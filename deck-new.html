@@ -1226,7 +1226,7 @@ body{font-family:'Noto Sans TC',system-ui,sans-serif}
 <!-- Navigation controls -->
 <div class="ctrl">
   <span class="lbl">PAGE</span>
-  <span id="ctrl-num">1/9</span>
+  <span id="ctrl-num">01/10</span>
   <span class="sep"></span>
   <button onclick="prevPage()">←</button>
   <button onclick="nextPage()">→</button>
@@ -1242,7 +1242,7 @@ function showPage(n) {
   pages[current].classList.remove('on');
   current = n;
   pages[current].classList.add('on');
-  ctrlNum.textContent = (current + 1) + '/10';
+  ctrlNum.textContent = String(current + 1).padStart(2, '0') + '/10';
   // Trigger P8 animations when navigating to page 8 (index 7)
   if (n === 7) {
     recalc();
