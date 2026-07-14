@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMPLIX Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAF9F6;
+  --ink:#1A1A2E;
+  --ink-2:#4A4A5E;
+  --ink-3:#7A7A8C;
+  --accent:#5B4FCF;
+  --accent-2:#2EAF80;
+  --coral:#C9544E;
+  --amber:#D98A12;
+}
+html,body{width:100%;height:100%;overflow:hidden;outline:none;background:transparent}
+body{font-family:'Noto Sans TC',system-ui,sans-serif}
+
+/* === Stage === */
+.stage{
+  position:fixed;inset:0;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+}
+.canvas{
+  width:1920px;height:1080px;
+  position:relative;overflow:hidden;
+  flex-shrink:0;
+}
+
+/* === Page === */
+.page{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease;
+}
+.page.on{opacity:1;pointer-events:auto}
+
+/* === Geo Grid === */
+.geo-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(91,79,207,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(91,79,207,.04) 1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+.top-accent{position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+
+/* === P1 COVER === */
+.p1{background:var(--bg)}
+.accent-bar{position:absolute;left:120px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent) 0%,var(--accent-2) 100%)}
+.geo-right{position:absolute;right:0;top:0;width:600px;height:100%;overflow:hidden}
+.geo-circle{position:absolute;border-radius:50%;border:1px solid rgba(91,79,207,.12)}
+.geo-circle-1{width:480px;height:480px;right:-120px;top:80px}
+.geo-circle-2{width:320px;height:320px;right:-40px;top:220px;border-color:rgba(46,175,128,.15)}
+.geo-circle-3{width:200px;height:200px;right:60px;top:320px;background:linear-gradient(135deg,rgba(91,79,207,.04),rgba(46,175,128,.04))}
+.bottom-line{position:absolute;bottom:100px;left:120px;right:120px;height:1px;background:linear-gradient(90deg,var(--accent) 0%,rgba(91,79,207,.1) 60%,transparent 100%)}
+.p1-content{position:absolute;left:160px;top:50%;transform:translateY(-50%);max-width:800px}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:32px}
+.eyebrow-badge{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:rgba(91,79,207,.08);padding:6px 14px;border-radius:999px}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-2)}
+.eyebrow-text{font-size:13px;color:var(--ink-3);font-weight:500}
+.p1-h1{font-family:'Noto Serif TC',serif;font-size:84px;font-weight:700;color:var(--ink);line-height:1.05;letter-spacing:-.02em;margin-bottom:28px}
+.accent-word{color:var(--accent);position:relative}
+.accent-word::after{content:'';position:absolute;bottom:4px;left:0;right:0;height:8px;background:rgba(91,79,207,.15);border-radius:4px;z-index:-1}
+.p1-sub{font-size:24px;color:var(--ink-2);line-height:1.5;margin-bottom:48px;font-weight:400}
+.p1-sub strong{color:var(--ink);font-weight:700}
+.cta-row{display:flex;align-items:center;gap:20px}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;font-size:15px;font-weight:700;padding:14px 28px;border-radius:12px;text-decoration:none;box-shadow:0 8px 24px rgba(91,79,207,.3);transition:transform .2s,box-shadow .2s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(91,79,207,.4)}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;color:var(--ink-2);font-size:15px;font-weight:600;padding:14px 20px;border-radius:12px;border:1px solid rgba(26,26,46,.12);background:rgba(255,255,255,.6);text-decoration:none;transition:transform .2s,background .2s}
+.btn-secondary:hover{background:rgba(255,255,255,.9);transform:translateY(-2px)}
+.p1-footer{position:absolute;bottom:100px;right:160px;text-align:right}
+.p1-footer-brand{font-size:13px;color:var(--ink-3);font-weight:600;margin-bottom:4px}
+.p1-footer-sub{font-size:11px;color:var(--ink-3);opacity:.7}
+.p1-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P2 PAIN === */
+.p2{background:var(--bg)}
+.left-bar{position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--coral) 0%,rgba(201,84,78,.3) 100%)}
+.p2-content{position:absolute;left:160px;right:160px;top:50%;transform:translateY(-50%)}
+.p2-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.p2-kicker::before{content:'';width:24px;height:2px;background:var(--coral)}
+.p2-h1{font-family:'Noto Serif TC',serif;font-size:56px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:60px}
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-bottom:56px}
+.pain-card{background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 2px 12px rgba(91,79,207,.07),0 12px 32px rgba(0,0,0,.04);border:1px solid rgba(26,26,46,.06);position:relative;overflow:hidden}
+.pain-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--coral),rgba(201,84,78,.3))}
+.pain-icon{width:44px;height:44px;border-radius:12px;background:rgba(201,84,78,.08);display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--coral)}
+.pain-card h3{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.3}
+.pain-card p{font-size:14px;color:var(--ink-2);line-height:1.55;font-weight:400}
+.pain-num{position:absolute;top:24px;right:24px;font-size:11px;font-weight:700;color:rgba(201,84,78,.25);letter-spacing:.05em}
+.bottom-note{background:rgba(91,79,207,.05);border-radius:16px;padding:24px 32px;display:flex;align-items:center;gap:16px}
+.bottom-note .icon{width:40px;height:40px;border-radius:10px;background:rgba(91,79,207,.1);display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0}
+.bottom-note p{font-size:16px;color:var(--ink-2);line-height:1.5}
+.bottom-note strong{color:var(--ink);font-weight:700}
+.p2-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P3 ROLES === */
+.p3{background:var(--bg)}
+.p3 .top-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.p3-content{position:absolute;left:120px;right:120px;top:50%;transform:translateY(-50%)}
+.p3-header{text-align:center;margin-bottom:52px}
+.p3-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.p3-h1{font-family:'Noto Serif TC',serif;font-size:52px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:14px}
+.p3-sub{font-size:18px;color:var(--ink-2);font-weight:400}
+.roles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:40px}
+.role-card{background:#fff;border-radius:22px;padding:28px 24px;box-shadow:0 2px 12px rgba(91,79,207,.07),0 12px 32px rgba(0,0,0,.04);border:1px solid rgba(26,26,46,.06);transition:transform .2s,box-shadow .2s}
+.role-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(91,79,207,.12),0 20px 48px rgba(0,0,0,.08)}
+.role-avatar{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Noto Serif TC',serif;font-weight:700;font-size:20px;margin-bottom:16px}
+.role-card h3{font-size:19px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.role-card .dept{font-size:12px;color:var(--ink-3);font-weight:600;margin-bottom:16px}
+.role-tags{display:flex;flex-wrap:wrap;gap:6px}
+.role-tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px}
+.tag-purple{background:rgba(91,79,207,.08);color:var(--accent)}
+.tag-blue{background:rgba(90,162,255,.12);color:#2d6fd0}
+.tag-mint{background:rgba(46,175,128,.12);color:#11906c}
+.tag-amber{background:rgba(217,138,18,.1);color:#b3700d}
+.tag-gray{background:rgba(154,163,178,.15);color:#6b7280}
+.role-desc{font-size:13px;color:var(--ink-3);line-height:1.5;margin-top:12px;font-weight:400}
+.p3-bottom{background:rgba(46,175,128,.06);border:1px solid rgba(46,175,128,.15);border-radius:16px;padding:20px 28px;text-align:center}
+.p3-bottom p{font-size:15px;color:var(--ink-2);font-weight:500}
+.p3-bottom strong{color:var(--accent);font-weight:700}
+.p3-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P4 FLOOR === */
+.p4{background:var(--bg)}
+.p4-left{position:absolute;left:0;top:0;bottom:0;width:560px;background:#fff;border-right:1px solid rgba(26,26,46,.07);padding:64px 52px;display:flex;flex-direction:column;justify-content:center}
+.p4-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.p4-kicker::before{content:'';width:20px;height:2px;background:var(--accent)}
+.p4-h1{font-family:'Noto Serif TC',serif;font-size:48px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:20px}
+.p4-sub{font-size:17px;color:var(--ink-2);line-height:1.6;margin-bottom:36px;font-weight:400}
+.features{display:flex;flex-direction:column;gap:16px}
+.feature{display:flex;align-items:flex-start;gap:14px;background:var(--bg);border-radius:14px;padding:16px 18px;border:1px solid rgba(26,26,46,.06)}
+.feature-icon{width:36px;height:36px;border-radius:10px;background:rgba(91,79,207,.08);display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0}
+.feature h3{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.feature p{font-size:13px;color:var(--ink-3);line-height:1.45;font-weight:400}
+.cta-hint{margin-top:32px;display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}
+.cta-hint:hover{text-decoration:underline}
+.p4-right{position:absolute;left:560px;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center}
+.office-wrap{position:relative;width:100%;height:100%}
+.office-svg{width:100%;height:100%}
+.p4-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P5 COMPARE === */
+.p5{background:var(--bg)}
+.p5-content{position:absolute;left:80px;right:80px;top:50%;transform:translateY(-50%)}
+.p5-header{text-align:center;margin-bottom:40px}
+.p5-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.p5-h1{font-family:'Noto Serif TC',serif;font-size:48px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:10px}
+.p5-sub{font-size:17px;color:var(--ink-2);font-weight:400}
+.comp-table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(91,79,207,.08),0 16px 48px rgba(0,0,0,.05);border:1px solid rgba(26,26,46,.07)}
+.comp-table th{padding:18px 28px;font-size:14px;font-weight:700;text-align:center}
+.comp-table th:first-child{text-align:left;padding-left:32px}
+.th-old{background:#f5f3ef;color:var(--ink-2)}
+.th-emplix{background:rgba(91,79,207,.06);color:var(--accent)}
+.th-old-2{background:#f5f3ef;color:var(--ink-2)}
+.comp-table td{padding:16px 24px;font-size:14px;text-align:center;border-top:1px solid rgba(26,26,46,.06)}
+.comp-table td:first-child{text-align:left;padding-left:32px;font-weight:700;color:var(--ink)}
+.row-old{background:#faf9f5}
+.row-emplix{background:rgba(91,79,207,.03)}
+.check{color:var(--accent-2);font-size:16px;font-weight:700}
+.cross{color:#C9544E;font-size:14px}
+.partial{color:#D98A12;font-size:14px}
+.emplix-val{color:var(--accent);font-weight:800;font-size:15px}
+.old-val{color:var(--ink-3)}
+.price-highlight{background:rgba(91,79,207,.08);border-radius:8px;padding:4px 10px}
+.bottom-row{background:rgba(91,79,207,.04)}
+.p5-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P6 ECOSYSTEM === */
+.p6{background:#f0eee8}
+.p6-left{position:absolute;left:0;top:0;bottom:0;width:640px;background:#fff;padding:64px 60px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(26,26,46,.07)}
+.p6-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.p6-kicker::before{content:'';width:22px;height:2px;background:var(--accent)}
+.p6-h1{font-family:'Noto Serif TC',serif;font-size:46px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:14px}
+.p6-sub{font-size:15px;color:var(--ink-2);line-height:1.6;margin-bottom:30px;font-weight:400}
+.eco-points{display:flex;flex-direction:column;gap:14px}
+.eco-point{display:flex;align-items:flex-start;gap:14px}
+.eco-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);margin-top:5px;flex-shrink:0}
+.eco-point p{font-size:14px;color:var(--ink-2);line-height:1.5;font-weight:400}
+.eco-point strong{color:var(--ink);font-weight:700}
+.eco-divider{height:1px;background:rgba(26,26,46,.08);margin:24px 0}
+.eco-footer{font-size:12px;color:var(--ink-3);line-height:1.65}
+.eco-footer strong{color:var(--ink);font-weight:700}
+.highlight-cards{display:flex;gap:10px;margin-top:18px;margin-bottom:18px}
+.hcard{flex:1;padding:16px 8px 14px;border-radius:14px;background:linear-gradient(135deg,var(--accent) 0%,#7B6FD4 100%);text-align:center;box-shadow:0 6px 24px rgba(91,79,207,.35);border:1px solid rgba(255,255,255,.15)}
+.hcard:nth-child(2){background:linear-gradient(135deg,var(--accent-2) 0%,#3DC990 100%);box-shadow:0 6px 24px rgba(46,175,128,.35)}
+.hcard:nth-child(3){background:linear-gradient(135deg,#E8703A 0%,#F5A623 100%);box-shadow:0 6px 24px rgba(232,112,58,.35)}
+.hcard-num{font-size:20px;font-weight:800;color:#fff;line-height:1;margin-bottom:6px;text-shadow:0 2px 8px rgba(0,0,0,.15)}
+.hcard-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:.05em}
+.hcard-icn{margin-bottom:8px}
+.hcard-icn svg{width:26px;height:26px;stroke:#fff;opacity:.9}
+.p6-right{position:absolute;left:640px;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.orbit-wrap{position:relative;width:560px;height:560px}
+.orbit-r1{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:520px;height:520px;border-radius:50%;border:1.5px dashed rgba(91,79,207,.18);animation:spin1 20s linear infinite}
+.orbit-r2{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:380px;height:380px;border-radius:50%;border:1px dashed rgba(46,175,128,.15);animation:spin2 14s linear infinite reverse}
+.orbit-r3{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:640px;height:640px;border-radius:50%;border:1px dashed rgba(91,79,207,.1);animation:spin3 25s linear infinite}
+.gpu-node{position:absolute;left:50%;top:50%;animation:orbit1 20s linear infinite;z-index:4}
+.gpu-box{width:90px;height:90px;border-radius:50%;background:#fff;border:2px solid rgba(90,162,255,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translate(-50%,-50%);z-index:4}
+.gpu-icon{margin-bottom:4px}
+.gpu-lbl{font-size:10px;font-weight:700;text-align:center;color:#2d6fd0;line-height:1.2}
+.token-node{position:absolute;left:50%;top:50%;animation:orbit2 14s linear infinite;z-index:4}
+.token-box{width:90px;height:90px;border-radius:50%;background:#fff;border:2px solid rgba(46,175,128,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translate(-50%,-50%);z-index:4}
+.token-icon{margin-bottom:4px}
+.token-lbl{font-size:10px;font-weight:700;text-align:center;color:#11906c;line-height:1.2}
+.partner-node{position:absolute;left:50%;top:50%;animation:orbit3 25s linear infinite;z-index:5}
+.partner-box{width:80px;height:80px;border-radius:50%;background:#fff;border:2px solid rgba(91,79,207,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.12);transform:translate(-50%,-50%);overflow:hidden}
+.partner-box img{width:50px;height:auto;object-fit:contain;border-radius:4px}
+.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:190px;height:190px;border-radius:50%;background:#fff;box-shadow:0 0 70px rgba(91,79,207,.2),0 20px 60px rgba(0,0,0,.12);border:2px solid rgba(91,79,207,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10}
+.core-logo{font-family:'Noto Serif TC',serif;font-size:38px;font-weight:800;color:var(--accent);letter-spacing:-1px}
+.core-sub{font-size:11px;color:rgba(91,79,207,.7);font-weight:600;margin-top:2px}
+@keyframes spin1{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes spin2{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes spin3{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes orbit1{from{transform:rotate(0deg) translateX(260px) rotate(0deg)}to{transform:rotate(360deg) translateX(260px) rotate(-360deg)}}
+@keyframes orbit2{from{transform:rotate(180deg) translateX(190px) rotate(-180deg)}to{transform:rotate(540deg) translateX(190px) rotate(-540deg)}}
+@keyframes orbit3{from{transform:rotate(0deg) translateX(320px) rotate(0deg)}to{transform:rotate(360deg) translateX(320px) rotate(-360deg)}}
+.p6-label{position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:12px;color:rgba(26,26,46,.35);font-weight:500;letter-spacing:.05em}
+.p6-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P7 TRUST === */
+.p7{background:var(--bg)}
+.p7 .top-accent{background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+.p7-content{position:absolute;left:120px;right:120px;top:50%;transform:translateY(-50%)}
+.p7-header{text-align:center;margin-bottom:44px}
+.p7-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2);margin-bottom:14px}
+.p7-h1{font-family:'Noto Serif TC',serif;font-size:52px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:10px}
+.p7-sub{font-size:17px;color:var(--ink-2);font-weight:400}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:36px}
+.trust-card{background:#fff;border-radius:20px;padding:28px 24px;box-shadow:0 2px 12px rgba(91,79,207,.07),0 12px 32px rgba(0,0,0,.04);border:1px solid rgba(26,26,46,.06);position:relative}
+.trust-card .num{font-size:11px;font-weight:800;color:rgba(91,79,207,.25);letter-spacing:.08em;margin-bottom:12px}
+.trust-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.trust-card h3{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.trust-card p{font-size:13px;color:var(--ink-3);line-height:1.55;font-weight:400}
+.flow-section{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:10px}
+.flow-card{flex-shrink:0}
+.flow-arrow{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.flow-done{flex-shrink:0}
+.flow-card{background:#fff;border-radius:18px;padding:22px 24px;box-shadow:0 2px 12px rgba(91,79,207,.07),0 8px 24px rgba(0,0,0,.04);border:1px solid rgba(26,26,46,.06)}
+.flow-card .header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.flow-card .dot{width:10px;height:10px;border-radius:50%}
+.flow-card .title{font-size:14px;font-weight:700;color:var(--ink)}
+.flow-card .status{margin-left:auto;font-size:12px;color:var(--ink-3);font-weight:600}
+.flow-doc{background:#f8f7ff;border-radius:10px;padding:12px 14px;font-size:13px;color:var(--ink-2);line-height:1.5;margin-bottom:14px;font-style:italic}
+.flow-actions{display:flex;gap:10px}
+.flow-btn{flex:1;padding:9px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;text-align:center}
+.flow-btn-approve{background:var(--accent-2);color:#fff}
+.flow-btn-revise{background:rgba(26,26,46,.06);color:var(--ink)}
+.flow-arrow{display:flex;flex-direction:column;align-items:center;gap:6px}
+.flow-arrow-line{width:2px;height:24px;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:1px}
+.flow-arrow-text{font-size:11px;color:var(--ink-3);font-weight:600}
+.flow-done{background:rgba(46,175,128,.06);border:1px solid rgba(46,175,128,.2);border-radius:18px;padding:22px 24px;text-align:center}
+.flow-done .done-icon{width:36px;height:36px;border-radius:50%;background:rgba(46,175,128,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:var(--accent-2)}
+.flow-done p{font-size:13px;color:var(--accent-2);font-weight:700}
+.p7-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P8 DATA === */
+.p8{background:var(--bg)}
+.p8 .top-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.p8-content{position:absolute;left:120px;right:120px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center}
+.p8-header{text-align:center;margin-bottom:32px}
+.p8-kicker{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.p8-h1{font-family:'Noto Serif TC',serif;font-size:42px;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.1;margin-bottom:8px}
+.p8-sub{font-size:14px;color:var(--ink-3)}
+.p8-grid{display:grid;grid-template-columns:520px 560px;gap:24px;align-items:start;max-width:100%;margin:0 auto}
+.p8-col-left{display:flex;flex-direction:column;gap:16px}
+.p8-card{background:#fff;border-radius:20px;padding:28px 32px;box-shadow:0 2px 12px rgba(91,79,207,.07),0 12px 32px rgba(0,0,0,.04);border:1px solid rgba(26,26,46,.06)}
+.data-kicker{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2);animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.data-title{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:16px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:18px}
+.stat-cell{text-align:center;padding:10px 0}
+.stat-cell+.stat-cell{border-left:1px solid rgba(26,26,46,.07)}
+.stat-num{font-family:'Noto Serif TC',serif;font-size:34px;font-weight:700;line-height:1;margin-bottom:4px}
+.stat-cell:nth-child(1) .stat-num{color:var(--accent)}
+.stat-cell:nth-child(2) .stat-num{color:var(--accent-2)}
+.stat-cell:nth-child(3) .stat-num{color:var(--amber)}
+.stat-label{font-size:11px;color:var(--ink-3);font-weight:600}
+.chart-inner{background:var(--bg);border-radius:12px;padding:14px 16px 8px;margin-bottom:14px}
+.chart-legend{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-3);font-weight:600}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+.chart-badge{margin-left:auto;display:flex;align-items:center;gap:4px;background:rgba(46,175,128,.1);color:var(--accent-2);font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px}
+.chart-area{height:110px}
+.chart-area svg{width:100%;height:100%}
+.data-note{font-size:10px;color:var(--ink-3);display:flex;align-items:center;gap:5px}
+.suggestion-card{background:rgba(91,79,207,.05);border:1px solid rgba(91,79,207,.12);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px}
+.suggestion-card svg{width:18px;height:18px;color:var(--accent);flex-shrink:0}
+.suggestion-card p{font-size:13px;color:var(--ink-2);line-height:1.5}
+.suggestion-card strong{color:var(--ink);font-weight:700}
+.pill{font-size:10px;font-weight:700;background:rgba(91,79,207,.08);color:var(--accent);padding:3px 10px;border-radius:999px;margin-left:4px}
+.roi-kicker{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:6px}
+.roi-headline{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.roi-tagline{font-size:12px;color:var(--ink-3);margin-bottom:20px}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.input-group{display:flex;flex-direction:column;gap:5px}
+.input-group label{font-size:11px;font-weight:700;color:var(--ink-2)}
+.input-group input{background:var(--bg);border:1.5px solid rgba(26,26,46,.1);border-radius:10px;padding:9px 12px;font-size:14px;font-weight:700;color:var(--ink);font-family:'Noto Sans TC',sans-serif;outline:none;width:100%;transition:border-color .2s}
+.input-group input:focus{border-color:var(--accent);background:#fff}
+.slider-group{margin-bottom:6px}
+.slider-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.slider-header label{font-size:11px;font-weight:700;color:var(--ink-2)}
+.slider-val{font-size:12px;font-weight:700;color:var(--accent);background:rgba(91,79,207,.08);padding:3px 10px;border-radius:999px}
+.slider{-webkit-appearance:none;width:100%;height:5px;border-radius:3px;background:rgba(91,79,207,.12);outline:none;cursor:pointer}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 2px 8px rgba(91,79,207,.4)}
+.calc-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.calc-step{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(26,26,46,.06);background:var(--bg);transition:border-color .3s,background .3s}
+.calc-step.active{border-color:var(--accent);background:rgba(91,79,207,.04)}
+.calc-step.done{border-color:rgba(46,175,128,.3);background:rgba(46,175,128,.04)}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.calc-step:not(.done):not(.active) .step-num{background:rgba(26,26,46,.08);color:var(--ink-3)}
+.calc-step.active .step-num{background:var(--accent);color:#fff}
+.calc-step.done .step-num{background:var(--accent-2);color:#fff}
+.step-content{flex:1}
+.step-formula{font-size:11px;color:var(--ink-3);margin-bottom:1px}
+.step-result{font-size:13px;font-weight:700;color:var(--ink)}
+.step-result .hl{color:var(--accent)}
+.roi-results{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.roi-result-card{padding:12px 16px;border-radius:12px;text-align:center}
+.roi-result-card.monthly{background:rgba(91,79,207,.07);border:1.5px solid rgba(91,79,207,.15)}
+.roi-result-card.yearly{background:rgba(46,175,128,.07);border:1.5px solid rgba(46,175,128,.2)}
+.roi-result-card .rc-label{font-size:10px;font-weight:700;color:var(--ink-3);margin-bottom:3px}
+.roi-result-card .rc-value{font-family:'Noto Serif TC',serif;font-size:20px;font-weight:700}
+.roi-result-card.monthly .rc-value{color:var(--accent)}
+.roi-result-card.yearly .rc-value{color:var(--accent-2)}
+.roi-disclaimer{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink-3);margin-top:14px;padding-top:14px;border-top:1px solid rgba(26,26,46,.07)}
+.roi-disclaimer svg{width:14px;height:14px;flex-shrink:0}
+.p8-footer{position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:11px;color:var(--ink-3);letter-spacing:.1em;font-family:monospace}
+.p8-watermark{position:absolute;bottom:40px;right:60px;font-size:10px;color:rgba(26,26,46,.2);letter-spacing:.12em;font-family:monospace}
+.p8-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P8 PRICING === */
+.p8{background:var(--bg)}
+.p8 .top-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.p8-content{position:absolute;left:120px;right:120px;top:50%;transform:translateY(-50%)}
+.p8-header{text-align:center;margin-bottom:40px}
+.p8-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.p8-h1{font-family:'Noto Serif TC',serif;font-size:52px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:10px}
+.p8-sub{font-size:17px;color:var(--ink-2);font-weight:400}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:28px}
+.price-card{background:#fff;border-radius:22px;padding:30px 26px;box-shadow:0 2px 12px rgba(91,79,207,.07),0 12px 32px rgba(0,0,0,.04);border:1px solid rgba(26,26,46,.06);position:relative}
+.price-card.pop{border:2px solid var(--accent);box-shadow:0 8px 32px rgba(91,79,207,.18),0 20px 48px rgba(0,0,0,.08)}
+.price-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#5B4FCF,#7c5cff);padding:5px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(91,79,207,.4)}
+.price-name{font-size:19px;font-weight:700;color:var(--ink);margin-bottom:2px;font-family:'Noto Serif TC',serif}
+.price-sub{font-size:12px;color:var(--ink-3);font-weight:600;margin-bottom:16px}
+.price-amount{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+.price-amount b{font-size:44px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+.price-amount span{font-size:13px;color:var(--ink-3);font-weight:500}
+.price-tag{font-size:13px;color:var(--ink-2);line-height:1.5;font-weight:400;margin-bottom:18px}
+.price-feats{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.price-feat{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-2);line-height:1.45;font-weight:400}
+.price-feat .ck{width:18px;height:18px;border-radius:5px;background:rgba(46,175,128,.12);color:var(--accent-2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.price-compare{font-size:11.5px;color:var(--ink-3);line-height:1.55;border-top:1px solid rgba(26,26,46,.07);padding-top:14px;margin-bottom:16px;font-weight:400}
+.price-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;padding:13px 20px;border-radius:12px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 20px rgba(91,79,207,.3)}
+.price-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(91,79,207,.4)}
+.price-btn-outline{background:#fff;color:var(--ink);border:1px solid rgba(26,26,46,.15);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.price-btn-outline:hover{background:var(--bg)}
+.bundle-row{background:rgba(91,79,207,.05);border:1px solid rgba(91,79,207,.12);border-radius:14px;padding:16px 28px;text-align:center;font-size:14px;color:var(--accent);font-weight:700}
+.p8-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === P9 CTA === */
+.p9{background:var(--bg)}
+.p9 .top-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.p9-content{position:absolute;left:120px;right:120px;top:50%;transform:translateY(-50%)}
+.p9-header{text-align:center;margin-bottom:40px}
+.p9-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.p9-h1{font-family:'Noto Serif TC',serif;font-size:52px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:10px}
+.p9-sub{font-size:17px;color:var(--ink-2);font-weight:400}
+.qr-card{background:#fff;border-radius:28px;padding:44px 48px;display:flex;flex-direction:column;align-items:center;gap:20px;box-shadow:0 4px 24px rgba(91,79,207,.08),0 16px 56px rgba(0,0,0,.06);border:1px solid rgba(26,26,46,.06);min-width:340px;flex-shrink:0}
+.qr-card.pop{border:2px solid var(--accent);box-shadow:0 8px 40px rgba(91,79,207,.18),0 24px 64px rgba(0,0,0,.1)}
+.qr-badge{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,var(--accent),#7c5cff);padding:5px 16px;border-radius:999px;box-shadow:0 4px 12px rgba(91,79,207,.4);white-space:nowrap}
+.qr-box{width:180px;height:180px;background:#f5f3ee;border-radius:20px;display:flex;align-items:center;justify-content:center}
+.qr-box svg{width:80px;height:80px;opacity:.18}
+.qr-title{font-family:'Noto Serif TC',serif;font-size:24px;font-weight:700;color:var(--ink)}
+.qr-price{font-size:15px;color:var(--accent);font-weight:700}
+.qr-desc{font-size:13px;color:var(--ink-3);line-height:1.6;text-align:center}
+.steps-panel{display:flex;flex-direction:column;gap:0}
+.steps-header{margin-bottom:32px}
+.p10-kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.p10-steps-title{font-family:'Noto Serif TC',serif;font-size:40px;font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em}
+.steps-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.step{display:flex;gap:14px}
+.step-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#7c5cff);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body{display:flex;flex-direction:column;gap:4px}
+.step-label{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3}
+.step-desc{font-size:13px;color:var(--ink-3);line-height:1.55}
+.btn-row{display:flex;gap:16px;margin-top:36px}
+.btn-primary{display:flex;align-items:center;gap:12px;background:var(--accent);color:#fff;font-size:15px;font-weight:700;padding:16px 28px;border-radius:14px;text-decoration:none;box-shadow:0 8px 28px rgba(91,79,207,.3);transition:transform .2s,box-shadow .2s;white-space:nowrap}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(91,79,207,.4)}
+.btn-secondary{display:flex;align-items:center;gap:12px;background:#fff;color:var(--ink);font-size:15px;font-weight:700;padding:16px 28px;border-radius:14px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.07);border:1px solid rgba(26,26,46,.1);transition:transform .2s,box-shadow .2s;white-space:nowrap}
+.btn-secondary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.1)}
+.btn-tag{font-size:10px;font-weight:700;background:rgba(91,79,207,.1);color:var(--accent);padding:3px 10px;border-radius:999px}
+.btn-tag.alt{background:rgba(46,175,128,.1);color:var(--accent-2)}
+.p10-content{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:80px 120px;gap:80px}
+.p10-footer{position:absolute;bottom:50px;left:0;right:0;text-align:center;font-size:11px;color:var(--ink-3);letter-spacing:.1em;font-family:monospace}
+.p10-watermark{position:absolute;bottom:40px;right:60px;font-size:10px;color:rgba(26,26,46,.2);letter-spacing:.12em;font-family:monospace}
+.p10-num{position:absolute;bottom:40px;left:120px;font-size:11px;color:var(--ink-3);letter-spacing:.15em;font-family:monospace}
+
+/* === CONTROLS === */
+.ctrl{
+  position:fixed;bottom:12px;right:16px;
+  background:rgba(26,26,46,.45);backdrop-filter:blur(8px);
+  padding:4px 10px;border-radius:8px;
+  display:flex;align-items:center;gap:6px;color:#fff;font-size:9px;font-family:ui-monospace,monospace;
+  z-index:100;border:1px solid rgba(255,255,255,.06);
+}
+.ctrl button{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+  color:#fff;padding:3px 8px;border-radius:5px;cursor:pointer;
+  font-size:9px;font-family:inherit;transition:background .15s;line-height:1.4;
+}
+.ctrl button:hover{background:rgba(255,255,255,.14)}
+.ctrl .sep{width:1px;height:12px;background:rgba(255,255,255,.08)}
+.ctrl .lbl{color:rgba(255,255,255,.3);font-size:8px;letter-spacing:.05em}
+</style>
+</head>
+<body>
+
+<div class="stage">
+<div class="canvas" id="cv">
+
+<!-- ==================== PAGE 1: COVER ==================== -->
+<div class="page p1 on" id="p-0">
+  <div class="geo-grid"></div>
+  <div class="accent-bar"></div>
+  <div class="geo-right">
+    <div class="geo-circle geo-circle-1"></div>
+    <div class="geo-circle geo-circle-2"></div>
+    <div class="geo-circle geo-circle-3"></div>
+  </div>
+  <div class="p1-content">
+    <div class="eyebrow">
+      <span class="eyebrow-badge">WEB3LABS</span>
+      <span class="eyebrow-dot"></span>
+      <span class="eyebrow-text">旗下產品 · AI 勞動力平台</span>
+    </div>
+    <h1 class="p1-h1">聘請<span class="accent-word">AI 員工</span>團隊<br>為中小企而設</h1>
+    <p class="p1-sub">受管治的 AI 勞動力——你審批，協助你完成<br><strong>文書、客服、銷售、會計，全部完成</strong></p>
+    <div class="cta-row">
+      <a href="#" class="btn-primary">開始 14 天免費試用 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="#" class="btn-secondary">查看投資回報率儀表板</a>
+    </div>
+  </div>
+  <div class="bottom-line"></div>
+  <div class="p1-footer">
+    <div class="p1-footer-brand">EMPLIX</div>
+    <div class="p1-footer-sub">By Web3Labs · Hong Kong</div>
+  </div>
+  <div class="p1-num">01 / 10</div>
+</div>
+
+<!-- ==================== PAGE 2: PAIN POINTS ==================== -->
+<div class="page p2" id="p-1">
+  <div class="geo-grid"></div>
+  <div class="left-bar"></div>
+  <div class="p2-content">
+    <div class="p2-kicker">中小企創業者的三大困境</div>
+    <h1 class="p2-h1">你並非缺乏嘗試，而是缺乏一個<br>能真正落地、員工願意採用的方案</h1>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="pain-num">01</span>
+        <div class="pain-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>員工視 AI 工具為多餘工作，抗拒使用</h3>
+        <p>培訓時間付諸東流，工具最終閒置，熱情冷卻後一切歸零</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-num">02</span>
+        <div class="pain-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h3>聘請全職員工成本高、培訓周期長</h3>
+        <p>新人上手慢，人工貴，還要面對人員流動帶來的風險</p>
+      </div>
+      <div class="pain-card">
+        <span class="pain-num">03</span>
+        <div class="pain-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>每月訂閱多個 AI 工具，費用持續增加</h3>
+        <p>無人真正使用，變相浪費預算，成效無從量化</p>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <div class="icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <p><strong>Emplix 並非另一款 AI 工具，而是全方位 AI 員工平台，助你完成所有瑣碎事務</strong>——你審批，協助你完成</p>
+    </div>
+  </div>
+  <div class="p2-num">02 / 10</div>
+</div>
+
+<!-- ==================== PAGE 3: ROLES ==================== -->
+<div class="page p3" id="p-2">
+  <div class="geo-grid"></div>
+  <div class="top-accent"></div>
+  <div class="p3-content">
+    <div class="p3-header">
+      <div class="p3-kicker">六位 AI 員工，各有所長</div>
+      <h1 class="p3-h1">你的 AI 員工團隊</h1>
+      <p class="p3-sub">每位員工皆嚴守紀律——僅使用你所指定的檔案辦事，未經批准绝不對外發出</p>
+    </div>
+    <div class="roles-grid">
+      <div class="role-card">
+        <div class="role-avatar" style="background:linear-gradient(135deg,#5aa2ff,#2d6fd0)">AD</div>
+        <h3>行政助理</h3>
+        <div class="dept">檔案、電郵與文件</div>
+        <div class="role-tags">
+          <span class="role-tag tag-mint">運行中</span>
+          <span class="role-tag tag-purple">需經審批</span>
+        </div>
+        <p class="role-desc">檔案整理、電郵回覆、文件起草，全部經你審批後執行</p>
+      </div>
+      <div class="role-card">
+        <div class="role-avatar" style="background:linear-gradient(135deg,#2fd1a5,#11a079)">CS</div>
+        <h3>客服助理</h3>
+        <div class="dept">客戶回覆與投訴</div>
+        <div class="role-tags">
+          <span class="role-tag tag-mint">運行中</span>
+          <span class="role-tag tag-blue">須有檔案</span>
+        </div>
+        <p class="role-desc">客戶回覆、FAQ 回應、投訴處理，引用來源後方可視為完成</p>
+      </div>
+      <div class="role-card">
+        <div class="role-avatar" style="background:linear-gradient(135deg,#ff9bcb,#dc6f64)">SA</div>
+        <h3>銷售助理</h3>
+        <div class="dept">報價與客戶跟進</div>
+        <div class="role-tags">
+          <span class="role-tag tag-mint">運行中</span>
+          <span class="role-tag tag-purple">僅供草擬</span>
+        </div>
+        <p class="role-desc">報價、跟進客戶、管理日程，每次外發須先經你審批</p>
+      </div>
+      <div class="role-card">
+        <div class="role-avatar" style="background:linear-gradient(135deg,#8b6bff,#6438e8)">SM</div>
+        <h3>營銷助理</h3>
+        <div class="dept">貼文、訊息與宣傳活動</div>
+        <div class="role-tags">
+          <span class="role-tag tag-amber">試行中</span>
+          <span class="role-tag tag-blue">僅供檢視</span>
+        </div>
+        <p class="role-desc">推廣貼文、社群媒體訊息、宣傳活動策劃，每次發佈須先經你審批</p>
+      </div>
+      <div class="role-card">
+        <div class="role-avatar" style="background:linear-gradient(135deg,#ffb454,#d98a12)">AC</div>
+        <h3>會計助理</h3>
+        <div class="dept">單據分類與月結</div>
+        <div class="role-tags">
+          <span class="role-tag tag-amber">試行中</span>
+          <span class="role-tag tag-purple">需經審批</span>
+        </div>
+        <p class="role-desc">單據分類、對賬、月結，起草文件交由你簽核，絕不自行申報</p>
+      </div>
+      <div class="role-card">
+        <div class="role-avatar" style="background:linear-gradient(135deg,#9aa3b2,#6b7280)">OP</div>
+        <h3>營運助理</h3>
+        <div class="dept">稍後推出</div>
+        <div class="role-tags">
+          <span class="role-tag tag-gray">未啟用</span>
+          <span class="role-tag tag-blue">暫不適用</span>
+        </div>
+        <p class="role-desc">存貨管理、工作程序、供應鏈統籌——敬請期待</p>
+      </div>
+    </div>
+    <div class="p3-bottom">
+      <p>每位 AI 員工皆：✓ 僅使用指定檔案辦事　✓ 對外動作須先經審批　✓ 資料不足時將拒絕執行</p>
+    </div>
+  </div>
+  <div class="p3-num">03 / 10</div>
+</div>
+
+<!-- ==================== PAGE 4: FLOOR VIEW ==================== -->
+<div class="page p4" id="p-3">
+  <div class="geo-grid"></div>
+  <div class="p4-left">
+    <div class="p4-kicker">虛擬辦公室 · Floor View</div>
+    <h1 class="p4-h1">開啟辦公室<br>各項運作一覽無遺</h1>
+    <p class="p4-sub">等距視角呈現你的 AI 員工團隊——每位員工有桌、有所屬職責，所有工作進度一目了然</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 7 13.5 15.5l-5-5L2 17"/><path d="M16 7h6v6"/></svg>
+        </div>
+        <div><h3>培訓室：先試後聘</h3><p>聘用前用內置範例資料示範任何技能</p></div>
+      </div>
+      <div class="feature" style="background:rgba(46,175,128,.04)">
+        <div class="feature-icon" style="background:rgba(46,175,128,.1);color:var(--accent-2)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div><h3>草稿傳送至你的桌面</h3><p>批准或退回並附加評語</p></div>
+      </div>
+      <div class="feature" style="background:rgba(90,162,255,.04)">
+        <div class="feature-icon" style="background:rgba(90,162,255,.1);color:#2d6fd0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        </div>
+        <div><h3>頂樓儀表板</h3><p>追蹤任務完成、節省工時與成本</p></div>
+      </div>
+    </div>
+    <a href="#" class="cta-hint">進入辦公室查看 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+  </div>
+  <div class="p4-right">
+    <div class="office-wrap">
+      <svg class="office-svg" viewBox="0 0 790 480" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f5f3ee"/><stop offset="100%" stop-color="#eeeae3"/></linearGradient>
+          <linearGradient id="fl" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f0eee8"/><stop offset="100%" stop-color="#e8e4dc"/></linearGradient>
+          <linearGradient id="fr" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#faf8f4"/><stop offset="100%" stop-color="#f0eee8"/></linearGradient>
+        </defs>
+        <polygon points="392,80.4 827.2,298 511,456.1 75.8,238.5" fill="#ddd5f2"/>
+        <polygon points="392,70.4 827.2,288 511,446.1 75.8,228.5" fill="url(#fg1)"/>
+        <polygon points="392,20 103,164.5 103,228.5 392,84" fill="#efe7f8" stroke="rgba(27,21,48,.12)"/>
+        <polygon points="392,20 800,224 800,288 392,84" fill="url(#fr)" stroke="rgba(27,21,48,.12)"/>
+        <polygon points="568.8,124.4 602.8,141.4 602.8,172.4 568.8,155.4" fill="#dceeff" stroke="rgba(27,21,48,.16)"/>
+        <polygon points="619.8,149.9 653.8,166.9 653.8,197.9 619.8,180.9" fill="#dceeff" stroke="rgba(27,21,48,.16)"/>
+        <polygon points="670.8,175.4 704.8,192.4 704.8,223.4 670.8,206.4" fill="#dceeff" stroke="rgba(27,21,48,.16)"/>
+        <polygon points="300.2,102.1 402.2,153.1 402.2,191.1 300.2,140.1" fill="rgb(170,177,195)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="494,107.2 402.2,153.1 402.2,191.1 494,145.2" fill="rgb(141,147,162)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="392,56.2 494,107.2 402.2,153.1 300.2,102.1" fill="rgb(215,225,248)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="300.2,56.1 402.2,107.1 402.2,153.1 300.2,102.1" fill="rgba(170,214,255,.4)" stroke="rgba(90,162,255,.6)"/>
+        <polygon points="494,61.2 402.2,107.1 402.2,153.1 494,107.2" fill="rgba(170,214,255,.3)" stroke="rgba(90,162,255,.6)"/>
+        <polygon points="368.2,76.1 381.8,82.9 381.8,91.9 368.2,85.1" fill="rgb(74,133,209)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="395.4,76.1 381.8,82.9 381.8,91.9 395.4,85.1" fill="rgb(61,110,173)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="381.8,69.3 395.4,76.1 381.8,82.9 368.2,76.1" fill="rgb(94,168,255)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="269.6,172.8 330.8,203.4 330.8,223.4 269.6,192.8" fill="rgb(203,198,187)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="361.4,188.1 330.8,203.4 330.8,223.4 361.4,208.1" fill="rgb(168,164,155)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="300.2,157.5 361.4,188.1 330.8,203.4 269.6,172.8" fill="rgb(255,251,237)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="303.6,153 325.7,164 325.7,177 303.6,166" fill="rgb(48,42,71)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="329.1,162.3 325.7,164 325.7,177 329.1,175.3" fill="rgb(39,35,58)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="307,151.3 329.1,162.3 325.7,164 303.6,153" fill="rgb(60,53,89)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="422.6,213.2 507.6,255.7 429.4,294.8 344.4,252.3" fill="#2fd1a5" opacity=".1"/>
+        <polygon points="395.4,218.7 456.6,249.3 456.6,269.3 395.4,238.7" fill="rgb(203,198,187)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="487.2,234 456.6,249.3 456.6,269.3 487.2,254" fill="rgb(168,164,155)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="426,203.4 487.2,234 456.6,249.3 395.4,218.7" fill="rgb(255,251,237)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="429.4,198.9 451.5,209.9 451.5,222.9 429.4,211.9" fill="rgb(48,42,71)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="454.9,208.3 451.5,209.9 451.5,222.9 454.9,221.3" fill="rgb(39,35,58)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="432.8,197.2 454.9,208.3 451.5,209.9 429.4,198.9" fill="rgb(60,53,89)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="463.4,313.5 589.2,376.4 500.8,420.6 375,357.7" fill="#e0484d" opacity=".07"/>
+        <polygon points="429.4,322.1 507.6,361.2 507.6,383.2 429.4,344.1" fill="rgb(190,178,155)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="541.6,344.2 507.6,361.2 507.6,383.2 541.6,366.2" fill="rgb(158,148,129)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="463.4,305.1 541.6,344.2 507.6,361.2 429.4,322.1" fill="rgb(241,226,197)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="453.2,319.1 471.9,328.5 471.9,331.5 453.2,322.1" fill="rgb(209,209,209)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="487.2,320.8 471.9,328.5 471.9,331.5 487.2,323.8" fill="rgb(173,173,173)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="468.5,311.5 487.2,320.8 471.9,328.5 453.2,319.1" fill="rgb(255,255,255)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="453.2,315.1 471.9,324.5 471.9,327.5 453.2,318.1" fill="rgb(209,209,209)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="487.2,316.8 471.9,324.5 471.9,327.5 487.2,319.8" fill="rgb(173,173,173)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="468.5,307.5 487.2,316.8 471.9,324.5 453.2,315.1" fill="rgb(255,255,255)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="285.6,248.8 336.6,274.3 336.6,312.3 285.6,286.8" fill="rgb(209,207,202)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="341,272.1 336.6,274.3 336.6,312.3 341,310.1" fill="rgb(173,172,167)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="290,246.6 341,272.1 336.6,274.3 285.6,248.8" fill="rgb(255,255,255)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="285.6,242.8 336.6,268.3 336.6,274.3 285.6,248.8" fill="rgb(39,171,135)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="341,266.1 336.6,268.3 336.6,274.3 341,272.1" fill="rgb(32,142,112)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="290,240.6 341,266.1 336.6,268.3 285.6,242.8" fill="rgb(49,217,172)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="682.7,206.3 733.7,231.8 733.7,283.8 682.7,258.3" fill="rgb(190,184,170)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="750.7,223.3 733.7,231.8 733.7,283.8 750.7,275.3" fill="rgb(158,152,141)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="699.7,197.8 750.7,223.3 733.7,231.8 682.7,206.3" fill="rgb(241,233,215)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="692.9,223.3 704.5,229 704.5,242 692.9,236.3" fill="rgb(74,133,209)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="713,224.8 704.5,229 704.5,242 713,237.8" fill="rgb(61,110,173)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="701.4,219 713,224.8 704.5,229 692.9,223.3" fill="rgb(94,168,255)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="296.8,167.3 381.8,209.8 303.6,248.9 218.6,206.4" fill="#5aa2ff" opacity=".1"/>
+        <polygon points="551.8,260.8 636.8,303.3 558.6,342.4 473.6,299.9" fill="#7c5cff" opacity=".1"/>
+        <polygon points="436.2,362.3 453.2,370.8 453.2,379.8 436.2,371.3" fill="rgb(48,42,71)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="468.5,363.1 453.2,370.8 453.2,379.8 468.5,372.1" fill="rgb(39,35,58)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="451.5,354.6 468.5,363.1 453.2,370.8 436.2,362.3" fill="rgb(60,53,89)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="142.1,180.3 146.9,182.6 146.9,226.6 142.1,224.3" fill="rgb(209,209,209)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="214.9,148.6 146.9,182.6 146.9,226.6 214.9,192.6" fill="rgb(173,173,173)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <polygon points="210.1,146.3 214.9,148.6 146.9,182.6 142.1,180.3" fill="rgb(255,255,255)" stroke="rgba(27,21,48,.16)" stroke-width="1" stroke-linejoin="round"/>
+        <g><g transform="translate(283.2,216.6)"><ellipse cx="0" cy="3" rx="10" ry="4.5" fill="rgba(27,21,48,.12)"/><rect x="-7" y="-17" width="14" height="17" rx="5.5" fill="#5aa2ff" stroke="rgb(63,113,179)"/><circle cx="0" cy="-22" r="6" fill="#ffe1c4" stroke="rgba(27,21,48,.2)"/></g></g>
+        <g><g transform="translate(409,262.5)"><ellipse cx="0" cy="3" rx="10" ry="4.5" fill="rgba(27,21,48,.12)"/><rect x="-7" y="-17" width="14" height="17" rx="5.5" fill="#2fd1a5" stroke="rgb(33,146,115)"/><circle cx="0" cy="-22" r="6" fill="#ffe1c4" stroke="rgba(27,21,48,.2)"/></g></g>
+        <g><g transform="translate(538.2,310.1)"><ellipse cx="0" cy="3" rx="10" ry="4.5" fill="rgba(27,21,48,.12)"/><rect x="-7" y="-17" width="14" height="17" rx="5.5" fill="#7c5cff" stroke="rgb(87,64,179)"/><circle cx="0" cy="-22" r="6" fill="#ffe1c4" stroke="rgba(27,21,48,.2)"/></g></g>
+        <g><g transform="translate(390.7,272.15)"><rect width="189.6" height="22" rx="11" fill="rgba(255,255,255,.95)" stroke="rgba(27,21,48,.14)"/><circle cx="13" cy="11" r="4" fill="#e0484d"/><text x="102.8" y="15" font-size="11" font-weight="700" fill="#1b1530" text-anchor="middle" font-family="Plus Jakarta Sans,Noto Sans TC,sans-serif">你的辦公桌 · 待批 5</text></g></g>
+        <g transform="translate(340,29.9)"><rect width="98.4" height="22" rx="11" fill="rgba(255,255,255,.95)" stroke="rgba(27,21,48,.14)"/><circle cx="13" cy="11" r="4" fill="#5aa2ff"/><text x="57.2" y="15" font-size="11" font-weight="700" fill="#1b1530" text-anchor="middle" font-family="Plus Jakarta Sans,Noto Sans TC,sans-serif">頂樓</text></g>
+        <g transform="translate(672.5,179.15)"><rect width="68" height="22" rx="11" fill="rgba(255,255,255,.95)" stroke="rgba(27,21,48,.14)"/><circle cx="13" cy="11" r="4" fill="#ffb454"/><text x="42" y="15" font-size="11" font-weight="700" fill="#1b1530" text-anchor="middle" font-family="Plus Jakarta Sans,Noto Sans TC,sans-serif">檔案室</text></g>
+        <g transform="translate(235.6,224.4)"><rect width="68" height="22" rx="11" fill="rgba(255,255,255,.95)" stroke="rgba(27,21,48,.14)"/><circle cx="13" cy="11" r="4" fill="#5aa2ff"/><text x="42" y="15" font-size="11" font-weight="700" fill="#1b1530" text-anchor="middle" font-family="Plus Jakarta Sans,Noto Sans TC,sans-serif">行政助理</text></g>
+        <g transform="translate(353.8,270.3)"><rect width="83.2" height="22" rx="11" fill="rgba(255,255,255,.95)" stroke="rgba(27,21,48,.14)"/><circle cx="13" cy="11" r="4" fill="#2fd1a5"/><text x="49.6" y="15" font-size="11" font-weight="700" fill="#1b1530" text-anchor="middle" font-family="Plus Jakarta Sans,Noto Sans TC,sans-serif">客服助理</text></g>
+        <g transform="translate(475.4,317.9)"><rect width="98.4" height="22" rx="11" fill="rgba(255,255,255,.95)" stroke="rgba(27,21,48,.14)"/><circle cx="13" cy="11" r="4" fill="#7c5cff"/><text x="57.2" y="15" font-size="11" font-weight="700" fill="#1b1530" text-anchor="middle" font-family="Plus Jakarta Sans,Noto Sans TC,sans-serif">銷售助理</text></g>
+        <g><g transform="translate(93,203.7)"><rect width="128.8" height="22" rx="11" fill="rgba(255,255,255,.95)" stroke="rgba(27,21,48,.14)"/><circle cx="13" cy="11" r="4" fill="#7c5cff"/><text x="72.4" y="15" font-size="11" font-weight="700" fill="#1b1530" text-anchor="middle" font-family="Plus Jakarta Sans,Noto Sans TC,sans-serif">培訓室</text></g></g>
+        <g transform="translate(229.4,300.8)"><rect width="121.2" height="22" rx="11" fill="rgba(255,255,255,.95)" stroke="rgba(27,21,48,.14)"/><circle cx="13" cy="11" r="4" fill="#2fd1a5"/><text x="68.6" y="15" font-size="11" font-weight="700" fill="#1b1530" text-anchor="middle" font-family="Plus Jakarta Sans,Noto Sans TC,sans-serif">招聘板</text></g>
+      </svg>
+    </div>
+  </div>
+  <div class="p4-num">04 / 10</div>
+</div>
+
+<!-- ==================== PAGE 5: COMPARE ==================== -->
+<div class="page p5" id="p-4">
+  <div class="geo-grid"></div>
+  <div class="p5-content">
+    <div class="p5-header">
+      <div class="p5-kicker">優勢對比</div>
+      <h1 class="p5-h1">Emplix 與其他方案有何不同</h1>
+      <p class="p5-sub">三個方案正面交鋒——月費、能力、風險逐一比拼</p>
+    </div>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="th-old">請一個文員</th>
+          <th class="th-emplix">Emplix AI 員工</th>
+          <th class="th-old-2">通用 AI 工具</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-old">
+          <td>月費</td>
+          <td class="old-val">HK$18,000+</td>
+          <td><span class="price-highlight emplix-val">HK$990 起</span></td>
+          <td class="old-val">HK$500–2,000+</td>
+        </tr>
+        <tr class="row-emplix">
+          <td>熟悉你的業務</td>
+          <td class="old-val"><span class="partial">◐</span> 需培訓</td>
+          <td><span class="check">✓</span> 審批學習</td>
+          <td class="old-val"><span class="cross">✗</span> 通用回答</td>
+        </tr>
+        <tr class="row-old">
+          <td>東主掌控審批</td>
+          <td class="old-val"><span class="partial">◐</span> 難以及時</td>
+          <td><span class="check">✓</span> 每個動作先審批</td>
+          <td class="old-val"><span class="cross">✗</span> 自主執行</td>
+        </tr>
+        <tr class="row-emplix">
+          <td>24/7 即時回覆</td>
+          <td class="old-val"><span class="cross">✗</span></td>
+          <td><span class="check">✓</span></td>
+          <td class="old-val"><span class="check">✓</span></td>
+        </tr>
+        <tr class="row-old">
+          <td>生態 GPU 算力成本</td>
+          <td class="old-val"><span class="cross">✗</span></td>
+          <td><span class="check">✓</span> 低 40%</td>
+          <td class="old-val"><span class="cross">✗</span></td>
+        </tr>
+        <tr class="row-emplix bottom-row">
+          <td>香港合規 / 數據留港</td>
+          <td class="old-val"><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td class="old-val"><span class="partial">◐</span> 視乎供應商</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="p5-num">05 / 10</div>
+</div>
+
+<!-- ==================== PAGE 6: ECOSYSTEM ==================== -->
+<div class="page p6" id="p-5">
+  <div class="p6-left">
+    <div class="p6-kicker">Web3Labs 生態實驗室</div>
+    <h1 class="p6-h1">中小企創業者一站式入口<br>底層能力，生態支撐</h1>
+    <p class="p6-sub">算力、大模型 Token、EMPLIX AI 應用——全部透過生態合作資源整合，無需自建，性價比最優化</p>
+    <div class="eco-points">
+      <div class="eco-point">
+        <div class="eco-dot"></div>
+        <p><strong>算力生態</strong>：與頭部算力機構合作，從源頭卡死硬體與網絡帶寬成本，源源不斷地為上層應用提供最具價格侵略性的算力底座支持。</p>
+      </div>
+      <div class="eco-point">
+        <div class="eco-dot" style="background:var(--accent-2)"></div>
+        <p><strong>大模型 Token</strong>：Token 驅動 Web3Labs 生態內循環，通過代幣經濟學將利潤在企業、開發者與算力方之間進行共享與權益沉澱，驅動飛輪自發流轉。</p>
+      </div>
+      <div class="eco-point">
+        <div class="eco-dot"></div>
+        <p><strong>EMPLIX AI 應用</strong>：真正服務於 B 端客戶的生產力爆發核心。主打高頻工作情境，免去任何技術配置，幫助中小企業實現開箱即用，一鍵提升公司整體人效。</p>
+      </div>
+    </div>
+    <div class="highlight-cards">
+      <div class="hcard">
+        <div class="hcard-icn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></div>
+        <div class="hcard-num">算力 −40%</div>
+        <div class="hcard-lbl">成本直降</div>
+      </div>
+      <div class="hcard">
+        <div class="hcard-icn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="hcard-num">TOKEN 飛輪</div>
+        <div class="hcard-lbl">生態內循環</div>
+      </div>
+      <div class="hcard">
+        <div class="hcard-icn"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div class="hcard-num">東主受益</div>
+        <div class="hcard-lbl">專心創業</div>
+      </div>
+    </div>
+    <div class="eco-divider"></div>
+    <div class="eco-footer">
+      <strong>關於Web3Labs：</strong>作為Web3.0創業一站式入口，目標響應香港特區政府政策宣言，通過落地服務、投資加速、技術合作、PR服務、助力合規等支持幫助全球Web3企業佈局香港、鏈接國際。目前已在香港、新加坡、馬來西亞、韓國、杭州、北京等地擁有線下孵化器。同時，Web3Labs推出了總額為1000萬美元的WEB3.0全球加速計劃，已與多家國際頭部機構達成戰略合作。
+    </div>
+  </div>
+  <div class="p6-right">
+    <div class="orbit-wrap">
+      <div class="orbit-r1"></div>
+      <div class="orbit-r2"></div>
+      <div class="orbit-r3"></div>
+      <div class="gpu-node">
+        <div class="gpu-box">
+          <svg class="gpu-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2d6fd0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+          <span class="gpu-lbl">算力生態<br>合作</span>
+        </div>
+      </div>
+      <div class="token-node">
+        <div class="token-box">
+          <svg class="token-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#11906c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span class="token-lbl">大模型<br>Token</span>
+        </div>
+      </div>
+      <div class="partner-node" style="animation-delay:-3.125s">
+        <div class="partner-box"><img src="img/web3labs.jpg" alt="Web3Labs"></div>
+      </div>
+      <div class="partner-node" style="animation-delay:0s">
+        <div class="partner-box"><img src="img/microsoft.png" alt="Microsoft"></div>
+      </div>
+      <div class="partner-node" style="animation-delay:-9.375s">
+        <div class="partner-box"><img src="img/aws.png" alt="AWS"></div>
+      </div>
+      <div class="partner-node" style="animation-delay:-18.75s">
+        <div class="partner-box"><img src="img/hkstp.png" alt="HKSTP"></div>
+      </div>
+      <div class="core">
+        <span class="core-logo">EMPLIX</span>
+        <span class="core-sub">AI 應用旗艦產品</span>
+      </div>
+    </div>
+    <p class="p6-label">Web3Labs 生態 · 生態合作資源共享 · 性價比最優化</p>
+  </div>
+  <div class="p6-num">06 / 10</div>
+</div>
+
+<!-- ==================== PAGE 7: TRUST ==================== -->
+<div class="page p7" id="p-6">
+  <div class="geo-grid"></div>
+  <div class="top-accent"></div>
+  <div class="p7-content">
+    <div class="p7-header">
+      <div class="p7-kicker">信任與治理</div>
+      <h1 class="p7-h1">你始終掌控全域，AI 協助執行</h1>
+      <p class="p7-sub">四大核心保障——對外動作先審批，引用來源，完整審計，可隨時還原</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="num">01</div>
+        <div class="trust-icon" style="background:rgba(46,175,128,.1)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2EAF80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>對外動作先審批</h3>
+        <p>客戶回覆、發票、報價——未經你批准，绝不對外發出</p>
+      </div>
+      <div class="trust-card">
+        <div class="num">02</div>
+        <div class="trust-icon" style="background:rgba(91,79,207,.1)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5B4FCF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>引用來源，拒絕幻想</h3>
+        <p>每個答案均列明依據何種文件，資料不足時將拒絕起草</p>
+      </div>
+      <div class="trust-card">
+        <div class="num">03</div>
+        <div class="trust-icon" style="background:rgba(90,162,255,.1)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2d6fd0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/></svg>
+        </div>
+        <h3>完整審計日誌</h3>
+        <p>所有操作有記錄，可以回顧、可以匯出為 CSV</p>
+      </div>
+      <div class="trust-card">
+        <div class="num">04</div>
+        <div class="trust-icon" style="background:rgba(217,138,18,.1)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D98A12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        </div>
+        <h3>可隨時還原權限</h3>
+        <p>AI 錶現穩當後方慢慢擴大權限，一鍵即可還原</p>
+      </div>
+    </div>
+    <div class="flow-section">
+      <div class="flow-card">
+        <div class="header">
+          <div class="dot" style="background:#5aa2ff"></div>
+          <span class="title">客服回覆草稿</span>
+          <span class="status">待審批</span>
+        </div>
+        <div class="flow-doc">「關於您的訂單查詢，我們預計在下週三發貨，請留意……」</div>
+        <div class="flow-actions">
+          <button class="flow-btn flow-btn-approve">✓ 核准</button>
+          <button class="flow-btn flow-btn-revise">✎ 退回</button>
+        </div>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-arrow-line"></div>
+        <div class="flow-arrow-text">退回</div>
+        <div class="flow-arrow-line"></div>
+      </div>
+      <div class="flow-card">
+        <div class="header">
+          <div class="dot" style="background:var(--amber)"></div>
+          <span class="title">報價草稿</span>
+          <span class="status">待審批</span>
+        </div>
+        <div class="flow-doc">「感謝您的詢價，詳細報價請見附件，有效期7天……」</div>
+        <div class="flow-actions">
+          <button class="flow-btn flow-btn-approve">✓ 核准</button>
+          <button class="flow-btn flow-btn-revise">✎ 退回</button>
+        </div>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-arrow-line"></div>
+        <div class="flow-arrow-text">核准</div>
+        <div class="flow-arrow-line"></div>
+      </div>
+      <div class="flow-done">
+        <div class="done-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <p>已核准並發出</p>
+      </div>
+    </div>
+  </div>
+  <div class="p7-num">07 / 10</div>
+</div>
+
+<!-- ==================== PAGE 8: DATA ==================== -->
+<div class="page p8" id="p-7">
+  <div class="geo-grid"></div>
+  <div class="top-accent"></div>
+  <div class="p8-content">
+    <div class="p8-header">
+      <div class="p8-kicker">我的建議</div>
+      <div class="p8-h1">成效數據 · 降本增效，數據說話</div>
+      <div class="p8-sub">示範環境 30 天累計數據（真實脫敏）</div>
+    </div>
+    <div class="p8-grid">
+      <div class="p8-col-left">
+        <div class="p8-card">
+          <div class="data-kicker">
+            <span class="live-dot"></span>
+            成效數據 · 示範環境 30 天累計
+          </div>
+          <div class="data-title">已完成任務與節省工時</div>
+          <div class="stat-row">
+            <div class="stat-cell">
+              <div class="stat-num" id="num-tasks">0</div>
+              <div class="stat-label">已完成任務</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num" id="num-hours">0</div>
+              <div class="stat-label">節省工時</div>
+            </div>
+            <div class="stat-cell">
+              <div class="stat-num" id="num-growth">0%</div>
+              <div class="stat-label">週增長</div>
+            </div>
+          </div>
+          <div class="chart-inner">
+            <div class="chart-legend">
+              <div class="legend-item">
+                <span class="legend-dot" style="background:var(--accent)"></span>
+                每週完成任務
+              </div>
+              <div class="chart-badge">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+                ▲18%
+              </div>
+            </div>
+            <div class="chart-area">
+              <svg viewBox="0 0 460 110" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#5B4FCF" stop-opacity="0.12"/>
+                    <stop offset="100%" stop-color="#5B4FCF" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <line x1="30" y1="16" x2="455" y2="16" stroke="rgba(26,26,46,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+                <line x1="30" y1="42" x2="455" y2="42" stroke="rgba(26,26,46,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+                <line x1="30" y1="68" x2="455" y2="68" stroke="rgba(26,26,46,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+                <line x1="30" y1="94" x2="455" y2="94" stroke="rgba(26,26,46,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+                <text x="24" y="20" text-anchor="end" font-size="10" fill="#7A7A8C" font-weight="600">200</text>
+                <text x="24" y="46" text-anchor="end" font-size="10" fill="#7A7A8C" font-weight="600">150</text>
+                <text x="24" y="72" text-anchor="end" font-size="10" fill="#7A7A8C" font-weight="600">100</text>
+                <text x="24" y="98" text-anchor="end" font-size="10" fill="#7A7A8C" font-weight="600">50</text>
+                <text x="64" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W1</text>
+                <text x="140" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W2</text>
+                <text x="216" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W3</text>
+                <text x="292" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W4</text>
+                <text x="368" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W5</text>
+                <text x="444" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W6</text>
+                <path d="M64,82 L140,70 L216,56 L292,42 L368,28 L444,12 L444,95 L64,95 Z" fill="url(#areaGrad)"/>
+                <path d="M64,82 L140,70 L216,56 L292,42 L368,28 L444,12" fill="none" stroke="#5B4FCF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="64" cy="82" r="3.5" fill="#5B4FCF" stroke="#fff" stroke-width="2"/>
+                <circle cx="140" cy="70" r="3.5" fill="#5B4FCF" stroke="#fff" stroke-width="2"/>
+                <circle cx="216" cy="56" r="3.5" fill="#5B4FCF" stroke="#fff" stroke-width="2"/>
+                <circle cx="292" cy="42" r="3.5" fill="#5B4FCF" stroke="#fff" stroke-width="2"/>
+                <circle cx="368" cy="28" r="3.5" fill="#5B4FCF" stroke="#fff" stroke-width="2"/>
+                <circle cx="444" cy="12" r="4.5" fill="#5B4FCF" stroke="#fff" stroke-width="2.5"/>
+                <text x="64" y="74" text-anchor="middle" font-size="10" fill="#5B4FCF" font-weight="700">92</text>
+                <text x="140" y="62" text-anchor="middle" font-size="10" fill="#5B4FCF" font-weight="700">108</text>
+                <text x="216" y="48" text-anchor="middle" font-size="10" fill="#5B4FCF" font-weight="700">127</text>
+                <text x="292" y="34" text-anchor="middle" font-size="10" fill="#5B4FCF" font-weight="700">150</text>
+                <text x="368" y="20" text-anchor="middle" font-size="10" fill="#5B4FCF" font-weight="700">178</text>
+                <text x="444" y="4" text-anchor="middle" font-size="10" fill="#5B4FCF" font-weight="700">194</text>
+              </svg>
+            </div>
+          </div>
+          <div class="data-note">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            數據來源：30天真實脫敏數據 · Emplix 內部測試環境
+          </div>
+        </div>
+        <div class="suggestion-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <p><strong>我的建議：</strong>先從 1 個崗位試用，確認審批流程暢順後再逐步擴大<span class="pill">循序漸進</span></p>
+        </div>
+      </div>
+      <div class="p8-card">
+        <div class="roi-kicker">ROI 計算器</div>
+        <div class="roi-headline">「你的公司能省多少？」</div>
+        <div class="roi-tagline">調整參數，查看專屬估算</div>
+        <div class="input-row">
+          <div class="input-group">
+            <label>現有員工人數</label>
+            <input type="number" id="inp-staff" value="10" min="1" max="500">
+          </div>
+          <div class="input-group">
+            <label>平均月薪（HK$）</label>
+            <input type="number" id="inp-salary" value="15000" min="1000" max="200000" step="1000">
+          </div>
+        </div>
+        <div class="slider-group">
+          <div class="slider-header">
+            <label>AI 替代比例</label>
+            <span class="slider-val" id="slider-pct">60%</span>
+          </div>
+          <input type="range" class="slider" id="inp-ratio" min="10" max="90" value="60" step="5">
+        </div>
+        <div class="calc-steps">
+          <div class="calc-step" id="step-1">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-formula">員工總月薪</div>
+              <div class="step-result"><span id="s1-staff">10</span> 人 × HK$<span id="s1-salary">15,000</span> = <span class="hl" id="s1-total">HK$150,000/月</span></div>
+            </div>
+          </div>
+          <div class="calc-step" id="step-2">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-formula">AI 處理比例</div>
+              <div class="step-result">可由 AI 處理：<span id="s2-pct">60%</span> = 省下 <span class="hl" id="s2-heads">6</span> 人力</div>
+            </div>
+          </div>
+          <div class="calc-step" id="step-3">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-formula">每月節省金額</div>
+              <div class="step-result"><span id="s3-heads">6</span> 人 × HK$<span id="s3-salary">15,000</span> = <span class="hl" id="s3-total">HK$90,000/月</span> 節省</div>
+            </div>
+          </div>
+        </div>
+        <div class="roi-results">
+          <div class="roi-result-card monthly">
+            <div class="rc-label">每月節省</div>
+            <div class="rc-value" id="res-monthly">HK$90,000</div>
+          </div>
+          <div class="roi-result-card yearly">
+            <div class="rc-label">每年節省</div>
+            <div class="rc-value" id="res-yearly">HK$1,080,000</div>
+          </div>
+        </div>
+        <div class="roi-disclaimer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/></svg>
+          ⚠ 月度價值以估算呈現，不保證實際節省
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p8-footer">EMPLIX · AI 勞動力平台 · BY WEB3LABS</div>
+  <div class="p8-watermark">Created by Huashu-Design</div>
+  <div class="p8-num">08 / 10</div>
+</div>
+
+<!-- ==================== PAGE 9: PRICING ==================== -->
+<div class="page p9" id="p-8">
+  <div class="geo-grid"></div>
+  <div class="top-accent"></div>
+  <div class="p9-content">
+    <div class="p9-header">
+      <div class="p9-kicker">定價</div>
+      <h1 class="p9-h1">成本只有請人的 5-7%</h1>
+      <p class="p9-sub">公開定價，不設門檻。14 天免費試用，隨時取消</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-name">標準 AI 員工</div>
+        <div class="price-sub">行政 · 客服 · 銷售 · 市場</div>
+        <div class="price-amount"><b>HK$990</b><span>/月/員工</span></div>
+        <p class="price-tag">行政、客服、銷售或市場——起草實際工作交你審批</p>
+        <div class="price-feats">
+          <div class="price-feat"><span class="ck">✓</span>每月約 600 項任務，超出每項 HK$1.5</div>
+          <div class="price-feat"><span class="ck">✓</span>對外動作先經你審批</div>
+          <div class="price-feat"><span class="ck">✓</span>引用指定檔案，缺來源時拒絕起草</div>
+          <div class="price-feat"><span class="ck">✓</span>完整審計日誌，可匯出 CSV</div>
+        </div>
+        <p class="price-compare">約為請一個香港文員（含強積金 HK$17,000-20,000/月）的 5-7%。全天候運作以增強團隊，非一對一取代。</p>
+        <a href="#" class="price-btn price-btn-outline">開始 14 天試用</a>
+      </div>
+      <div class="price-card pop">
+        <div class="price-badge">最受歡迎</div>
+        <div class="price-name">資深 AI 員工</div>
+        <div class="price-sub">會計與簿記</div>
+        <div class="price-amount"><b>HK$2,480</b><span>/月/員工</span></div>
+        <p class="price-tag">更高技能職位，包括會計與簿記</p>
+        <div class="price-feats">
+          <div class="price-feat"><span class="ck">✓</span>包含標準方案一切，另加多步驟工作</div>
+          <div class="price-feat"><span class="ck">✓</span>起草對賬與日記賬分錄，交人手簽核</div>
+          <div class="price-feat"><span class="ck">✓</span>絕不自行申報或付款</div>
+          <div class="price-feat"><span class="ck">✓</span>14 天免費試用——付款前先看真實草稿</div>
+        </div>
+        <p class="price-compare">仍只是初級香港會計（市場約 HK$19,000/月）的一小部分。增強團隊，而非取代人手。</p>
+        <a href="#" class="price-btn">開始 14 天試用</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">規模方案</div>
+        <div class="price-sub">3 人或以上團隊</div>
+        <div class="price-amount"><b>價格另議</b></div>
+        <p class="price-tag">跨職能組建 AI 員工團隊</p>
+        <div class="price-feats">
+          <div class="price-feat"><span class="ck">✓</span>聘請 3 位或以上，全單九折</div>
+          <div class="price-feat"><span class="ck">✓</span>混合標準與資深職位</div>
+          <div class="price-feat"><span class="ck">✓</span>共用任務額度、上手協助與優先支援</div>
+          <div class="price-feat"><span class="ck">✓</span>與所有方案相同的審批治理</div>
+        </div>
+        <p class="price-compare">一支 AI 員工團隊，成本只是一名人手薪金的一小部分——每個動作仍要先經你蓋章。</p>
+        <a href="#" class="price-btn price-btn-outline">聯絡我們</a>
+      </div>
+    </div>
+    <div class="bundle-row">🏷️ 聘請 3 位或以上 AI 員工，全單九折</div>
+  </div>
+  <div class="p9-num">09 / 10</div>
+</div>
+
+<!-- ==================== PAGE 10: CTA ==================== -->
+<div class="page p10" id="p-9">
+  <div class="geo-grid"></div>
+  <div class="top-accent"></div>
+  <div class="p10-content">
+    <!-- Left: QR Card -->
+    <div class="qr-card pop">
+      <div class="qr-badge">立即開始</div>
+      <div class="qr-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#7A7A8C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
+          <path d="M14 14h2v2h-2zM17 17h2v2h-2zM14 17h2v2h-2z"/>
+        </svg>
+      </div>
+      <span class="qr-title">開啟你的辦公室</span>
+      <span class="qr-price">14 天免費試用</span>
+      <span class="qr-desc">掃描二維碼<br>5 分鐘完成設定</span>
+    </div>
+
+    <!-- Right: 5 Steps -->
+    <div class="steps-panel">
+      <div class="steps-header">
+        <div class="p10-kicker">EMPLIX 早期企業計劃</div>
+        <h2 class="p10-steps-title">五步設定你的辦公室</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-label">選擇業務類型和團隊規模</div>
+            <div class="step-desc">回答兩個問題，我們便會為你設定一個空置辦公室。</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-label">嚮導推薦第一位員工</div>
+            <div class="step-desc">貿易公司可先用行政助理。店舖可先用客服助理。</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-label">加入 3 至 5 份檔案</div>
+            <div class="step-desc">價目表、FAQ 或合約範本。可以跳過。</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-label">用一份檔案試做第一項任務</div>
+            <div class="step-desc">第一份草稿會送到我的辦公桌。你可批准，或附評語退回。</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-label">預設已開啟審批</div>
+            <div class="step-desc">每次外發都先等你決定。員工負責起草；你負責決定。每個決定都保留在紀錄內。</div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <a href="#" class="btn-primary">
+          立即體驗（5分鐘設定）
+          <span class="btn-tag">選員工 → 看工作 → 審批外發動作</span>
+        </a>
+        <a href="#" class="btn-secondary">
+          想知道你的行業怎麼用？
+          <span class="btn-tag alt">免費評估（15 分鐘）</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="p10-footer">EMPLIX · AI 勞動力平台 · BY WEB3LABS</div>
+  <div class="p10-watermark">Created by Huashu-Design</div>
+  <div class="p10-num">10 / 10</div>
+</div>
+
+</div><!-- canvas -->
+</div><!-- stage -->
+
+<!-- Navigation controls -->
+<div class="ctrl">
+  <span class="lbl">PAGE</span>
+  <span id="ctrl-num">1/9</span>
+  <span class="sep"></span>
+  <button onclick="prevPage()">←</button>
+  <button onclick="nextPage()">→</button>
+</div>
+
+<script>
+// Simple page navigation
+const pages = document.querySelectorAll('.page');
+let current = 0;
+const ctrlNum = document.getElementById('ctrl-num');
+
+function showPage(n) {
+  pages[current].classList.remove('on');
+  current = n;
+  pages[current].classList.add('on');
+  ctrlNum.textContent = (current + 1) + '/10';
+  // Trigger P8 animations when navigating to page 8 (index 7)
+  if (n === 7) {
+    recalc();
+    animateNum(document.getElementById('num-tasks'), 684, '');
+    animateNum(document.getElementById('num-hours'), 312, '');
+    animateNum(document.getElementById('num-growth'), 18, '%');
+  }
+}
+
+function nextPage() {
+  showPage((current + 1) % pages.length);
+}
+
+function prevPage() {
+  showPage((current - 1 + pages.length) % pages.length);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault();
+    nextPage();
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    prevPage();
+  }
+});
+
+// === Full-screen adaptive scaling ===
+function scaleCanvas() {
+  const cv = document.getElementById('cv');
+  const stage = document.querySelector('.stage');
+  const sw = window.innerWidth;
+  const sh = window.innerHeight;
+  const cw = 1920, ch = 1080;
+  const scale = Math.min(sw / cw, sh / ch);
+  const ox = (sw - cw * scale) / 2;
+  const oy = (sh - ch * scale) / 2;
+  cv.style.transform = `scale(${scale})`;
+  cv.style.transformOrigin = 'top left';
+  cv.style.position = 'absolute';
+  cv.style.left = ox + 'px';
+  cv.style.top = oy + 'px';
+  cv.style.width = cw + 'px';
+  cv.style.height = ch + 'px';
+}
+
+window.addEventListener('resize', scaleCanvas);
+window.addEventListener('load', scaleCanvas);
+scaleCanvas();
+</script>
+
+<script>
+// P8 ROI Calculator & Data Animation
+function animateNum(el, target, suffix) {
+  let current = 0;
+  const step = Math.ceil(target / 40);
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current.toLocaleString() + suffix;
+    if (current >= target) clearInterval(timer);
+  }, 25);
+}
+function recalc() {
+  const staff = parseInt(document.getElementById('inp-staff').value) || 1;
+  const salary = parseInt(document.getElementById('inp-salary').value) || 1000;
+  const ratio = parseInt(document.getElementById('inp-ratio').value);
+  document.getElementById('slider-pct').textContent = ratio + '%';
+  const monthlyTotal = staff * salary;
+  const aiHeads = Math.round(staff * ratio / 100);
+  const monthlySavings = aiHeads * salary;
+  const yearlySavings = monthlySavings * 12;
+  document.getElementById('s1-staff').textContent = staff;
+  document.getElementById('s1-salary').textContent = salary.toLocaleString();
+  document.getElementById('s1-total').textContent = 'HK$' + monthlyTotal.toLocaleString();
+  document.getElementById('s2-pct').textContent = ratio + '%';
+  document.getElementById('s2-heads').textContent = aiHeads;
+  document.getElementById('s3-heads').textContent = aiHeads;
+  document.getElementById('s3-salary').textContent = salary.toLocaleString();
+  document.getElementById('s3-total').textContent = 'HK$' + monthlySavings.toLocaleString();
+  document.getElementById('res-monthly').textContent = 'HK$' + monthlySavings.toLocaleString();
+  document.getElementById('res-yearly').textContent = 'HK$' + yearlySavings.toLocaleString();
+  ['step-1','step-2','step-3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    setTimeout(() => {
+      el.classList.add('active');
+      setTimeout(() => { el.classList.add('done'); el.classList.remove('active'); }, 350);
+    }, i * 180);
+  });
+}
+document.getElementById('inp-staff').addEventListener('input', recalc);
+document.getElementById('inp-salary').addEventListener('input', recalc);
+document.getElementById('inp-ratio').addEventListener('input', recalc);
+window.addEventListener('load', () => {
+  recalc();
+  animateNum(document.getElementById('num-tasks'), 684, '');
+  animateNum(document.getElementById('num-hours'), 312, '');
+  animateNum(document.getElementById('num-growth'), 18, '%');
+});
+</script>
+</body>
+</html>
