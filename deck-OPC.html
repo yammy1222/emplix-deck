@@ -320,55 +320,61 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
    Desktop slide navigation stays unchanged
 ═══════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* Allow natural page flow */
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+  /* ── Reset root: allow natural overflow ── */
+  html {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
   }
-
-  /* Stage: unfix from viewport */
-  .stage {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: auto;
-    overflow: visible;
-  }
-
-  /* Canvas: constrain to viewport width, allow natural height */
-  .canvas {
-    position: relative;
+  body {
     width: 100% !important;
     height: auto !important;
-    transform: none !important;
-    overflow: visible;
+    overflow: visible !important;
   }
 
-  /* All pages visible, stacked vertically */
+  /* ── Stage: unfix from viewport, become normal container ── */
+  .stage {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* ── Canvas: drop fixed dimensions, flow naturally ── */
+  .canvas {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    transform: none !important;
+    overflow: visible !important;
+  }
+
+  /* ── All pages: stacked vertically, always visible ── */
   .page {
     position: relative !important;
     inset: auto !important;
     width: 100% !important;
-    min-height: 100vh;
+    min-height: 100vh !important;
     opacity: 1 !important;
     pointer-events: auto !important;
     display: flex !important;
+    flex-direction: column !important;
   }
 
-  /* Desktop .on mechanism irrelevant on mobile scroll — always show */
-  .page.on { opacity: 1; }
+  /* Desktop .on mechanism irrelevant on mobile */
+  .page.on { opacity: 1 !important; }
 
-  /* Hide page numbers (stacked, no slide context) */
-  .pnum { display: none; }
+  /* Hide page numbers */
+  .pnum { display: none !important; }
 
-  /* Horizontal dot-grid is too dense on small screens */
-  .grid { display: none; }
+  /* Hide dense dot grid on small screens */
+  .grid { display: none !important; }
 
-  /* Controls: slightly smaller on mobile */
-  .ctrl { bottom: 10px; right: 10px; padding: 5px 10px; }
-  .ctrl button { padding: 3px 8px; font-size: 9px; }
+  /* Controls: smaller on mobile */
+  .ctrl { bottom: 10px !important; right: 10px !important; padding: 5px 10px !important; }
+  .ctrl button { padding: 3px 8px !important; font-size: 9px !important; }
 }
 
 /* Controls */
