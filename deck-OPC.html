@@ -317,115 +317,165 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 /* Controls */
 /* ═══════════════════════════════════════
-   MOBILE RESPONSIVE — < 768px
+   MOBILE — completely override desktop layout
 ═══════════════════════════════════════ */
 @media (max-width: 767px) {
-  html, body { overflow: auto; height: auto; }
-  .stage { position: relative; display: block; height: auto; overflow: visible; }
-  .canvas { width: 100%; height: auto; transform: none !important; position: relative; overflow: visible; }
-  /* stacked vertically; only .on page is visible */
-  .page {
+  /* Reset everything: let pages flow naturally */
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* Stage becomes a normal container */
+  .stage {
     position: relative;
-    inset: auto;
-    opacity: 0;
-    pointer-events: none;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 20px 60px;
+    display: block;
+    width: 100%;
+    height: auto;
     overflow: visible;
   }
-  .page.on { opacity: 1; pointer-events: auto; }
 
-  /* hide page number on mobile (stacked pages, only show on desktop) */
+  /* Canvas: 100% width, no fixed size, no transform */
+  .canvas {
+    position: relative;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100%;
+    transform: none !important;
+    overflow: visible;
+  }
+
+  /* Pages: one at a time, stacked */
+  .page {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-height: 100vh;
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+    flex-direction: column;
+    overflow: visible;
+  }
+  .page.on {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Hide page number (stacked pages, only desktop shows it) */
   .pnum { display: none; }
 
-  /* logo-bar */
-  .logo-bar { top: 20px; left: 20px; right: 20px; }
+  /* ── P1: stack vertically ── */
+  .p1-center-col {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    max-width: 100%;
+    padding: 90px 20px 0;
+  }
+  .p1-h1 { font-size: 38px; line-height: 1.1; }
+  .p1-desc { font-size: 15px; }
+  .p1-tags { margin-bottom: 28px; }
+  .p1-cta { flex-direction: column; gap: 10px; }
+  .p1-right {
+    position: relative !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    padding: 0 20px 24px;
+  }
+  .p1-clock-card { padding: 20px; }
+  .p1-bottom {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 0 20px 20px;
+    margin-top: 0;
+  }
+  .p1-trust { flex-wrap: wrap; gap: 10px; }
 
-  /* P1 — stack vertical */
-  .p1 { gap: 0; }
-  .p1-center-col { position: relative; left: auto; top: auto; transform: none; max-width: 100%; padding-top: 80px; }
-  .p1-h1 { font-size: 40px; }
-  .p1-right { position: relative; right: auto; top: auto; transform: none; width: 100%; margin-top: 24px; }
-  .p1-bottom { position: relative; bottom: auto; left: auto; right: auto; flex-direction: column; gap: 10px; align-items: flex-start; margin-top: 24px; }
-  .p1-cta { flex-direction: column; }
-  .p1-trust { flex-wrap: wrap; gap: 12px; }
-
-  /* P2 — solution */
-  .p2-sol-center { padding: 80px 0 0; }
-  .p2-sol-h1 { font-size: 34px; }
-  .p2-sol-tagline { font-size: 15px; }
-  .p2-sol-cards { grid-template-columns: 1fr; }
+  /* ── P2: solution ── */
+  .p2-sol-center { padding: 90px 20px 0; gap: 24px; }
+  .p2-sol-h1 { font-size: 32px; }
+  .p2-sol-tagline { font-size: 14px; }
+  .p2-sol-cards { grid-template-columns: 1fr; max-width: 100%; }
   .p2-sol-bottom { flex-direction: column; text-align: center; }
 
-  /* P3 — employee grid: 2-col */
-  .p3-center { padding: 80px 0 0; }
-  .p3-h1 { font-size: 30px; }
+  /* ── P3: employees 2-col ── */
+  .p3-center { padding: 90px 20px 0; }
+  .p3-h1 { font-size: 28px; }
   .p3-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .p3-card { padding: 18px 14px; }
-  .p3-avatar { width: 40px; height: 40px; font-size: 14px; }
+  .p3-card { padding: 16px 12px; }
+  .p3-avatar { width: 38px; height: 38px; font-size: 14px; }
   .p3-note { flex-direction: column; text-align: center; margin-top: 20px; }
 
-  /* P4 — workflow: stack left+right */
-  .p4-left { position: relative; width: 100%; padding: 80px 0 24px; border-right: none; border-bottom: 1px solid rgba(45,45,58,0.07); }
-  .p4-right { position: relative; left: auto; width: 100%; height: auto; overflow: visible; }
-  .p4-cards { flex-direction: column; padding: 20px 0; height: auto; }
-  .p4-desk, .p4-dash { animation: none; width: 100%; }
+  /* ── P4: workflow stacked ── */
+  .p4-left {
+    position: relative !important;
+    width: 100% !important;
+    padding: 90px 20px 24px;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(45,45,58,0.07);
+  }
   .p4-h1 { font-size: 28px; }
+  .p4-right {
+    position: relative !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible;
+  }
+  .p4-cards { flex-direction: column; padding: 20px; height: auto; }
+  .p4-desk, .p4-dash { animation: none; width: 100%; }
   .p4-floor { display: none; }
 
-  /* P5 — ROI: stack cards */
-  .p5-center { padding: 80px 0 0; }
-  .p5-h1 { font-size: 30px; }
+  /* ── P5: ROI stacked ── */
+  .p5-center { padding: 90px 20px 0; gap: 24px; }
+  .p5-h1 { font-size: 28px; }
   .p5-grid { grid-template-columns: 1fr; }
-  .p5-savings { flex-direction: column; text-align: center; gap: 16px; padding: 24px; }
+  .p5-savings { flex-direction: column; text-align: center; gap: 16px; padding: 20px; }
   .p5-div { width: 40px; height: 1px; }
-  .p5-save-num { font-size: 42px; }
+  .p5-save-num { font-size: 40px; }
 
-  /* P6 — pricing: stack cards */
-  .p6-center { padding: 80px 0 0; }
-  .p6-h1 { font-size: 30px; }
+  /* ── P6: pricing stacked ── */
+  .p6-center { padding: 90px 20px 0; gap: 24px; }
+  .p6-h1 { font-size: 28px; }
   .p6-plans { grid-template-columns: 1fr; max-width: 400px; }
-  .p6-plan-price b { font-size: 36px; }
+  .p6-plan-price b { font-size: 34px; }
 
-  /* P7 — flywheel: show simplified */
+  /* ── P7: flywheel simplified ── */
   .p7-wheel { width: 100%; height: auto; margin-top: 24px; }
   .p7-wheel-svg { position: relative; width: 100%; height: auto; }
-  .p7-node-circle { width: 70px; height: 70px; }
+  .p7-node-circle { width: 64px; height: 64px; }
   .p7-node-icon { font-size: 18px; }
-  .p7-center-hub { width: 80px; height: 80px; }
-  .p7-hub-logo { font-size: 16px; }
-  .p7-h1 { font-size: 28px; }
+  .p7-center-hub { width: 72px; height: 72px; }
+  .p7-hub-logo { font-size: 14px; }
+  .p7-h1 { font-size: 26px; }
 
-  /* P8 — CTA */
-  .p8-h1 { font-size: 40px; }
-  .p8-qr-row { flex-direction: column; gap: 24px; }
-  .p8-qr-item svg { width: 120px; height: 120px; }
+  /* ── P8: CTA stacked ── */
+  .p8-h1 { font-size: 38px; }
+  .p8-qr-row { flex-direction: column; gap: 20px; }
+  .p8-qr-item svg { width: 110px; height: 110px; }
   .p8-cta { flex-direction: column; width: 100%; }
   .p8-btn-primary, .p8-btn-ghost { width: 100%; justify-content: center; }
-  .p8-trust { flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .p8-trust { flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .p8-sub { font-size: 15px; }
 
-  /* hide grid dot pattern on mobile (too busy) */
-  .grid { display: none; }
-
-  /* Controls */
-  .ctrl { bottom: 10px; right: 10px; padding: 5px 10px; }
-}
-
-/* ═══════════════════════════════════════
-   TABLET — 768px–1024px (gentle scale)
-═══════════════════════════════════════ */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .p1-h1 { font-size: 52px; }
-  .p1-right { right: 40px; width: 380px; }
-  .p3-grid { grid-template-columns: repeat(3, 1fr); }
-  .p4-left { width: 380px; padding: 60px 36px; }
-  .p4-right { left: 380px; }
-  .p7-wheel { width: 600px; height: 380px; }
-  .p8-h1 { font-size: 58px; }
-  .p2-sol-h1 { font-size: 48px; }
-  .p6-plans { max-width: 800px; }
+  /* ── shared mobile fixes ── */
+  .logo-bar { top: 16px; left: 20px; right: 20px; }
+  .top-bar { height: 3px; }
+  .grid { display: none; } /* too busy on mobile */
+  .ctrl { bottom: 8px; right: 8px; padding: 4px 8px; }
+  .ctrl button { padding: 3px 8px; font-size: 9px; }
 }
 
 /* Controls */
