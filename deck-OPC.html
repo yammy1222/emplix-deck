@@ -320,9 +320,46 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
   html { overflow-x: hidden !important; overflow-y: auto !important; height: auto !important; }
   body { width: 100% !important; height: auto !important; overflow: visible !important; }
   .stage { position: relative !important; display: block !important; width: 100% !important; height: auto !important; overflow: visible !important; }
-  .canvas { position: relative !important; width: 100% !important; height: auto !important; min-height: auto !important; transform: none !important; overflow: visible !important; }
-  .page { position: relative !important; inset: auto !important; width: 100% !important; min-height: 100vh !important; opacity: 1 !important; pointer-events: auto !important; display: flex !important; flex-direction: column !important; }
+  .canvas { position: relative !important; width: 100% !important; height: auto !important; min-height: 5000px !important; transform: none !important; overflow: visible !important; }
+  .page { position: relative !important; inset: auto !important; width: 100% !important; min-height: 100vh !important; opacity: 1 !important; pointer-events: auto !important; display: flex !important; flex-direction: column !important; overflow: visible !important; }
   .page.on { opacity: 1 !important; }
+  /* reset all absolute children inside pages to normal flow */
+  .top-bar, .logo-bar, .p1-center-col, .p1-right, .p1-bottom,
+  .p2-sol-center, .p3-center, .p4-left, .p4-right, .p4-cards, .p4-floor,
+  .p5-center, .p6-center, .p7-center, .p7-wheel, .p7-center-hub,
+  .p8-center, .p8-main, .p8-deco-1, .p8-deco-2, .p8-qr-row, .p8-cta-col, .p8-blocks,
+  .pnum { position: relative !important; top: auto !important; left: auto !important; right: auto !important; bottom: auto !important; transform: none !important; }
+  /* specific layout resets */
+  .logo-bar { display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 16px 20px !important; }
+  .top-bar { width: 100% !important; }
+  .p1-center-col { max-width: 100% !important; padding: 100px 20px 0 !important; }
+  .p1-right { width: 100% !important; padding: 0 20px !important; margin-top: 24px !important; }
+  .p1-bottom { width: 100% !important; padding: 20px !important; margin-top: 24px !important; flex-direction: column !important; gap: 10px !important; }
+  .p1-cta { flex-direction: column !important; }
+  .p2-sol-center { padding: 90px 20px 0 !important; align-items: center !important; }
+  .p2-sol-cards { grid-template-columns: 1fr !important; }
+  .p2-sol-bottom { flex-direction: column !important; text-align: center !important; }
+  .p3-center { padding: 90px 20px 0 !important; align-items: center !important; }
+  .p3-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .p3-note { flex-direction: column !important; text-align: center !important; margin-top: 20px !important; }
+  .p4-left { width: 100% !important; padding: 90px 20px 24px !important; border: none !important; border-bottom: 1px solid rgba(45,45,58,0.07) !important; }
+  .p4-right { width: 100% !important; height: auto !important; }
+  .p4-cards { flex-direction: column !important; padding: 20px !important; height: auto !important; }
+  .p4-floor { display: none !important; }
+  .p5-center { padding: 90px 20px 0 !important; align-items: center !important; }
+  .p5-grid { grid-template-columns: 1fr !important; }
+  .p5-savings { flex-direction: column !important; text-align: center !important; }
+  .p5-div { width: 40px !important; height: 1px !important; }
+  .p6-center { padding: 90px 20px 0 !important; align-items: center !important; }
+  .p6-plans { grid-template-columns: 1fr !important; }
+  .p7-wheel { width: 100% !important; height: auto !important; margin-top: 24px !important; }
+  .p7-wheel-svg { position: relative !important; width: 100% !important; height: auto !important; }
+  .p7-center-hub { position: relative !important; margin: 0 auto !important; }
+  .p8-center { padding: 90px 20px 0 !important; align-items: center !important; }
+  .p8-qr-row { flex-direction: column !important; gap: 24px !important; }
+  .p8-cta { flex-direction: column !important; }
+  .p8-btn-primary, .p8-btn-ghost { width: 100% !important; justify-content: center !important; }
+  .p8-trust { flex-wrap: wrap !important; justify-content: center !important; }
   .pnum { display: none !important; }
   .grid { display: none !important; }
   .ctrl { bottom: 10px !important; right: 10px !important; padding: 5px 10px !important; }
