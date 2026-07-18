@@ -2910,17 +2910,30 @@ document.addEventListener('keydown', e => {
   }
 })();
 
-function resize() {
-  var vv = window.visualViewport;
-  var zoomed = vv && vv.scale > 1.01;
-
-  // Toggle .ctrl visibility/pointer events based on zoom state (defensive)
+/* Pinch detection — tracks finger count on screen directly.
+   More reliable than visualViewport.scale on iOS Safari (which can lag). */
+var pinchActive = false;
+function setPinchActive(active) {
+  if (pinchActive === active) return;
+  pinchActive = active;
+  // While pinching, also dim ctrl + suppress orient-hint updates defensively
   var ctrl = document.querySelector('.ctrl');
-  if (ctrl) ctrl.classList.toggle('zoomed', zoomed);
+  if (ctrl) ctrl.classList.toggle('zoomed', active);
+  document.documentElement.classList.toggle('pinching', active);
+}
+document.addEventListener('touchstart', function (e) {
+  if (e.touches.length >= 2) setPinchActive(true);
+}, { passive: true });
+document.addEventListener('touchend', function (e) {
+  if (e.touches.length === 0) setPinchActive(false);
+}, { passive: true });
+document.addEventListener('touchcancel', function () {
+  setPinchActive(false);
+}, { passive: true });
 
-  // While the user is pinch-zoomed, skip auto-rescale so the user's zoom
-  // isn't clobbered by the canvas re-fitting the viewport.
-  if (zoomed) return;
+function resize() {
+  // While user is pinch-zooming, skip auto-rescale — don't fight the user's gesture.
+  if (pinchActive) return;
 
   const cv = document.getElementById('cv');
   const stage = document.querySelector('.stage');
@@ -2964,6 +2977,7 @@ resize();
   document.addEventListener('touchend', function (e) {
     if (!tracking) return;
     tracking = false;
+    if (pinchActive) return; // never fire navigation during/right-after pinch
     if (e.changedTouches.length !== 1) return;
     var dx = e.changedTouches[0].clientX - startX;
     var dy = e.changedTouches[0].clientY - startY;
