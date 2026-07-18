@@ -23,7 +23,7 @@
   --r-sm: 16px;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Noto Sans TC', sans-serif; color: var(--ink); }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Noto Sans TC', sans-serif; color: var(--ink); touch-action: pinch-zoom; -webkit-touch-callout: none; }
 .stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
 .canvas { width: 1920px; height: 1080px; position: relative; overflow: hidden; flex-shrink: 0; transform-origin: center center; }
 .page { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.45s ease; }
@@ -1415,10 +1415,18 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 }
 
 /* Controls */
-.ctrl { position: fixed; bottom: 16px; right: 20px; background: rgba(45,45,58,0.55); backdrop-filter: blur(8px); padding: 6px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px; z-index: 100; border: 1px solid rgba(255,255,255,0.08); }
+.ctrl { position: fixed; bottom: 16px; right: 20px; background: rgba(45,45,58,0.55); backdrop-filter: blur(8px); padding: 6px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px; z-index: 100; border: 1px solid rgba(255,255,255,0.08); transition: opacity 0.2s, pointer-events 0.2s; }
 .ctrl button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 10px; font-family: inherit; font-weight: 700; transition: background 0.15s; }
 .ctrl button:hover { background: rgba(255,255,255,0.18); }
 .ctrl .lbl { color: rgba(255,255,255,0.3); font-size: 9px; letter-spacing: 0.05em; }
+/* Hide nav buttons on mobile — they catch accidental taps during pinch-zoom.
+   Mobile users navigate via swipe-left/right (added in JS). */
+@media (max-width: 767px) {
+  .ctrl { display: none; }
+}
+/* Defensive: when user is pinch-zoomed, disable pointer events on .ctrl
+   even on desktop, so accidental brushes during pinch don't fire navigation. */
+.ctrl.zoomed { opacity: 0.35; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -2917,10 +2925,16 @@ document.addEventListener('keydown', e => {
 })();
 
 function resize() {
-  // While the user is pinch-zoomed, visualViewport.scale > 1.
-  // Skip auto-rescale so the user's zoom isn't clobbered by the canvas re-fitting the viewport.
   var vv = window.visualViewport;
-  if (vv && vv.scale > 1.01) return;
+  var zoomed = vv && vv.scale > 1.01;
+
+  // Toggle .ctrl visibility/pointer events based on zoom state (defensive)
+  var ctrl = document.querySelector('.ctrl');
+  if (ctrl) ctrl.classList.toggle('zoomed', zoomed);
+
+  // While the user is pinch-zoomed, skip auto-rescale so the user's zoom
+  // isn't clobbered by the canvas re-fitting the viewport.
+  if (zoomed) return;
 
   const cv = document.getElementById('cv');
   const stage = document.querySelector('.stage');
@@ -2933,6 +2947,48 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', resize);
 }
 resize();
+
+/* ==================================================
+   Swipe navigation — mobile page nav (replaces hidden .ctrl buttons).
+   Only fires on clear horizontal swipes; pinch-zoom uses two fingers
+   and doesn't trigger this single-finger swipe handler.
+================================================== */
+(function () {
+  var startX = 0, startY = 0, startT = 0, tracking = false;
+  var SWIPE_MIN_DIST = 50;   // px
+  var SWIPE_MAX_TIME = 600;  // ms
+  var SWIPE_ANGLE_LIMIT = 30; // degrees off horizontal — ignore vertical/diagonal
+
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) { tracking = false; return; }
+    // Don't track swipes that start on an interactive element (button, input, etc.)
+    var t = e.target;
+    while (t && t !== document.body) {
+      if (t.tagName === 'BUTTON' || t.tagName === 'INPUT' || t.tagName === 'A' || t.tagName === 'SELECT') {
+        tracking = false; return;
+      }
+      t = t.parentElement;
+    }
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    startT = Date.now();
+    tracking = true;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function (e) {
+    if (!tracking) return;
+    tracking = false;
+    if (e.changedTouches.length !== 1) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    var dt = Date.now() - startT;
+    if (dt > SWIPE_MAX_TIME) return;
+    if (Math.abs(dx) < SWIPE_MIN_DIST) return;
+    var angle = Math.atan2(Math.abs(dy), Math.abs(dx)) * 180 / Math.PI;
+    if (angle > SWIPE_ANGLE_LIMIT) return; // too vertical — likely a scroll attempt
+    if (dx > 0) prev(); else next();
+  }, { passive: true });
+})();
 
 /* ==================================================
    Portrait-orientation hint — show on small portrait viewports
