@@ -23,8 +23,11 @@
   --r-sm: 16px;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Noto Sans TC', sans-serif; color: var(--ink); touch-action: pinch-zoom; -webkit-touch-callout: none; }
-.stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+html, body { width: 100%; height: 100%; background: var(--bg); font-family: 'Noto Sans TC', sans-serif; color: var(--ink); touch-action: pinch-zoom; -webkit-touch-callout: none; }
+/* iOS Safari quirk: overflow:hidden on html/body BREAKS pinch-zoom AND pauses CSS animations.
+   .stage is position:fixed (out of flow), .canvas has its own overflow:hidden,
+   so body never scrolls on desktop. Mobile @media (max-width: 767px) below uses overflow:auto. */
+.stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .canvas { width: 1920px; height: 1080px; position: relative; overflow: hidden; flex-shrink: 0; transform-origin: center center; }
 .page { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.45s ease; }
 .page.on { opacity: 1; pointer-events: auto; }
