@@ -32,8 +32,8 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 */
 .stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .canvas { width: 1920px; height: 1080px; position: relative; overflow: hidden; flex-shrink: 0; transform-origin: center center; }
-.page { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.45s ease; }
-.page.on { opacity: 1; pointer-events: auto; }
+.page { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.45s ease, visibility 0s linear 0.45s; }
+.page.on { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 0.45s ease, visibility 0s linear 0s; }
 /* Pause CSS animations on hidden pages to save CPU/GPU */
 .page:not(.on) *, .page:not(.on) { animation-play-state: paused !important; }
 .grid { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(45,45,58,0.06) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; }
