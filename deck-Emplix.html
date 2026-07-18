@@ -1133,7 +1133,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 /* ═══════════════════════════════════════
    MOBILE RESPONSIVE — < 768px
 ═══════════════════════════════════════ */
-@media (max-width: 1024px) {
+@media (max-width: 767px) {
   html, body { overflow: auto; height: auto; }
   .stage { position: relative; display: block; height: auto; overflow: visible; }
   .canvas { width: 100%; height: auto; transform: none !important; position: relative; overflow: visible; }
@@ -2845,9 +2845,10 @@ document.addEventListener('keydown', e => {
 function resize() {
   const cv = document.getElementById('cv');
   const stage = document.querySelector('.stage');
-  // On narrow viewports (phones in any orientation, small tablets),
-  // let CSS own the layout — don't transform canvas.
-  if (window.innerWidth <= 1024) {
+  // Only skip canvas transform on narrow portrait phones — they get the
+  // dedicated mobile layout (vertical scroll, single-page). Landscape phones
+  // and tablets use the desktop layout (canvas scales to fit, multi-column grids).
+  if (window.innerWidth <= 767 && window.innerHeight > window.innerWidth) {
     cv.style.transform = '';
     return;
   }
