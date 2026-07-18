@@ -1129,6 +1129,42 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .pain-footer { text-align: center; font-size: 14px; color: var(--ink-3); font-weight: 500; }
 .pain-footer strong { color: var(--accent); font-weight: 700; }
 
+/* Landscape prompt — top banner shown only on phone portrait.
+   Pure CSS, no JS, no fullscreen overlay, no backdrop-filter.
+   Sits at the top, doesn't block canvas scaling or gestures. */
+.orient-hint {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(45, 45, 58, 0.95);
+  color: #fff;
+  padding: 8px 14px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+.orient-hint svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  animation: phoneRotate 2.4s ease-in-out infinite;
+}
+@keyframes phoneRotate {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(90deg); }
+}
+@media (orientation: portrait) and (max-width: 500px) {
+  .orient-hint { display: flex; }
+}
+
 /* Adaptive scaling handled entirely by JS (see resize() below).
    Pattern copied from deck-new.html which works reliably on iOS Safari:
    the 1920×1080 canvas is uniformly scaled to fit any viewport, so the
@@ -1143,6 +1179,14 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 </style>
 </head>
 <body>
+
+<div class="orient-hint" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="6" y="2" width="12" height="20" rx="2" ry="2"></rect>
+    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+  </svg>
+  <span>請旋轉手機至橫向以獲得最佳體驗</span>
+</div>
 
 <div class="stage">
 <div class="canvas" id="cv">
