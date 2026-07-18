@@ -1133,7 +1133,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 /* ═══════════════════════════════════════
    MOBILE RESPONSIVE — < 768px
 ═══════════════════════════════════════ */
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
   html, body { overflow: auto; height: auto; }
   .stage { position: relative; display: block; height: auto; overflow: visible; }
   .canvas { width: 100%; height: auto; transform: none !important; position: relative; overflow: visible; }
@@ -1304,9 +1304,11 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 }
 
 /* ═══════════════════════════════════════
-   TABLET — 768px–1024px (gentle scale)
+   TABLET — 1025px–1280px (gentle scale)
+   Mobile now covers ≤1024px (phones in any orientation + small tablets).
+   This range is for actual tablets in landscape.
 ═══════════════════════════════════════ */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 1025px) and (max-width: 1280px) {
   .p1-h1 { font-size: 52px; }
   .p1-right { right: 40px; width: 380px; }
   .p3-grid { grid-template-columns: repeat(3, 1fr); }
@@ -2828,9 +2830,9 @@ document.addEventListener('keydown', e => {
 function resize() {
   const cv = document.getElementById('cv');
   const stage = document.querySelector('.stage');
-  // On mobile (≤767px), let CSS own the layout — don't transform canvas
-  // (avoids specificity fights with @media `transform: none !important`)
-  if (window.innerWidth <= 767) {
+  // On narrow viewports (phones in any orientation, small tablets),
+  // let CSS own the layout — don't transform canvas.
+  if (window.innerWidth <= 1024) {
     cv.style.transform = '';
     return;
   }
