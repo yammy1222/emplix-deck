@@ -1129,224 +1129,17 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 .pain-footer { text-align: center; font-size: 14px; color: var(--ink-3); font-weight: 500; }
 .pain-footer strong { color: var(--accent); font-weight: 700; }
 
-/* Controls */
-/* ═══════════════════════════════════════
-   MOBILE RESPONSIVE — < 768px
-═══════════════════════════════════════ */
-@media (max-width: 767px) {
-  html, body { overflow: auto; height: auto; }
-  .stage { position: relative; display: block; height: auto; overflow: visible; }
-  .canvas { width: 100%; height: auto; transform: none !important; position: relative; overflow: visible; }
-  /* CRITICAL: convert all desktop "center" containers to normal flow.
-     On desktop they're position:absolute inset:0 with flex-centered content.
-     On mobile the page is min-height:100vh, so absolute children get locked
-     to a tiny viewport — flex-centered content overflows above AND below
-     the visible area. position:relative lets the container grow with its
-     content so everything is reachable by scrolling. */
-  .p1-center-col, .p2-sol-center, .p25-center, .p4-cycle-center,
-  .p3-center, .p5-center, .mkt-center, .p6-center, .p7-center,
-  .p8-center, .pain-center {
-    position: relative;
-    inset: auto;
-    min-height: auto;
-    padding-left: 0;
-    padding-right: 0;
-  }
-  .page {
-    position: relative;
-    inset: auto;
-    opacity: 1;
-    pointer-events: auto;
-    min-height: 100vh;
-    display: none;            /* hide non-active on mobile so JS nav actually shows different content */
-    flex-direction: column;
-    padding: 20px 20px 60px;
-    overflow: visible;
-  }
-  .page.on {
-    display: flex;            /* show only active page */
-    opacity: 1;
-  }
-
-  /* logo-bar */
-  .logo-bar { top: 20px; left: 20px; right: 20px; }
-
-  /* P1 — stack vertical */
-  .p1 { gap: 0; }
-  .p1-center-col { position: relative; inset: auto; padding: 100px 20px 60px; }
-  .p1-h1 { font-size: 40px; }
-  .p1-right { position: relative; right: auto; top: auto; transform: none; width: 100%; margin-top: 24px; }
-  .p1-bottom { position: relative; bottom: auto; left: auto; right: auto; flex-direction: column; gap: 10px; align-items: flex-start; margin-top: 24px; }
-  .p1-cta { flex-direction: column; }
-  .p1-trust { flex-wrap: wrap; gap: 12px; }
-
-  /* P2 — solution */
-  .p2-sol-center { padding: 80px 0 0; }
-  .p2-sol-h1 { font-size: 34px; }
-  .p2-sol-tagline { font-size: 15px; }
-  .p2-sol-cards { grid-template-columns: 1fr; }
-  .p2-sol-bottom { flex-direction: column; text-align: center; }
-
-  /* P2 — pain points (SME) */
-  .pain-center { padding: 80px 0 0; gap: 16px; }
-  .pain-h1 { font-size: 28px; }
-  .pain-intro { font-size: 13px; padding: 0 24px; }
-  .pain-cards { grid-template-columns: 1fr; gap: 14px; }
-  .pain-card { padding: 22px 20px; min-height: 0; }
-  .pain-card h3 { font-size: 16px; }
-  .pain-card p { font-size: 13px; }
-  .pain-footer { padding: 0 24px; }
-
-  /* P6.5 — target customer */
-  .p25-center { padding: 80px 0 0; }
-  .p25-h1 { font-size: 30px; }
-  .p25-grid { grid-template-columns: 1fr; gap: 14px; }
-  .p25-quad { padding: 22px 20px; }
-
-  /* P3 — 5-step state machine */
-  .p3-demo-header { top: 50px; }
-  .p3-demo-h1 { font-size: 32px; }
-  .p3-demo-body { top: 200px; width: calc(100% - 48px); height: auto; transform: none; left: 24px; }
-  .p3-demo-stage { position: relative; width: 100%; height: auto; min-height: 280px; }
-  .p3-demo-info { position: relative; top: 16px; left: 0; width: 100%; height: auto; min-height: 200px; }
-  .p3-info-title { font-size: 24px; }
-  .p3-demo-controls { top: auto; bottom: 40px; flex-wrap: wrap; gap: 8px; }
-  .p3-progress { margin-left: 0; }
-
-  /* P4 — message cycle */
-  .p4-cycle-center { padding: 80px 20px 40px; gap: 18px; }
-  .p4-cycle-h1 { font-size: 28px; }
-  .p4-cycle-flow { flex-direction: column; gap: 8px; }
-  .p4-cycle-arrow { transform: rotate(90deg); }
-  .p4-cycle-demo { grid-template-columns: 1fr; }
-  .p4-cycle-demo-arrow svg { transform: rotate(90deg); }
-  .p4-cycle-footer { gap: 8px; }
-  /* Stack trace + videos vertically on mobile (was horizontal flex at 1312px) */
-  .p4-cycle-row { flex-direction: column; align-items: stretch; gap: 16px; }
-  .p4-cycle-row .p4-trace-wrap { max-width: 100%; }
-  .p4-videos { max-width: 100%; }
-  /* Allow trace-step row to wrap if status text would be clipped */
-  .p4-trace-step { flex-wrap: wrap; }
-  .p4-trace-state { flex-shrink: 0; }
-
-  /* P3 — employee grid: 2-col */
-  .p3-center { padding: 80px 0 0; }
-  .p3-h1 { font-size: 30px; }
-  .p3-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .p3-card { padding: 18px 14px; }
-  .p3-avatar { width: 40px; height: 40px; font-size: 14px; }
-  .p3-note { flex-direction: column; text-align: center; margin-top: 20px; }
-
-  /* P4 — workflow: stack left+right */
-  .p4-left { position: relative; width: 100%; padding: 80px 0 24px; border-right: none; border-bottom: 1px solid rgba(45,45,58,0.07); }
-  .p4-right { position: relative; left: auto; width: 100%; height: auto; overflow: visible; }
-  .p4-cards { flex-direction: column; padding: 20px 0; height: auto; }
-  .p4-desk, .p4-dash { animation: none; width: 100%; }
-  .p4-h1 { font-size: 28px; }
-  .p4-floor { display: none; }
-
-  /* P5 — ROI: stack cards */
-  .p5-center { padding: 80px 0 0; gap: 24px; }
-  .p5-h1 { font-size: 30px; }
-  .p5-grid { grid-template-columns: 1fr; }
-  .p5-savings { flex-direction: column; text-align: center; gap: 16px; padding: 24px; }
-  .p5-div { width: 40px; height: 1px; }
-  .p5-save-num { font-size: 42px; }
-
-  /* P8 — 競品對比表 mobile */
-  .p5-table { font-size: 12px; }
-  .p5-tcell { padding: 10px 12px; font-size: 12px; }
-  .p5-tcell.is-head { padding: 12px 10px; font-size: 11px; }
-  .p5-tcell-name.is-emplix { font-size: 14px; }
-  .p5-tcell-val.is-emplix { font-size: 14px; }
-
-  /* P4 — 市場機會 mobile */
-  .mkt-center { padding: 80px 0 0; gap: 18px; }
-  .mkt-h1 { font-size: 28px; }
-  .mkt-body { grid-template-columns: 1fr; gap: 14px; }
-  .mkt-stats { grid-template-columns: 1fr; gap: 12px; }
-  .mkt-stat { padding: 18px 18px; min-height: 0; }
-  .mkt-stat-num { font-size: 32px; }
-  .mkt-block { padding: 18px 18px; }
-
-  /* P10 — 降本增效 mobile */
-  .roi-content { position: relative; left: auto; right: auto; top: auto; transform: none; padding: 80px 20px 40px; gap: 18px; }
-  .roi-h1 { font-size: 28px; }
-  .roi-grid { grid-template-columns: 1fr; gap: 14px; }
-  .roi-stat-num { font-size: 26px; }
-  .roi-input-row { grid-template-columns: 1fr; }
-  .roi-calc-results { grid-template-columns: 1fr; }
-
-  /* P6 — pricing (page rhythm only — card layout is handled by @container near .p6-plans) */
-  .p6-center { padding: 80px 0 0; }
-  .p6-h1 { font-size: 30px; }
-
-  /* P7 — flywheel: show simplified */
-  .p7-wheel { width: 100%; height: auto; margin-top: 24px; }
-  .p7-wheel-svg { position: relative; width: 100%; height: auto; }
-  .p7-node-circle { width: 70px; height: 70px; }
-  .p7-node-icon { font-size: 18px; }
-  .p7-center-hub { width: 80px; height: 80px; }
-  .p7-hub-logo { font-size: 16px; }
-  .p7-h1 { font-size: 28px; }
-  .p9-main { flex-direction: column; gap: 22px; margin-top: 20px; }
-  .p9-eco { width: 100%; height: auto; padding: 8px 0; }
-  .p9-orbit, .p9-aurora, .p9-flow, .p9-grow-cap, .p9-connections { display: none; }
-  .p9-stack { width: 100%; height: auto; position: relative; inset: auto; }
-  .p9-spin-net { position: static; animation: none; transform: none; }
-  .p9-disc-text { animation: none; }
-  .p9-disc-col { position: static; width: 100%; flex-direction: row; gap: 12px; justify-content: flex-start; }
-  .p9-disc { width: 64px; height: 64px; }
-  .p9-disc-core { inset: 11px; }
-  .p9-disc .p9-ic { width: 24px; height: 24px; font-size: 14px; }
-  .p9-disc-text { align-items: flex-start; text-align: left; }
-  .p9-side { width: 100%; }
-  .p9-chip { font-size: 10px; padding: 4px 9px; }
-
-  /* P8 — CTA */
-  .p8-h1 { font-size: 40px; }
-  .p8-qr-row { flex-direction: column; gap: 24px; }
-  .p8-qr-item svg { width: 120px; height: 120px; }
-  .p8-cta { flex-direction: column; width: 100%; }
-  .p8-btn-primary, .p8-btn-ghost { width: 100%; justify-content: center; }
-  .p8-trust { flex-wrap: wrap; justify-content: center; gap: 12px; }
-
-  /* hide grid dot pattern on mobile (too busy) */
-  .grid { display: none; }
-
-  /* Controls — keep same look as deck-new.html; small size is fine because inline onclick works reliably */
-  .ctrl { bottom: 12px; right: 16px; }
-}
-
-/* ═══════════════════════════════════════
-   TABLET — 1025px–1280px (gentle scale)
-   Mobile now covers ≤1024px (phones in any orientation + small tablets).
-   This range is for actual tablets in landscape.
-═══════════════════════════════════════ */
-@media (min-width: 1025px) and (max-width: 1280px) {
-  .p1-h1 { font-size: 52px; }
-  .p1-right { right: 40px; width: 380px; }
-  .p3-grid { grid-template-columns: repeat(3, 1fr); }
-  .p4-left { width: 380px; padding: 60px 36px; }
-  .p4-right { left: 380px; }
-  .p7-wheel { width: 600px; height: 380px; }
-  .p8-h1 { font-size: 58px; }
-  .p2-sol-h1 { font-size: 48px; }
-  .pain-h1 { font-size: 40px; }
-  .pain-cards { gap: 14px; }
-  .mkt-h1 { font-size: 36px; }
-  .mkt-body { max-width: 800px; }
-  .roi-h1 { font-size: 32px; }
-  .roi-bento { gap: 14px; }
-}
+/* Adaptive scaling handled entirely by JS (see resize() below).
+   Pattern copied from deck-new.html which works reliably on iOS Safari:
+   the 1920×1080 canvas is uniformly scaled to fit any viewport, so the
+   desktop layout (multi-column grids, absolute positioning) renders
+   correctly on every device. Users navigate via .ctrl buttons below. */
 
 /* Controls */
 .ctrl { position: fixed; bottom: 12px; right: 16px; background: rgba(45,45,58,0.55); backdrop-filter: blur(8px); padding: 6px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px; z-index: 100; border: 1px solid rgba(255,255,255,0.08); }
 .ctrl button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; font-weight: 700; transition: background 0.15s; }
 .ctrl button:hover { background: rgba(255,255,255,0.18); }
 .ctrl .lbl { color: rgba(255,255,255,0.3); font-size: 9px; letter-spacing: 0.05em; }
-/* .ctrl stays visible on mobile — pattern from deck-new.html which works on iOS Safari.
-   Pinch-detection in JS dims it (opacity:0.35, pointer-events:none) during zoom. */
 </style>
 </head>
 <body>
@@ -2843,15 +2636,11 @@ document.addEventListener('keydown', e => {
    (Original detection was over-engineering that interfered with gestures.) */
 
 function resize() {
+  // Pure uniform scaling — same pattern as deck-new.html.
+  // Canvas (1920×1080) is scaled to fit the viewport; multi-column
+  // grids, absolute positioning, and font sizes all scale together.
   const cv = document.getElementById('cv');
   const stage = document.querySelector('.stage');
-  // Only skip canvas transform on narrow portrait phones — they get the
-  // dedicated mobile layout (vertical scroll, single-page). Landscape phones
-  // and tablets use the desktop layout (canvas scales to fit, multi-column grids).
-  if (window.innerWidth <= 767 && window.innerHeight > window.innerWidth) {
-    cv.style.transform = '';
-    return;
-  }
   const s = Math.min(stage.clientWidth / 1920, stage.clientHeight / 1080);
   cv.style.transform = `scale(${s})`;
 }
