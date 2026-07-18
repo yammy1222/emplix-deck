@@ -2828,6 +2828,12 @@ document.addEventListener('keydown', e => {
 function resize() {
   const cv = document.getElementById('cv');
   const stage = document.querySelector('.stage');
+  // On mobile (≤767px), let CSS own the layout — don't transform canvas
+  // (avoids specificity fights with @media `transform: none !important`)
+  if (window.innerWidth <= 767) {
+    cv.style.transform = '';
+    return;
+  }
   const s = Math.min(stage.clientWidth / 1920, stage.clientHeight / 1080);
   cv.style.transform = `scale(${s})`;
 }
