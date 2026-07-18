@@ -1295,8 +1295,9 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
   /* hide grid dot pattern on mobile (too busy) */
   .grid { display: none; }
 
-  /* Controls */
-  .ctrl { bottom: 10px; right: 10px; padding: 5px 10px; }
+  /* Controls — make buttons big enough to tap reliably on phones */
+  .ctrl { bottom: 12px; right: 12px; padding: 8px 14px; gap: 10px; }
+  .ctrl button { padding: 8px 16px; font-size: 14px; min-width: 44px; min-height: 36px; }
 }
 
 /* ═══════════════════════════════════════
@@ -1321,8 +1322,9 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 /* Controls */
 .ctrl { position: fixed; bottom: 16px; right: 20px; background: rgba(45,45,58,0.55); backdrop-filter: blur(8px); padding: 6px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px; z-index: 100; border: 1px solid rgba(255,255,255,0.08); transition: opacity 0.2s, pointer-events 0.2s; }
-.ctrl button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 10px; font-family: inherit; font-weight: 700; transition: background 0.15s; }
+.ctrl button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 10px; font-family: inherit; font-weight: 700; transition: background 0.15s; touch-action: manipulation; -webkit-tap-highlight-color: rgba(255,255,255,0.2); }
 .ctrl button:hover { background: rgba(255,255,255,0.18); }
+.ctrl button:active { background: rgba(255,255,255,0.3); transform: scale(0.96); }
 .ctrl .lbl { color: rgba(255,255,255,0.3); font-size: 9px; letter-spacing: 0.05em; }
 /* .ctrl stays visible on mobile — pattern from deck-new.html which works on iOS Safari.
    Pinch-detection in JS dims it (opacity:0.35, pointer-events:none) during zoom. */
@@ -2730,12 +2732,17 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 
 <div class="ctrl">
   <span class="lbl">NAV</span>
-  <button onclick="prev()">←</button>
-  <button onclick="next()">→</button>
+  <button type="button" id="ctrlPrevBtn" aria-label="上一頁">←</button>
+  <button type="button" id="ctrlNextBtn" aria-label="下一頁">→</button>
   <span id="ctrlNum">1/14</span>
 </div>
 
 <script>
+// Global error handler so a single page-script bug doesn't kill the deck
+window.addEventListener('error', function(e) {
+  console.warn('[deck error]', e.message, e.filename, e.lineno);
+});
+
 const pages = document.querySelectorAll('.page');
 const ctrlNum = document.getElementById('ctrlNum');
 let cur = 0;
@@ -2750,6 +2757,24 @@ function go(idx) {
 }
 function next() { go(cur + 1); }
 function prev() { go(cur - 1); }
+
+// Bind nav buttons via addEventListener (more reliable than inline onclick on iOS Safari)
+(function () {
+  var prevBtn = document.getElementById('ctrlPrevBtn');
+  var nextBtn = document.getElementById('ctrlNextBtn');
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      prev();
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      next();
+    });
+  }
+})();
 
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
