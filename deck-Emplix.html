@@ -23,7 +23,7 @@
   --r-sm: 16px;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { width: 100%; height: 100%; background: var(--bg); font-family: 'Noto Sans TC', sans-serif; color: var(--ink); touch-action: pinch-zoom; -webkit-touch-callout: none; }
+html, body { width: 100%; height: 100%; background: var(--bg); font-family: 'Noto Sans TC', sans-serif; color: var(--ink); touch-action: manipulation; -webkit-touch-callout: none; }
 /* iOS Safari quirk: overflow:hidden on html/body BREAKS pinch-zoom AND pauses CSS animations.
    .stage is position:fixed (out of flow), .canvas has its own overflow:hidden,
    so body never scrolls on desktop. Mobile @media (max-width: 767px) below uses overflow:auto. */
@@ -1126,97 +1126,6 @@ html, body { width: 100%; height: 100%; background: var(--bg); font-family: 'Not
 .pain-footer { text-align: center; font-size: 14px; color: var(--ink-3); font-weight: 500; }
 .pain-footer strong { color: var(--accent); font-weight: 700; }
 
-/* Portrait orientation hint — mobile豎屏提示 */
-.orient-hint {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(45, 45, 58, 0.92);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  padding: 24px;
-  font-family: 'Noto Sans TC', sans-serif;
-}
-.orient-hint-card {
-  background: var(--bg);
-  color: var(--ink);
-  border-radius: var(--r);
-  padding: 36px 32px;
-  max-width: 340px;
-  width: 100%;
-  text-align: center;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border);
-}
-.orient-hint-icon {
-  width: 96px;
-  height: 64px;
-  margin: 0 auto 20px;
-  position: relative;
-  animation: phoneRotate 2.4s ease-in-out infinite;
-}
-.orient-hint-phone {
-  position: absolute;
-  inset: 0;
-  border: 3px solid var(--accent);
-  border-radius: 10px;
-  background: rgba(232, 99, 74, 0.08);
-}
-.orient-hint-phone::before {
-  content: '';
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent);
-}
-.orient-hint-arrow {
-  position: absolute;
-  top: 50%;
-  right: -22px;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  border-top: 3px solid var(--accent-2);
-  border-right: 3px solid var(--accent-2);
-  border-radius: 3px;
-  animation: arrowPulse 1.4s ease-in-out infinite;
-}
-@keyframes phoneRotate {
-  0%, 100% { transform: rotate(0deg); }
-  50%      { transform: rotate(90deg); }
-}
-@keyframes arrowPulse {
-  0%, 100% { opacity: 0.4; transform: translate(0, -50%); }
-  50%      { opacity: 1;   transform: translate(4px, -50%); }
-}
-.orient-hint-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 20px;
-  font-weight: 900;
-  color: var(--ink);
-  margin-bottom: 10px;
-  letter-spacing: -0.01em;
-}
-.orient-hint-desc {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--ink-2);
-  margin-bottom: 20px;
-}
-.orient-hint-desc strong { color: var(--accent); font-weight: 700; }
-
-@media (orientation: portrait) and (max-width: 500px) {
-  .orient-hint { display: flex; }
-}
-.orient-hint.visible { display: flex; }
-
 /* Controls */
 /* ═══════════════════════════════════════
    MOBILE RESPONSIVE — < 768px
@@ -1424,17 +1333,6 @@ html, body { width: 100%; height: 100%; background: var(--bg); font-family: 'Not
 </style>
 </head>
 <body>
-
-<div class="orient-hint" id="orientHint" role="dialog" aria-live="polite" aria-label="旋轉裝置提示">
-  <div class="orient-hint-card">
-    <div class="orient-hint-icon" aria-hidden="true">
-      <div class="orient-hint-phone"></div>
-      <div class="orient-hint-arrow"></div>
-    </div>
-    <div class="orient-hint-title">請旋轉手機</div>
-    <div class="orient-hint-desc">為了獲得最佳瀏覽體驗，請將裝置<strong>旋轉至橫向 (landscape)</strong>。</div>
-  </div>
-</div>
 
 <div class="stage">
 <div class="canvas" id="cv">
@@ -2923,7 +2821,7 @@ var pinchActive = false;
 function setPinchActive(active) {
   if (pinchActive === active) return;
   pinchActive = active;
-  // While pinching, also dim ctrl + suppress orient-hint updates defensively
+  // While pinching, dim ctrl defensively so accidental brushes don't fire navigation
   var ctrl = document.querySelector('.ctrl');
   if (ctrl) ctrl.classList.toggle('zoomed', active);
   document.documentElement.classList.toggle('pinching', active);
@@ -2998,31 +2896,12 @@ resize();
 })();
 
 /* ==================================================
-   Portrait-orientation hint — show on small portrait viewports
+   Portrait-orientation hint — REMOVED. The overlay was interfering
+   with iOS Safari gesture handling on some devices. Deck now displays
+   in any orientation on phones; iPad users get the deck directly.
 ================================================== */
-(function () {
-  var hint = document.getElementById('orientHint');
-
-  // Expose for resize() / updateOrientHint()
-  window.updateOrientHint = function () {
-    if (!hint) return;
-    var w = window.innerWidth;
-    var h = window.innerHeight;
-    var isPortrait = h > w;
-    var isNarrow = w <= 500; // phones only — iPad (768+) is wide enough to see the deck in portrait
-    if (isPortrait && isNarrow) {
-      hint.classList.add('visible');
-    } else {
-      hint.classList.remove('visible');
-    }
-  };
-
-  // Also react to orientationchange — some browsers fire it before resize
-  window.addEventListener('orientationchange', function () {
-    // Defer one frame so innerWidth/Height reflect the new orientation
-    requestAnimationFrame(window.updateOrientHint);
-  });
-})();
+// Legacy hook kept as a no-op so resize() / external code doesn't break
+window.updateOrientHint = function () {};
 
 /* ==================================================
    Count-up animation — fires every time a page becomes .on
