@@ -1143,12 +1143,15 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
     opacity: 1;
     pointer-events: auto;
     min-height: 100vh;
-    display: flex;
+    display: none;            /* hide non-active on mobile so JS nav actually shows different content */
     flex-direction: column;
     padding: 20px 20px 60px;
     overflow: visible;
   }
-  .page.on { opacity: 1; }
+  .page.on {
+    display: flex;            /* show only active page */
+    opacity: 1;
+  }
 
   /* logo-bar */
   .logo-bar { top: 20px; left: 20px; right: 20px; }
