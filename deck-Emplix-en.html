@@ -1,0 +1,2903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>window.onerror = (m,s,l,c,e)=>document.body.innerHTML += '<pre style="position:fixed;top:0;left:0;background:red;color:white;padding:10px;z-index:99999;font-size:12px;">'+m+' @ '+l+':'+c+'</pre>';</script>
+<title>EMPLIX — AI Workforce for SMBs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FDF6F0;
+  --bg-card: #FFFFFF;
+  --ink: #2D2D3A;
+  --ink-2: #5A5A6E;
+  --ink-3: #9A9AB0;
+  --accent: #E8634A;
+  --accent-2: #3D9B8A;
+  --accent-3: #8B6BCF;
+  --border: rgba(45,45,58,0.08);
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 48px rgba(0,0,0,0.10);
+  --r: 24px;
+  --r-sm: 16px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: 'Noto Sans TC', sans-serif; color: var(--ink); }
+/* Mobile pattern adapted from deck-new.html which works reliably on iOS Safari:
+   - overflow:hidden on body keeps the fixed canvas contained
+   - No touch-action override — browser handles native pinch/pinch-zoom natively
+   - Nav .ctrl buttons stay visible on mobile so user can tap ← → to navigate
+*/
+.stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.canvas { width: 1920px; height: 1080px; position: relative; overflow: hidden; flex-shrink: 0; transform-origin: center center; }
+.page { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.45s ease, visibility 0s linear 0.45s; }
+.page.on { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 0.45s ease, visibility 0s linear 0s; }
+/* Pause CSS animations on hidden pages to save CPU/GPU */
+.page:not(.on) *, .page:not(.on) { animation-play-state: paused !important; }
+.grid { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(45,45,58,0.06) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; }
+.top-bar { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.logo-bar { position: absolute; top: 36px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark { width: 36px; height: 36px; background: var(--ink); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; }
+.logo-text { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 700; color: var(--ink); letter-spacing: -0.5px; }
+.logo-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); background: rgba(45,45,58,0.06); padding: 6px 14px; border-radius: 999px; }
+.pnum { position: absolute; bottom: 40px; left: 80px; font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; font-family: monospace; }
+.tag { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+.tag-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.tag-red { background: rgba(232,99,74,0.1); color: var(--accent); }
+.tag-teal { background: rgba(61,155,138,0.1); color: var(--accent-2); }
+.tag-purple { background: rgba(139,107,207,0.1); color: var(--accent-3); }
+.btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 700; padding: 15px 30px; border-radius: 999px; text-decoration: none; box-shadow: 0 8px 24px rgba(232,99,74,0.28); transition: transform 0.2s, box-shadow 0.2s; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(232,99,74,0.38); }
+.btn-ghost { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 15px; font-weight: 600; padding: 15px 24px; border-radius: 999px; border: 1.5px solid rgba(45,45,58,0.12); text-decoration: none; transition: background 0.2s; }
+.btn-ghost:hover { background: rgba(45,45,58,0.04); }
+
+/* P1 — OPENING */
+.p1 { background: var(--bg); }
+.p1-center-col { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 100px 80px; text-align: center; }
+.p1-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 28px; }
+.p1-eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.p1-eyebrow-text { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.p1-h1 { font-family: 'Noto Serif TC', serif; font-size: 74px; font-weight: 900; line-height: 1.04; letter-spacing: -0.025em; color: var(--ink); margin-bottom: 28px; }
+.p1-h1 em { font-style: normal; color: var(--accent); }
+.p1-desc { font-size: 20px; color: var(--ink-2); line-height: 1.65; margin-bottom: 40px; font-weight: 400; }
+.p1-desc strong { color: var(--ink); font-weight: 700; }
+.p1-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 44px; justify-content: center; }
+.p1-cta { display: flex; gap: 14px; }
+.p1-right { position: absolute; right: 460px; top: 50%; transform: translateY(-50%); width: 500px; }
+.p1-clock-card { background: var(--bg-card); border-radius: var(--r); padding: 32px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.p1-clock-header { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+.p1-clock-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(232,99,74,0.1); display: flex; align-items: center; justify-content: center; color: var(--accent); }
+.p1-clock-title { font-size: 14px; font-weight: 700; color: var(--ink); }
+.p1-timeline { display: flex; flex-direction: column; }
+.p1-time-item { display: flex; gap: 14px; padding: 13px 0; border-bottom: 1px solid rgba(45,45,58,0.06); opacity: 0; transform: translateX(-10px); animation: slideIn 0.5s ease forwards; }
+.p1-time-item:nth-child(1) { animation-delay: 0.2s; }
+.p1-time-item:nth-child(2) { animation-delay: 0.5s; }
+.p1-time-item:nth-child(3) { animation-delay: 0.8s; }
+.p1-time-item:nth-child(4) { animation-delay: 1.1s; }
+.p1-time-item:last-child { border-bottom: none; }
+@keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+.p1-time { font-size: 11px; font-weight: 700; color: var(--ink-3); width: 42px; flex-shrink: 0; padding-top: 2px; }
+.p1-task { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.p1-drain { font-size: 12px; color: var(--accent); font-weight: 600; }
+.p1-saved { font-size: 12px; color: var(--accent-2); font-weight: 600; }
+.p1-bottom { position: absolute; bottom: 40px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; }
+.p1-trust { display: flex; align-items: center; gap: 20px; }
+.p1-trust span { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); font-weight: 600; }
+.p1-trust svg { width: 14px; height: 14px; }
+
+/* P2 — SOLUTION INTRO */
+.p2-solution { background: var(--bg); }
+.p2-sol-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 120px; gap: 40px; }
+.p2-sol-h1 { font-family: 'Noto Serif TC', serif; font-size: 64px; font-weight: 900; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em; text-align: center; margin-bottom: 12px; }
+.p2-sol-h1 em { font-style: normal; color: var(--accent); }
+.p2-sol-tagline { font-size: 22px; color: var(--ink-2); font-weight: 400; text-align: center; max-width: 700px; line-height: 1.6; margin-bottom: 48px; }
+.p2-sol-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; width: 100%; max-width: 960px; }
+.p2-sol-card { background: #fff; border-radius: var(--r); padding: 28px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; transition: transform 0.25s, box-shadow 0.25s; }
+.p2-sol-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.p2-sol-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; }
+.p2-sol-card h3 { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.p2-sol-card p { font-size: 13px; color: var(--ink-3); line-height: 1.6; font-weight: 400; }
+.p2-sol-bottom { display: flex; align-items: center; gap: 12px; background: rgba(232,99,74,0.05); border: 1px solid rgba(232,99,74,0.12); border-radius: var(--r); padding: 20px 32px; max-width: 960px; width: 100%; justify-content: center; }
+.p2-sol-bottom-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(232,99,74,0.1); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; }
+.p2-sol-bottom p { font-size: 14px; color: var(--ink-2); font-weight: 500; }
+.p2-sol-bottom strong { color: var(--ink); }
+
+/* P6.5 — TARGET CUSTOMER + RISK REVERSAL */
+.p25 { background: var(--bg); }
+.p25-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 100px 60px; }
+.p25-header { text-align: center; margin-bottom: 36px; }
+.p25-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.p25-h1 { font-family: 'Noto Serif TC', serif; font-size: 52px; font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+.p25-h1 em { font-style: normal; color: var(--accent); }
+.p25-sub { font-size: 17px; color: var(--ink-2); font-weight: 400; }
+.p25-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; max-width: 1100px; }
+.p25-quad { background: #fff; border-radius: var(--r); padding: 28px 26px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.p25-quad-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(232,99,74,0.08); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px; }
+.p25-quad h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+.p25-quad ul { list-style: none; padding: 0; margin: 0; }
+.p25-quad li { font-size: 13px; color: var(--ink-2); line-height: 1.7; font-weight: 500; }
+.p25-quad li strong { color: var(--ink); }
+.p25-formula { display: inline-block; background: rgba(232,99,74,0.08); color: var(--accent); font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 999px; margin-top: 12px; }
+.p25-quad-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 8px 0 6px; }
+.p25-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+
+/* P8 — 4 quadrants (2x2) + 5-step onboarding block */
+.p25-grid.p25-grid-4 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  max-width: 1180px;
+  gap: 20px;
+}
+
+/* Q1 — Who it is for · 4 mini avatars */
+.p25-archetypes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 14px 0 16px;
+}
+.p25-arch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.p25-arch-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(232,99,74,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.p25-arch-avatar svg { width: 22px; height: 22px; color: var(--accent); }
+.p25-arch-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+/* Q2 — Integrations · Now / Next */
+.p25-int-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.p25-int-block {
+  border-radius: 12px;
+  padding: 12px 12px 10px;
+}
+.p25-int-block.is-now {
+  background: rgba(61,155,138,0.08);
+  border: 1px solid rgba(61,155,138,0.2);
+}
+.p25-int-block.is-next {
+  background: rgba(139,107,207,0.06);
+  border: 1px solid rgba(139,107,207,0.18);
+}
+.p25-int-head {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.p25-int-block.is-now .p25-int-head { color: var(--secondary-accent); }
+.p25-int-block.is-next .p25-int-head { color: var(--tertiary-accent); }
+.p25-int-head-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.p25-int-block.is-now .p25-int-head-dot { background: var(--secondary-accent); }
+.p25-int-block.is-next .p25-int-head-dot { background: var(--tertiary-accent); }
+.p25-int-item {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+.p25-int-item::before {
+  content: '';
+  width: 4px; height: 4px; border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+.p25-int-block.is-now .p25-int-item { color: #2a6b5e; }
+.p25-int-block.is-next .p25-int-item { color: #6b4fa8; }
+
+/* Q3 — 5 steps · Horizontal stepper */
+.p25-quad-steps .p25-quad-lead {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-weight: 500;
+  margin: -2px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.p25-quad-lead::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--secondary-accent);
+}
+.p25-stepper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4px;
+  margin: 6px 0 14px;
+}
+.p25-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+.p25-step-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Sans TC', sans-serif;
+  position: relative;
+  z-index: 2;
+}
+.p25-step-connector {
+  position: absolute;
+  top: 15px;
+  left: calc(50% + 18px);
+  right: calc(-50% + 18px);
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, rgba(232,99,74,0.3) 100%);
+}
+.p25-step:last-child .p25-step-connector { display: none; }
+.p25-step-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 8px;
+  line-height: 1.25;
+}
+
+/* Q4 — Risk reversal · 4 big checks */
+.p25-check-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  margin-top: 12px;
+}
+.p25-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.p25-check-tick {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(61,155,138,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-accent);
+}
+.p25-check-tick svg { width: 14px; height: 14px; }
+.p25-check-text {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+.p25-check-text small {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  margin-top: 1px;
+}
+
+/* P3 — 5-STEP STATE MACHINE */
+.p3-demo { background: var(--bg); }
+.p3-demo-center { position: absolute; inset: 0; }
+.p3-demo-header { position: absolute; top: 220px; left: 0; right: 0; text-align: center; }
+.p3-demo-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.p3-demo-h1 { font-family: 'Noto Serif TC', serif; font-size: 44px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 8px; }
+.p3-demo-sub { font-size: 16px; color: var(--ink-2); }
+.p3-demo-body { position: absolute; top: 340px; left: 50%; transform: translateX(-50%); width: 1500px; height: 500px; }
+.p3-demo-stage { position: absolute; top: 0; left: 0; width: 730px; height: 500px; padding: 0; overflow: hidden; }
+.p3-stage-frame { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; overflow: hidden; }
+.p3-stage-frame.active { opacity: 1; pointer-events: auto; }
+.p3-stage-frame svg { display: block; width: 100%; height: 100%; overflow: hidden; }
+.p3-demo-info { position: absolute; top: 0; left: 770px; width: 730px; height: 500px; padding: 16px; overflow: hidden; }
+.p3-info-step { display: none; max-width: 100%; word-break: break-word; overflow-wrap: anywhere; opacity: 1; color: var(--ink); }
+.p3-info-step p, .p3-info-step h2 { max-width: 100%; word-break: break-word; overflow-wrap: anywhere; opacity: 1; color: inherit; }
+.p3-info-step.active { display: flex; flex-direction: column; justify-content: center; height: 100%; overflow-y: auto; animation: p3FadeUp 0.5s ease; opacity: 1; visibility: visible; }
+@keyframes p3FadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.p3-info-num { font-family: 'DM Sans', monospace; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 14px; }
+.p3-info-title { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 10px; line-height: 1.25; letter-spacing: -0.01em; word-break: break-word; overflow-wrap: anywhere; }
+.p3-info-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; margin-bottom: 18px; word-break: break-word; overflow-wrap: anywhere; }
+.p3-info-quote { background: rgba(232,99,74,0.06); border-left: 3px solid var(--accent); padding: 14px 18px; font-size: 14px; color: var(--ink-2); border-radius: 0 8px 8px 0; }
+.p3-info-quote strong { color: var(--ink); margin-right: 4px; }
+.p3-demo-controls { position: absolute; bottom: 140px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 14px; pointer-events: auto; }
+.p3-demo-controls .p3-demo-btn { cursor: pointer; user-select: none; }
+.p3-demo-controls .p3-dot { cursor: pointer; user-select: none; }
+.p3-demo-btn { background: rgba(45,45,58,0.06); border: none; padding: 10px 20px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--ink); cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.p3-demo-btn:hover { background: rgba(45,45,58,0.12); }
+.p3-demo-btn.primary { background: var(--accent); color: #fff; }
+.p3-demo-btn.primary:hover { background: #d65540; }
+.p3-progress { display: flex; gap: 10px; margin-left: 20px; }
+.p3-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(45,45,58,0.15); transition: all 0.3s; cursor: pointer; }
+.p3-dot.active { background: var(--accent); transform: scale(1.4); }
+.p3-dot:hover { background: rgba(45,45,58,0.3); }
+
+/* P4 — RunTrace 8-step timeline (mirrors demo RunTrace.jsx) */
+.p4-cycle { background: var(--bg); }
+.p4-cycle-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 70px 100px 50px; gap: 28px; }
+.p4-cycle-header { text-align: center; max-width: 980px; }
+.p4-cycle-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.p4-cycle-h1 { font-family: 'Noto Serif TC', serif; font-size: 46px; font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+.p4-cycle-h1 em { font-style: normal; color: var(--accent); }
+.p4-cycle-sub { font-size: 15px; color: var(--ink-2); }
+.p4-trace-wrap { background: #fff; border-radius: var(--r); padding: 14px 18px; border: 1px solid var(--border); box-shadow: var(--shadow); width: 100%; max-width: 1180px; }
+.p4-trace-head { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; flex-wrap: wrap; }
+.p4-trace-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.p4-trace-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.p4-trace-time { font-family: 'DM Sans', monospace; font-size: 11.5px; color: var(--ink-3); font-weight: 600; }
+.p4-trace-conf { font-size: 11px; color: var(--ink-3); margin-left: auto; }
+.p4-trace-conf::before { content: 'Ready · '; color: var(--ink-3); }
+.p4-trace-title { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.p4-trace-steps { display: flex; flex-direction: column; gap: 5px; }
+.p4-trace-step { display: flex; align-items: center; gap: 12px; padding: 6px 10px; border-radius: 8px; opacity: 1; transition: all 0.3s; }
+.p4-trace-step.done { background: rgba(18,168,119,0.05); }
+.p4-trace-step.current { background: rgba(47,127,224,0.08); box-shadow: 0 0 0 2px rgba(47,127,224,0.15); }
+.p4-trace-step.pending { opacity: 0.5; }
+.p4-trace-mark { width: 22px; height: 22px; border-radius: 50%; background: #12a877; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.p4-trace-step.current .p4-trace-mark { background: #2f7fe0; position: relative; }
+.p4-trace-step.pending .p4-trace-mark { background: var(--ink-3); opacity: 0.5; }
+.p4-trace-mark svg { width: 11px; height: 11px; }
+.p4-trace-pulse { width: 10px; height: 10px; border-radius: 50%; background: #fff; position: relative; }
+.p4-trace-pulse::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid #fff; animation: p4Pulse 1.5s ease-in-out infinite; }
+@keyframes p4Pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0; } }
+.p4-trace-body { flex: 1; min-width: 0; }
+.p4-trace-label { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 1px; }
+.p4-trace-sub { font-size: 11px; color: var(--ink-2); line-height: 1.35; }
+.p4-trace-sub strong { color: var(--accent); font-weight: 700; }
+.p4-trace-step.pending .p4-trace-sub { color: var(--ink-3); }
+.p4-trace-state { font-size: 10px; font-weight: 700; color: #12a877; text-transform: uppercase; letter-spacing: 0.06em; }
+.p4-cycle-footer { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; max-width: 1100px; }
+.p4-cycle-foot-item { font-size: 12px; color: var(--ink-2); font-weight: 600; padding: 6px 14px; border-radius: 999px; background: rgba(61,155,138,0.08); }
+
+/* P4 two-column layout: trace card + 2 demo videos */
+.p4-cycle-row {
+  display: flex;
+  gap: 32px;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+}
+.p4-cycle-row .p4-trace-wrap {
+  max-width: 480px;
+  width: 100%;
+  flex: 0 1 auto;
+}
+.p4-videos {
+  max-width: 800px;
+  width: 100%;
+  flex: 0 1 auto;
+}
+.p4-video-card {
+  margin: 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.p4-video-card img, .p4-video-card video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  display: block;
+  background: #000;
+  object-fit: contain;
+}
+.p4-video-card figcaption {
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.p4-video-card figcaption span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+/* P3 — EMPLOYEES */
+.p3-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 100px; }
+.p3-header { text-align: center; margin-bottom: 44px; }
+.p3-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 14px; }
+.p3-h1 { font-family: 'Noto Serif TC', serif; font-size: 52px; font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 12px; }
+.p3-sub { font-size: 17px; color: var(--ink-2); font-weight: 400; }
+.p3-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 22px; width: 100%; max-width: 1500px; }
+.p3-card { background: var(--bg-card); border-radius: var(--r); padding: 32px 26px; box-shadow: var(--shadow); border: 1px solid var(--border); transition: transform 0.25s, box-shadow 0.25s; position: relative; }
+.p3-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.p3-card-badge { position: absolute; top: -12px; right: 18px; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; padding: 5px 12px; border-radius: 999px; white-space: nowrap; }
+.p3-badge-std { background: linear-gradient(135deg,#3D9B8A,#2a7a6a); color: #fff; }
+.p3-badge-sen { background: linear-gradient(135deg,#E8634A,#c94030); color: #fff; }
+.p3-avatar { width: 72px; height: 72px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Noto Serif TC', serif; font-weight: 800; font-size: 24px; margin-bottom: 18px; }
+.p3-card h3 { font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+.p3-dept { font-size: 14px; color: var(--ink-3); font-weight: 600; margin-bottom: 14px; }
+.p3-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.p3-tag { font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 999px; }
+.t-running { background: rgba(61,155,138,0.12); color: var(--accent-2); }
+.t-trial { background: rgba(232,99,74,0.1); color: var(--accent); }
+.t-pending { background: rgba(139,107,207,0.1); color: var(--accent-3); }
+.t-soon { background: rgba(154,163,178,0.15); color: #6B7280; }
+.p3-desc { font-size: 15px; color: var(--ink-3); line-height: 1.5; font-weight: 400; }
+.p3-note { background: rgba(61,155,138,0.06); border: 1px solid rgba(61,155,138,0.15); border-radius: var(--r); padding: 22px 32px; display: flex; align-items: center; gap: 14px; max-width: 1500px; width: 100%; margin-top: 36px; }
+.p3-note-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(61,155,138,0.12); display: flex; align-items: center; justify-content: center; color: var(--accent-2); flex-shrink: 0; }
+.p3-note p { font-size: 15px; color: var(--ink-2); font-weight: 500; }
+.p3-note strong { color: var(--ink); }
+
+/* P4 — WORKFLOW */
+.p4-left { position: absolute; left: 0; top: 0; bottom: 0; width: 520px; background: #fff; border-right: 1px solid rgba(45,45,58,0.07); padding: 80px 52px; display: flex; flex-direction: column; justify-content: center; }
+.p4-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-3); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.p4-kicker::before { content: ''; width: 18px; height: 2px; background: var(--accent-3); }
+.p4-h1 { font-family: 'Noto Serif TC', serif; font-size: 44px; font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 14px; }
+.p4-sub { font-size: 15px; color: var(--ink-2); line-height: 1.6; margin-bottom: 36px; font-weight: 400; }
+.p4-steps { display: flex; flex-direction: column; gap: 10px; }
+.p4-step { display: flex; align-items: flex-start; gap: 14px; padding: 15px 16px; border-radius: var(--r-sm); background: var(--bg); border: 1px solid rgba(45,45,58,0.06); }
+.p4-step.active { border-color: rgba(139,107,207,0.3); background: rgba(139,107,207,0.04); }
+.p4-step-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.p4-step h4 { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.p4-step p { font-size: 12px; color: var(--ink-3); font-weight: 400; line-height: 1.45; }
+.p4-hint { display: inline-flex; align-items: center; gap: 7px; margin-top: 26px; font-size: 13px; font-weight: 700; color: var(--accent-3); cursor: pointer; }
+.p4-hint:hover { text-decoration: underline; }
+.p4-right { position: absolute; left: 520px; right: 0; top: 0; bottom: 0; overflow: hidden; }
+.p4-floor { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.p4-floor svg { width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+.p4-cards { position: relative; z-index: 1; display: flex; flex-direction: row; gap: 20px; padding: 20px 0; width: 100%; height: 100%; align-items: center; justify-content: center; }
+.p4-desk { background: #fff; border-radius: 20px; padding: 26px 30px; box-shadow: 0 8px 40px rgba(0,0,0,0.12); border: 1px solid var(--border); animation: float1 3s ease-in-out infinite; }
+.p4-desk-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.p4-desk-title { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 700; color: var(--ink); }
+.p4-desk-count { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: var(--accent); background: rgba(232,99,74,0.1); padding: 4px 10px; border-radius: 999px; }
+.p4-items { display: flex; flex-direction: column; gap: 10px; }
+.p4-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--r-sm); background: var(--bg); border: 1px solid rgba(45,45,58,0.06); }
+.p4-avatar { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+.p4-info { flex: 1; }
+.p4-info h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.p4-info p { font-size: 11px; color: var(--ink-3); }
+.p4-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+.p4-actions { display: flex; gap: 8px; margin-top: 14px; }
+.p4-btn-appr { flex: 1; padding: 10px; border-radius: 10px; background: var(--accent-2); color: #fff; font-size: 12px; font-weight: 700; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.p4-btn-rev { flex: 1; padding: 10px; border-radius: 10px; background: rgba(45,45,58,0.06); color: var(--ink); font-size: 12px; font-weight: 700; border: none; cursor: pointer; }
+
+/* P4 — WORKFLOW (dashboard) */
+.p4 { position: absolute; inset: 0; }
+
+/* P4 Dashboard */
+.p4-dash { background: #fff; border-radius: 20px; padding: 26px 30px; box-shadow: 0 8px 40px rgba(0,0,0,0.12); border: 1px solid var(--border); animation: float2 3s ease-in-out infinite; animation-delay: -1.5s; }
+@keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.p4-desk, .p4-dash { transform-box: fill-box; }
+.p4-dash-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.p4-dash-title { font-family: 'Noto Serif TC', serif; font-size: 15px; font-weight: 700; color: var(--ink); }
+.p4-dash-badge { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: rgba(61,155,138,0.1); color: var(--accent-2); display: flex; align-items: center; gap: 4px; }
+.p4-dash-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-2); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.p4-kpis { display: flex; gap: 12px; margin-bottom: 14px; }
+.p4-kpi { flex: 1; background: var(--bg); border-radius: 10px; padding: 12px 14px; text-align: center; }
+.p4-kpi .v { font-family: 'DM Sans', sans-serif; font-size: 22px; font-weight: 700; color: var(--ink); animation: numPulse 2s ease-in-out infinite; }
+@keyframes numPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08);color:var(--accent-3)} }
+.p4-kpi .l { font-size: 10px; color: var(--ink-3); font-weight: 600; margin-top: 2px; }
+.p4-chart-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.p4-chart-label span { font-size: 11px; font-weight: 700; color: var(--ink); }
+.p4-chart-trend { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: rgba(61,155,138,0.1); color: var(--accent-2); display: flex; align-items: center; gap: 3px; }
+.p4-chart-svg { width: 100%; height: auto; display: block; }
+
+/* P5 — ROI */
+.p5-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 70px 100px; gap: 36px; }
+.p5-header { text-align: center; }
+.p5-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.p5-h1 { font-family: 'Noto Serif TC', serif; font-size: 50px; font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+.p5-sub { font-size: 16px; color: var(--ink-2); font-weight: 400; }
+.p5-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; width: 100%; max-width: 980px; }
+.p5-card { background: #fff; border-radius: var(--r); padding: 32px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.p5-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid rgba(45,45,58,0.07); }
+.p5-card-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.p5-card-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+.p5-card-sub { font-size: 11px; color: var(--ink-3); font-weight: 600; }
+.p5-rows { display: flex; flex-direction: column; }
+.p5-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(45,45,58,0.05); font-size: 13px; }
+.p5-row .lbl { color: var(--ink-2); }
+.p5-row .val { font-weight: 700; }
+.p5-row .red { color: var(--accent); }
+.p5-row .green { color: var(--accent-2); }
+.p5-row .gray { color: var(--ink-3); }
+.p5-row.total { padding-top: 14px; margin-top: 4px; border-top: 2px solid rgba(45,45,58,0.1); }
+.p5-row.total .lbl { font-weight: 700; color: var(--ink); font-size: 14px; }
+.p5-row.total .val { font-size: 18px; }
+.p5-emplix { border: 2px solid rgba(61,155,138,0.25); position: relative; }
+.p5-emplix::before { content: 'EMPLIX'; position: absolute; top: -12px; left: 22px; background: var(--accent-2); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 999px; }
+.p5-savings { display: flex; align-items: center; gap: 36px; background: rgba(232,99,74,0.04); border: 1px solid rgba(232,99,74,0.12); border-radius: var(--r); padding: 32px 40px; width: 100%; max-width: 980px; }
+.p5-save-stat { text-align: center; flex-shrink: 0; }
+.p5-save-num { font-family: 'Noto Serif TC', serif; font-size: 60px; font-weight: 900; line-height: 1; }
+.p5-save-num.coral { color: var(--accent); }
+.p5-save-num.teal { color: var(--accent-2); }
+.p5-save-label { font-size: 12px; color: var(--ink-3); font-weight: 600; margin-top: 4px; }
+.p5-div { width: 1px; height: 56px; background: rgba(45,45,58,0.1); flex-shrink: 0; }
+.p5-save-text { font-size: 15px; color: var(--ink-2); line-height: 1.7; font-weight: 500; }
+.p5-save-text strong { color: var(--ink); }
+
+/* P8 — Competitor comparison table */
+.p5-table { width: 100%; max-width: 1080px; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: var(--r); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+.p5-tcell { padding: 14px 20px; font-size: 13.5px; text-align: center; border-bottom: 1px solid rgba(45,45,58,0.05); color: var(--ink-2); }
+.p5-tcell.is-head { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); padding: 18px 20px; }
+.p5-tcell.is-feature { text-align: left; font-weight: 600; color: var(--ink); width: 24%; }
+.p5-tcell.is-emplix { background: rgba(232,99,74,0.04); }
+.p5-tcell.is-emplix.is-head { background: rgba(232,99,74,0.1); }
+.p5-tcell-name { font-size: 14px; font-weight: 800; color: var(--ink); letter-spacing: 0.04em; }
+.p5-tcell-name.is-emplix { color: var(--accent); font-size: 16px; }
+.p5-tcell-check { color: var(--accent-2); font-weight: 700; }
+.p5-tcell-cross { color: var(--ink-3); font-weight: 600; }
+.p5-tcell-tri { color: #d98a12; font-weight: 700; }
+.p5-tcell-val { font-weight: 700; color: var(--ink); }
+.p5-tcell-val.is-emplix { color: var(--accent); font-size: 16px; }
+.p5-tbody-row:last-child .p5-tcell { border-bottom: none; }
+.p5-summary { margin-top: 12px; font-size: 14px; color: var(--ink-3); font-weight: 500; text-align: center; }
+.p5-summary strong { color: var(--accent); font-weight: 700; }
+
+/* P4 — Market opportunity */
+.mkt-page { background: var(--bg); }
+.mkt-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 70px 100px 50px; gap: 24px; }
+.mkt-header { text-align: center; max-width: 1000px; }
+.mkt-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.mkt-h1 { font-family: 'Noto Serif TC', serif; font-size: 46px; font-weight: 900; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 12px; }
+.mkt-h1 em { font-style: normal; color: var(--accent); }
+.mkt-sub { font-size: 15px; color: var(--ink-2); line-height: 1.55; font-weight: 400; }
+.mkt-sub strong { color: var(--ink); font-weight: 700; }
+.mkt-body { display: grid; grid-template-columns: 1.05fr 1fr; gap: 24px; width: 100%; max-width: 1180px; align-items: stretch; }
+.mkt-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.mkt-stat { background: #fff; border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 150px; }
+.mkt-stat-num { font-family: 'Noto Serif TC', serif; font-size: 40px; font-weight: 900; line-height: 1; margin-bottom: 8px; letter-spacing: -0.02em; }
+.mkt-stat-num.is-teal { color: var(--accent-2); }
+.mkt-stat-num.is-coral { color: var(--accent); }
+.mkt-stat-num.is-purple { color: var(--tertiary-accent); }
+.mkt-stat-label { font-size: 12.5px; color: var(--ink-2); font-weight: 600; line-height: 1.5; margin-bottom: 4px; }
+.mkt-stat-meta { font-size: 10.5px; color: var(--ink-3); font-weight: 500; margin-top: auto; letter-spacing: 0.04em; }
+.mkt-right { display: flex; flex-direction: column; gap: 14px; }
+.mkt-block { background: #fff; border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); flex: 1; }
+.mkt-block-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+.mkt-block-text { font-size: 13px; color: var(--ink-2); line-height: 1.65; margin-bottom: 14px; }
+.mkt-block-text strong { color: var(--ink); font-weight: 700; }
+.mkt-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.mkt-chip { display: inline-block; padding: 5px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 700; }
+.mkt-chip.is-teal { background: rgba(61,155,138,0.1); color: var(--accent-2); }
+.mkt-chip.is-coral { background: rgba(232,99,74,0.1); color: var(--accent); }
+.mkt-chip.is-purple { background: rgba(139,107,207,0.1); color: var(--tertiary-accent); }
+
+/* Counter animation (P4 number tween) */
+.counter.is-pop { animation: counter-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes counter-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* ==================================================
+   Tier 2 flourishes
+================================================== */
+
+/* P1 Cover — logo slow auto-rotate + background blob drift + tags stagger */
+.p1 .logo-mark { animation: logo-spin 24s linear infinite; transform-origin: center; }
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.p1::before, .p1::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.p1::before {
+  top: 8%; right: 6%;
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(232,99,74,0.08) 0%, transparent 65%);
+  animation: orb-drift-a 28s ease-in-out infinite;
+}
+.p1::after {
+  bottom: 6%; left: 4%;
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(61,155,138,0.08) 0%, transparent 65%);
+  animation: orb-drift-b 34s ease-in-out infinite;
+}
+@keyframes orb-drift-a {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(70px, 50px); }
+}
+@keyframes orb-drift-b {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-55px, -40px); }
+}
+.p1 .p1-center-col { z-index: 2; }
+.p1 .p1-bottom { z-index: 2; }
+.p1-tags .tag {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: tag-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.p1-tags .tag:nth-child(1) { animation-delay: 0.45s; }
+.p1-tags .tag:nth-child(2) { animation-delay: 0.58s; }
+.p1-tags .tag:nth-child(3) { animation-delay: 0.71s; }
+.p1-tags .tag:nth-child(4) { animation-delay: 0.84s; }
+@keyframes tag-pop {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* P5 Solution — 3 cards slide in from left / center / right */
+.p2-sol-h1, .p2-sol-tagline {
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: header-drop 0.5s ease forwards;
+}
+.p2-sol-h1 { animation-delay: 0.05s; }
+.p2-sol-tagline { animation-delay: 0.18s; }
+@keyframes header-drop {
+  to { opacity: 1; transform: translateY(0); }
+}
+.p2-sol-card {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  animation-duration: 0.7s;
+  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.p2-sol-card:nth-child(1) {
+  animation-name: card-from-left;
+  animation-delay: 0.32s;
+}
+.p2-sol-card:nth-child(2) {
+  animation-name: card-from-bottom;
+  animation-delay: 0.48s;
+}
+.p2-sol-card:nth-child(3) {
+  animation-name: card-from-right;
+  animation-delay: 0.64s;
+}
+@keyframes card-from-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes card-from-bottom {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes card-from-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.p2-sol-card:nth-child(2) .p2-sol-icon { animation: icon-pulse 2.4s ease-in-out infinite; animation-delay: 1.4s; }
+@keyframes icon-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(232,99,74,0); }
+  50%      { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(232,99,74,0.12); }
+}
+
+/* P8 Employees — 5 avatars bobbing in stagger + tags pop in */
+.p3-card .p3-avatar {
+  animation: avatar-bob 4s ease-in-out infinite;
+}
+.p3-card:nth-child(1) .p3-avatar { animation-delay: 0s; }
+.p3-card:nth-child(2) .p3-avatar { animation-delay: 0.4s; }
+.p3-card:nth-child(3) .p3-avatar { animation-delay: 0.8s; }
+.p3-card:nth-child(4) .p3-avatar { animation-delay: 1.2s; }
+.p3-card:nth-child(5) .p3-avatar { animation-delay: 1.6s; }
+@keyframes avatar-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+.p3-card .p3-tag {
+  opacity: 0;
+  transform: scale(0.7);
+  animation: tag-spring 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.p3-card:nth-child(1) .p3-tag { animation-delay: 0.6s; }
+.p3-card:nth-child(2) .p3-tag { animation-delay: 0.75s; }
+.p3-card:nth-child(3) .p3-tag { animation-delay: 0.9s; }
+.p3-card:nth-child(4) .p3-tag { animation-delay: 1.05s; }
+.p3-card:nth-child(5) .p3-tag { animation-delay: 1.2s; }
+@keyframes tag-spring {
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* P9 Comparison table — Emplix column highlight wave + others fade in */
+.p5-tcell {
+  opacity: 0;
+  animation: cell-fade 0.45s ease forwards;
+}
+.p5-thead-row .p5-tcell:nth-child(1) { animation-delay: 0.05s; }
+.p5-thead-row .p5-tcell:nth-child(2) { animation-delay: 0.12s; animation-name: cell-highlight-head; background: rgba(232,99,74,0.1); }
+.p5-thead-row .p5-tcell:nth-child(3) { animation-delay: 0.19s; }
+.p5-thead-row .p5-tcell:nth-child(4) { animation-delay: 0.26s; }
+.p5-tbody-row .p5-tcell:nth-child(1) { animation-delay: 0.35s; }
+.p5-tbody-row .p5-tcell:nth-child(2) { animation-delay: 0.42s; animation-name: cell-highlight; }
+.p5-tbody-row .p5-tcell:nth-child(3) { animation-delay: 0.49s; }
+.p5-tbody-row .p5-tcell:nth-child(4) { animation-delay: 0.56s; }
+@keyframes cell-fade { to { opacity: 1; } }
+@keyframes cell-highlight-head {
+  0% { opacity: 0; background: rgba(232,99,74,0); }
+  60% { opacity: 1; background: rgba(232,99,74,0.18); }
+  100% { opacity: 1; background: rgba(232,99,74,0.1); }
+}
+@keyframes cell-highlight {
+  0% { opacity: 0; background: rgba(232,99,74,0); }
+  60% { opacity: 1; background: rgba(232,99,74,0.12); }
+  100% { opacity: 1; background: rgba(232,99,74,0.04); }
+}
+
+/* P2-P3 Pain points — cards enter from 3deg tilt + tag pills pop in */
+.pain-card {
+  opacity: 0;
+  transform: rotate(3deg) translateY(20px);
+  animation: pain-card-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.pain-cards .pain-card:nth-child(1) { animation-delay: 0.15s; }
+.pain-cards .pain-card:nth-child(2) { animation-delay: 0.28s; }
+.pain-cards .pain-card:nth-child(3) { animation-delay: 0.41s; }
+@keyframes pain-card-in {
+  to { opacity: 1; transform: rotate(0deg) translateY(0); }
+}
+.pain-tag {
+  opacity: 0;
+  transform: scale(0.5);
+  animation: pain-tag-spring 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.pain-cards .pain-card:nth-child(1) .pain-tag { animation-delay: 0.85s; }
+.pain-cards .pain-card:nth-child(2) .pain-tag { animation-delay: 0.98s; }
+.pain-cards .pain-card:nth-child(3) .pain-tag { animation-delay: 1.11s; }
+@keyframes pain-tag-spring {
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* P10 — Cost & efficiency · Data speaks (data + ROI calculator) */
+.roi-page { background: var(--bg); }
+.roi-content { position: absolute; left: 100px; right: 100px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; }
+.roi-header { text-align: center; margin-bottom: 28px; }
+.roi-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.roi-h1 { font-family: 'Noto Serif TC', serif; font-size: 40px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 8px; }
+.roi-h1 em { font-style: normal; color: var(--accent); }
+.roi-sub { font-size: 14px; color: var(--ink-3); }
+.roi-grid { display: grid; grid-template-columns: 520px 560px; gap: 24px; align-items: start; max-width: 100%; margin: 0 auto; }
+.roi-col-left { display: flex; flex-direction: column; gap: 14px; }
+.roi-card { background: #fff; border-radius: 20px; padding: 26px 30px; box-shadow: 0 2px 12px rgba(91,79,207,.07), 0 12px 32px rgba(0,0,0,.04); border: 1px solid rgba(26,26,46,.06); }
+.roi-data-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.roi-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-2); animation: roi-pulse 2s infinite; flex-shrink: 0; }
+@keyframes roi-pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+.roi-data-title { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 16px; }
+.roi-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 18px; }
+.roi-stat-cell { text-align: center; padding: 10px 0; }
+.roi-stat-cell + .roi-stat-cell { border-left: 1px solid rgba(26,26,46,.07); }
+.roi-stat-num { font-family: 'Noto Serif TC', serif; font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+.roi-stat-cell:nth-child(1) .roi-stat-num { color: var(--accent); }
+.roi-stat-cell:nth-child(2) .roi-stat-num { color: var(--accent-2); }
+.roi-stat-cell:nth-child(3) .roi-stat-num { color: #d98a12; }
+.roi-stat-label { font-size: 11px; color: var(--ink-3); font-weight: 600; }
+.roi-chart-legend { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.roi-legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.roi-chart-badge { margin-left: auto; display: flex; align-items: center; gap: 4px; background: rgba(61,155,138,0.1); color: var(--accent-2); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.roi-chart-area { height: 110px; }
+.roi-chart-area svg { width: 100%; height: 100%; }
+.roi-data-note { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ink-3); margin-top: 10px; padding-top: 12px; border-top: 1px solid rgba(26,26,46,.06); }
+.roi-suggestion { background: rgba(91,79,207,.05); border: 1px solid rgba(91,79,207,.12); border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; }
+.roi-suggestion svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+.roi-suggestion p { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+.roi-suggestion strong { color: var(--ink); font-weight: 700; }
+.roi-suggestion .pill { display: inline-block; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; letter-spacing: 0.04em; }
+
+/* Right column: ROI calculator */
+.roi-calc-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-2); margin-bottom: 6px; }
+.roi-calc-headline { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.roi-calc-tagline { font-size: 12px; color: var(--ink-3); margin-bottom: 18px; }
+.roi-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.roi-input-group { display: flex; flex-direction: column; gap: 5px; }
+.roi-input-group label { font-size: 11px; font-weight: 700; color: var(--ink-2); }
+.roi-input { background: var(--bg); border: 1.5px solid rgba(26,26,46,.1); border-radius: 10px; padding: 9px 12px; font-size: 14px; font-weight: 700; color: var(--ink); font-family: 'Noto Sans TC', sans-serif; outline: none; width: 100%; }
+.roi-slider-group { margin-bottom: 6px; }
+.roi-slider-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.roi-slider-head label { font-size: 11px; font-weight: 700; color: var(--ink-2); }
+.roi-slider-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--accent); }
+.roi-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: linear-gradient(to right, var(--accent) 0%, var(--accent) 60%, rgba(26,26,46,.1) 60%, rgba(26,26,46,.1) 100%); border-radius: 999px; outline: none; }
+.roi-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); cursor: pointer; box-shadow: 0 2px 6px rgba(91,79,207,.3); }
+.roi-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); cursor: pointer; box-shadow: 0 2px 6px rgba(91,79,207,.3); }
+.roi-calc-steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.roi-calc-step { display: flex; gap: 10px; align-items: flex-start; padding: 10px 14px; border-radius: 12px; border: 1.5px solid rgba(26,26,46,.06); background: var(--bg); }
+.roi-calc-step.is-active { border-color: var(--accent); background: rgba(232,99,74,0.04); }
+.roi-calc-step.is-done { border-color: rgba(61,155,138,0.3); background: rgba(61,155,138,0.04); }
+.roi-step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(26,26,46,.08); color: var(--ink-3); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+.roi-calc-step.is-active .roi-step-num { background: var(--accent); color: #fff; }
+.roi-calc-step.is-done .roi-step-num { background: var(--accent-2); color: #fff; }
+.roi-step-content { flex: 1; min-width: 0; }
+.roi-step-formula { font-size: 11px; font-weight: 700; color: var(--ink-2); margin-bottom: 3px; }
+.roi-step-result { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+.roi-step-result .hl { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--ink); }
+.roi-calc-results { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.roi-calc-result-card { padding: 12px 16px; border-radius: 12px; text-align: center; }
+.roi-calc-result-card.is-monthly { background: rgba(232,99,74,0.07); border: 1.5px solid rgba(232,99,74,0.15); }
+.roi-calc-result-card.is-yearly { background: rgba(61,155,138,0.07); border: 1.5px solid rgba(61,155,138,0.2); }
+.roi-calc-result-card .rc-label { font-size: 10px; font-weight: 700; color: var(--ink-3); margin-bottom: 3px; letter-spacing: 0.04em; text-transform: uppercase; }
+.roi-calc-result-card .rc-value { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 700; }
+.roi-calc-result-card.is-monthly .rc-value { color: var(--accent); }
+.roi-calc-result-card.is-yearly .rc-value { color: var(--accent-2); }
+.roi-disclaimer { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ink-3); margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(26,26,46,.06); }
+
+.roi-footer { position: absolute; bottom: 50px; left: 0; right: 0; text-align: center; font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; font-family: monospace; }
+.roi-watermark { position: absolute; bottom: 40px; right: 60px; font-size: 10px; color: rgba(26,26,46,.2); letter-spacing: 0.12em; font-family: monospace; }
+.roi-num { position: absolute; bottom: 40px; left: 100px; font-size: 11px; color: var(--ink-3); letter-spacing: 0.15em; font-family: monospace; }
+
+/* P6 — PRICING */
+.p6-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 70px 100px; gap: 36px; }
+.p6-header { text-align: center; }
+.p6-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-3); margin-bottom: 12px; }
+.p6-h1 { font-family: 'Noto Serif TC', serif; font-size: 50px; font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+.p6-sub { font-size: 16px; color: var(--ink-2); font-weight: 400; }
+.p6-plans { container-type: inline-size; display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 18px; width: 100%; max-width: 1180px; align-items: stretch; }
+.p6-plan { background: #fff; border-radius: var(--r); padding: 30px 26px; box-shadow: var(--shadow); border: 1px solid var(--border); position: relative; transition: transform 0.25s, box-shadow 0.25s; display: flex; flex-direction: column; }
+.p6-plan:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.p6-plan.pop { border: 2px solid var(--accent); box-shadow: 0 12px 48px rgba(232,99,74,0.18), 0 28px 64px rgba(0,0,0,0.08); background: linear-gradient(180deg, rgba(232,99,74,0.05) 0%, rgba(232,99,74,0.015) 30%, #fff 70%); padding: 36px 30px 34px; }
+.p6-plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--accent), #f08060); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 18px; border-radius: 999px; white-space: nowrap; box-shadow: 0 4px 14px rgba(232,99,74,0.4); }
+.p6-plan-name { font-size: 12px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.p6-plan-price { display: flex; align-items: baseline; gap: 3px; margin-bottom: 4px; }
+.p6-plan-price b { font-family: 'Noto Serif TC', serif; font-size: 46px; font-weight: 900; color: var(--ink); letter-spacing: -0.02em; }
+.p6-plan.pop .p6-plan-price b { font-size: 54px; color: var(--accent); }
+.p6-plan.pop .p6-plan-name { font-size: 13px; color: var(--accent); }
+.p6-plan-price span { font-size: 13px; color: var(--ink-3); font-weight: 500; }
+.p6-plan-tag { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin-bottom: 20px; font-weight: 400; }
+.p6-plan-div { height: 1px; background: rgba(45,45,58,0.07); margin-bottom: 18px; }
+.p6-plan-feats { display: flex; flex-direction: column; gap: 9px; margin-bottom: 22px; }
+.p6-feat { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: var(--ink-2); line-height: 1.45; font-weight: 400; }
+.p6-feat .ck { width: 18px; height: 18px; border-radius: 5px; background: rgba(61,155,138,0.12); color: var(--accent-2); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+.p6-plan-btn { width: 100%; padding: 13px; border-radius: 12px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; text-align: center; transition: transform 0.2s, box-shadow 0.2s; }
+.p6-plan-btn.primary { background: var(--accent); color: #fff; box-shadow: 0 6px 20px rgba(232,99,74,0.28); }
+.p6-plan-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(232,99,74,0.38); }
+.p6-plan-btn.outline { background: transparent; color: var(--ink); border: 1.5px solid rgba(45,45,58,0.15); }
+.p6-plan-btn.outline:hover { background: rgba(45,45,58,0.04); }
+
+/* Container query — pricing layout adapts to actual container width (any narrow viewport: phone, tablet portrait, resized window) */
+@container (max-width: 760px) {
+  .p6-plans {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+    gap: 14px;
+  }
+  .p6-plan-price {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin-bottom: 12px;
+  }
+  .p6-plan-price b { font-size: 36px; line-height: 1.1; }
+  .p6-plan-price span { font-size: 12px; }
+  .p6-plan.pop .p6-plan-price b { font-size: 42px; }
+  .p6-plan.pop { padding: 32px 26px 30px; }
+}
+
+.p6-note { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); font-weight: 500; margin-top: 4px; }
+.p6-note svg { width: 15px; height: 15px; color: var(--accent-2); flex-shrink: 0; }
+
+/* P7 — FLYWHEEL */
+.p7 { background: var(--bg); overflow: visible; }
+.p7-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 100px 40px; }
+.p7-header { text-align: center; margin-bottom: 0; }
+.p7-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-3); margin-bottom: 12px; }
+.p7-h1 { font-family: 'Noto Serif TC', serif; font-size: 46px; font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+.p7-h1 em { font-style: normal; color: var(--accent); }
+.p7-sub { font-size: 15px; color: var(--ink-2); font-weight: 400; }
+.p7-wheel { position: relative; width: 820px; height: 520px; margin-top: 60px; }
+.p7-wheel-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.p7-node-circle { width: 110px; height: 110px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: 2px solid; position: relative; cursor: default; transition: transform 0.25s; }
+.p7-node-circle::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid; opacity: 0.18; }
+.p7-node-circle::after { content: ''; position: absolute; inset: -14px; border-radius: 50%; border: 1px solid; opacity: 0.08; animation: breathe 3s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{transform:scale(1);opacity:0.08} 50%{transform:scale(1.04);opacity:0.05} }
+.p7-node-circle:hover { transform: scale(1.08); }
+.p7-node-icon { font-size: 26px; }
+.p7-node-sublabel { font-size: 9px; opacity: 0.65; margin-top: 1px; }
+.p7-node-top { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); }
+.p7-node-right { position: absolute; bottom: 75px; right: 148px; }
+.p7-node-left { position: absolute; bottom: 75px; left: 148px; }
+.p7-node-info { position: absolute; text-align: center; max-width: 170px; }
+.p7-node-info.top { bottom: 128px; left: 50%; transform: translateX(-50%); }
+.p7-node-info.left { top: 50%; left: -10px; transform: translateY(-50%); text-align: right; }
+.p7-node-info.right { top: 50%; right: -10px; transform: translateY(-50%); text-align: left; }
+.p7-node-title { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.p7-node-desc { font-size: 11px; color: var(--ink-3); line-height: 1.5; font-weight: 400; }
+.p7-node-stat { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; margin-top: 6px; white-space: nowrap; }
+.p7-node-label { font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+.s-coral { background: rgba(232,99,74,0.1); color: var(--accent); }
+.s-teal { background: rgba(61,155,138,0.1); color: var(--accent-2); }
+.s-purple { background: rgba(139,107,207,0.1); color: var(--accent-3); }
+.p7-center-hub { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 120px; height: 120px; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid rgba(232,99,74,0.2); box-shadow: 0 6px 40px rgba(232,99,74,0.18), 0 16px 60px rgba(0,0,0,0.10); z-index: 10; }
+.p7-hub-logo { font-family: 'Noto Serif TC', serif; font-size: 22px; font-weight: 900; color: var(--ink); letter-spacing: -1px; }
+.p7-hub-sub { font-size: 8px; font-weight: 700; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+.p7-trust { display: flex; align-items: center; gap: 24px; margin-top: 12px; }
+.p7-trust-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-2); font-weight: 600; }
+.p7-trust-dot { width: 8px; height: 8px; border-radius: 50%; }
+.p7-trust-dot.coral { background: var(--accent); }
+.p7-trust-dot.teal { background: var(--accent-2); }
+
+/* P9 — Ecosystem flywheel (three-layer stack + orbit) */
+.p9-main { display: flex; align-items: center; justify-content: center; gap: 56px; margin-top: 10px; }
+.p9-eco { position: relative; width: 700px; height: 600px; flex-shrink: 0; }
+.p9-side { width: 388px; display: flex; flex-direction: column; gap: 20px; }
+.p9-side-h { font-family: 'Noto Serif TC', serif; font-size: 21px; font-weight: 800; color: var(--ink); margin-bottom: 2px; }
+.p9-side-item { display: flex; gap: 14px; }
+.p9-side-bar { width: 4px; border-radius: 4px; flex-shrink: 0; }
+.p9-side-bar.c-coral  { background: var(--accent); }
+.p9-side-bar.c-purple { background: var(--accent-3); }
+.p9-side-bar.c-teal   { background: var(--accent-2); }
+.p9-side-t { font-size: 15px; font-weight: 800; color: var(--ink); margin-bottom: 5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.p9-side-d { font-size: 12.5px; color: var(--ink-2); line-height: 1.65; }
+.p9-orbit { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: visible; }
+.p9-orbit-line { animation: p9flow 22s linear infinite; }
+@keyframes p9flow { to { stroke-dashoffset: -600; } }
+.p9-echo { transform-box: fill-box; transform-origin: center; opacity: 0; animation: p9grow 3.6s ease-out infinite; }
+.p9-echo-2 { animation-delay: 1.8s; }
+@keyframes p9grow { 0% { transform: scale(0.9); opacity: 0.5; } 100% { transform: scale(1.16); opacity: 0; } }
+.p9-stack { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+
+/* === Plan A v3: three discs + three connecting lines rotate together (network flywheel) === */
+.p9-spin-net {
+  position: absolute; inset: 0;
+  transform-origin: 50% 50%;
+  animation: p9-net-spin 28s linear infinite;
+}
+.p9-connections { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: visible; }
+.p9-connections line { animation: p9-conn-flow 2.6s linear infinite; }
+.p9-connections line:nth-child(2) { animation-delay: 0.9s; }
+.p9-connections line:nth-child(3) { animation-delay: 1.7s; }
+@keyframes p9-net-spin     { to { transform: rotate(360deg);  } }
+@keyframes p9-net-spin-rev { to { transform: rotate(-360deg); } }
+@keyframes p9-conn-flow    { to { stroke-dashoffset: -90; } }
+
+.p9-disc-col { position: absolute; width: 112px; display: flex; flex-direction: column; align-items: center; gap: 4px; pointer-events: auto; z-index: 2; }
+.p9-disc-col.pos-top { top: 69px;  left: 50%; transform: translateX(-50%); }
+.p9-disc-col.pos-bl  { top: 332px; left: 142px; }
+.p9-disc-col.pos-br  { top: 332px; left: 446px; }
+.p9-disc { position: relative; width: 112px; height: 112px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.p9-disc-orbit {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px dashed var(--c);
+  box-shadow: 0 0 0 6px rgba(255,255,255,0.45), 0 12px 36px rgba(0,0,0,0.10);
+  animation: p9disc-spin var(--spin-out) linear infinite;
+}
+.p9-disc-orbit::before {
+  content: ''; position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--c-solid); box-shadow: 0 0 10px var(--c-glow), 0 0 2px #fff inset;
+}
+.p9-disc-core {
+  position: absolute; inset: 18px; border-radius: 50%;
+  background:
+    conic-gradient(from 0deg, rgba(255,255,255,0.95) 0deg, rgba(255,255,255,0.55) 90deg, rgba(255,255,255,0.95) 180deg, rgba(255,255,255,0.55) 270deg, rgba(255,255,255,0.95) 360deg),
+    rgba(255,255,255,0.82);
+  border: 1.5px solid rgba(255,255,255,0.92);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.05), 0 4px 14px rgba(0,0,0,0.06);
+  animation: p9disc-spin-rev var(--spin-in) linear infinite;
+}
+.p9-disc-core::after {
+  content: ''; position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%; background: var(--c-solid); opacity: 0.85;
+}
+.p9-disc .p9-ic {
+  position: relative; z-index: 2; width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Three disc colors + three rotation speeds (alternating direction) */
+.p9-disc.l-app   { --c: rgba(61,155,138,0.55);  --c-solid: #3D9B8A; --c-glow: rgba(61,155,138,0.7);  --spin-out:  9s; --spin-in: 6s; }
+.p9-disc.l-token { --c: rgba(139,107,207,0.55); --c-solid: #8B6BCF; --c-glow: rgba(139,107,207,0.7); --spin-out: 11s; --spin-in: 7s; }
+.p9-disc.l-power { --c: rgba(232,99,74,0.55);   --c-solid: #E8634A; --c-glow: rgba(232,99,74,0.7);   --spin-out:  8s; --spin-in: 5s; }
+
+/* Disc-only hover lift — keeps the original p9lift spirit (only animates box-shadow, doesn't fight spin for transform) */
+.p9-disc-orbit { animation: p9disc-spin var(--spin-out) linear infinite, p9disc-lift 4.6s ease-in-out infinite; }
+.p9-disc.l-power .p9-disc-orbit { animation-delay: 0s, 0s; }
+.p9-disc.l-token .p9-disc-orbit { animation-delay: 0s, 0.55s; }
+.p9-disc.l-app   .p9-disc-orbit { animation-delay: 0s, 1.1s; }
+
+@keyframes p9disc-spin     { to { transform: rotate(360deg);  } }
+@keyframes p9disc-spin-rev { to { transform: rotate(-360deg); } }
+@keyframes p9disc-lift {
+  0%,30%,100% { box-shadow: 0 0 0 6px rgba(255,255,255,0.45), 0 12px 36px rgba(0,0,0,0.10); }
+  7%          { box-shadow: 0 0 0 6px rgba(255,255,255,0.45), 0 0 0 3px var(--c), 0 0 36px 6px var(--c-glow), 0 12px 36px rgba(0,0,0,0.10); }
+  18%         { box-shadow: 0 0 0 6px rgba(255,255,255,0.45), 0 0 0 2px var(--c), 0 0 22px 4px var(--c-glow), 0 12px 36px rgba(0,0,0,0.10); }
+}
+
+.p9-disc-text {
+  display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center;
+  /* Counter-rotate to offset .p9-spin-net's overall rotation — title stays horizontal */
+  animation: p9-net-spin-rev 28s linear infinite;
+}
+.p9-disc-text .p9-title { font-size: 13.5px; white-space: nowrap; }
+
+/* Text label (below the disc, does not rotate) */
+.p9-title { font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 800; color: var(--ink); line-height: 1.2; }
+.p9-tag { font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.p9-tag.c-teal   { background: rgba(61,155,138,0.12); color: var(--accent-2); }
+.p9-tag.c-purple { background: rgba(139,107,207,0.12); color: var(--accent-3); }
+.p9-tag.c-coral  { background: rgba(232,99,74,0.12); color: var(--accent); }
+.p9-chip { display: inline-block; font-size: 11.5px; font-weight: 800; padding: 5px 13px; border-radius: 999px; white-space: nowrap; }
+.p9-chip.c-teal   { background: rgba(61,155,138,0.1); color: var(--accent-2); }
+.p9-chip.c-purple { background: rgba(139,107,207,0.1); color: var(--accent-3); }
+.p9-chip.c-coral  { background: rgba(232,99,74,0.1); color: var(--accent); }
+.p9-flow { position: absolute; z-index: 2; font-size: 11.5px; font-weight: 700; color: var(--ink-2); background: rgba(255,255,255,0.92); border: 1px solid rgba(45,45,58,0.08); padding: 5px 12px; border-radius: 999px; box-shadow: 0 4px 16px rgba(0,0,0,0.05); white-space: nowrap; }
+.p9-flow.f-right { right: -20px; top: 56%; transform: translateY(-50%); }
+.p9-flow.f-left-up { left: -20px; top: 32%; }
+.p9-flow.f-left-dn { left: -20px; top: 70%; }
+.p9-grow-cap { position: absolute; z-index: 2; left: 50%; bottom: -8px; transform: translateX(-50%); display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: var(--accent); background: rgba(232,99,74,0.08); border: 1px solid rgba(232,99,74,0.22); padding: 6px 16px; border-radius: 999px; }
+.p9-aurora { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+.p9-blob { position: absolute; border-radius: 50%; filter: blur(64px); }
+.p9-blob.b1 { width: 640px; height: 640px; background: radial-gradient(circle, rgba(232,99,74,0.18), transparent 70%); top: 6%; left: 14%; animation: p9drift1 19s ease-in-out infinite; }
+.p9-blob.b2 { width: 560px; height: 560px; background: radial-gradient(circle, rgba(61,155,138,0.16), transparent 70%); top: 26%; right: 10%; animation: p9drift2 23s ease-in-out infinite; }
+.p9-blob.b3 { width: 520px; height: 520px; background: radial-gradient(circle, rgba(139,107,207,0.15), transparent 70%); bottom: 2%; left: 40%; animation: p9drift3 21s ease-in-out infinite; }
+@keyframes p9drift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(44px,-30px)} }
+@keyframes p9drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-38px,28px)} }
+@keyframes p9drift3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(26px,-36px)} }
+
+/* P8 — CTA */
+.p8 { background: var(--bg); }
+.p8-deco { position: absolute; border-radius: 50%; pointer-events: none; }
+.p8-deco-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,99,74,0.06) 0%, transparent 70%); top: -200px; right: -200px; }
+.p8-deco-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(61,155,138,0.05) 0%, transparent 70%); bottom: -200px; left: -200px; }
+.p8-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; }
+.p8-main { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+.p8-qr-row { display: flex; align-items: center; gap: 48px; }
+.p8-qr-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.p8-qr-item svg { border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.p8-qr-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+.p8-qr-sub { font-size: 11px; color: var(--ink-3); font-weight: 500; }
+.p8-cta-col { display: flex; flex-direction: column; gap: 20px; align-items: center; }
+.p8-blocks { display: flex; flex-direction: column; gap: 24px; align-items: center; }
+.p8-block { display: flex; flex-direction: column; align-items: center; gap: 12px; background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.8); border-radius: 20px; padding: 24px 32px; }
+.p8-block svg { border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.12); }
+.p8-block-info { text-align: center; }
+.p8-block-label { font-size: 15px; font-weight: 700; color: var(--ink); }
+.p8-block-sub { font-size: 12px; color: var(--ink-3); font-weight: 500; margin-top: 2px; }
+.p8-h1 { font-family: 'Noto Serif TC', serif; font-size: 76px; font-weight: 900; color: var(--ink); line-height: 1.04; letter-spacing: -0.025em; text-align: center; margin-bottom: 8px; }
+.p8-h1 em { font-style: normal; color: var(--accent); }
+.p8-sub { font-size: 20px; color: var(--ink-2); font-weight: 400; text-align: center; max-width: 500px; line-height: 1.65; }
+.p8-cta { display: flex; gap: 14px; }
+.p8-btn-primary { display: inline-flex; align-items: center; gap: 12px; background: var(--accent); color: #fff; font-size: 16px; font-weight: 700; padding: 18px 38px; border-radius: 999px; text-decoration: none; box-shadow: 0 8px 32px rgba(232,99,74,0.3); transition: transform 0.2s, box-shadow 0.2s; }
+.p8-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 48px rgba(232,99,74,0.42); }
+.p8-btn-ghost { display: inline-flex; align-items: center; gap: 10px; color: var(--ink-2); font-size: 16px; font-weight: 600; padding: 18px 30px; border-radius: 999px; border: 1.5px solid rgba(45,45,58,0.12); text-decoration: none; transition: background 0.2s; }
+.p8-btn-ghost:hover { background: rgba(45,45,58,0.04); }
+.p8-trust { display: flex; align-items: center; gap: 24px; }
+.p8-trust-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--ink-3); font-weight: 600; }
+.p8-trust-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-2); }
+
+/* P2 / P3 — PAIN POINTS (SME) */
+.pain-page { background: var(--bg); }
+.pain-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 100px 60px; gap: 24px; }
+.pain-header { text-align: center; max-width: 900px; }
+.pain-kicker { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(139,107,207,0.1); color: var(--tertiary-accent); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
+.pain-h1 { font-family: 'Noto Serif TC', serif; font-size: 52px; font-weight: 900; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 12px; }
+.pain-intro { font-size: 15px; color: var(--ink-3); font-style: italic; font-weight: 400; line-height: 1.5; }
+.pain-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; max-width: 1100px; }
+.pain-card { background: #fff; border-radius: var(--r); padding: 26px 24px; box-shadow: var(--shadow); border: 1px solid var(--border); display: flex; flex-direction: column; min-height: 240px; }
+.pain-card-no { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+.pain-card-icon { width: 46px; height: 46px; border-radius: 13px; background: rgba(232,99,74,0.08); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px; color: var(--accent); }
+.pain-card-icon.is-2 { background: rgba(61,155,138,0.08); color: var(--accent-2); }
+.pain-card-icon.is-3 { background: rgba(139,107,207,0.08); color: var(--tertiary-accent); }
+.pain-card h3 { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 10px; line-height: 1.3; }
+.pain-card p { font-size: 13.5px; color: var(--ink-2); line-height: 1.7; font-weight: 400; flex: 1; margin-bottom: 14px; }
+.pain-tag { display: inline-block; padding: 5px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 700; align-self: flex-start; }
+.pain-tag.is-1 { background: rgba(232,99,74,0.1); color: var(--accent); }
+.pain-tag.is-2 { background: rgba(61,155,138,0.1); color: var(--secondary-accent); }
+.pain-tag.is-3 { background: rgba(139,107,207,0.1); color: var(--tertiary-accent); }
+.pain-footer { text-align: center; font-size: 14px; color: var(--ink-3); font-weight: 500; }
+.pain-footer strong { color: var(--accent); font-weight: 700; }
+
+/* Landscape prompt — top banner shown only on phone portrait.
+   Pure CSS, no JS, no fullscreen overlay, no backdrop-filter.
+   Sits at the top, doesn't block canvas scaling or gestures. */
+.orient-hint {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(45, 45, 58, 0.95);
+  color: #fff;
+  padding: 8px 14px;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+.orient-hint svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  animation: phoneRotate 2.4s ease-in-out infinite;
+}
+@keyframes phoneRotate {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(90deg); }
+}
+@media (orientation: portrait) and (max-width: 500px) {
+  .orient-hint { display: flex; }
+}
+
+/* Adaptive scaling handled entirely by JS (see resize() below).
+   Pattern copied from deck-new.html which works reliably on iOS Safari:
+   the 1920×1080 canvas is uniformly scaled to fit any viewport, so the
+   desktop layout (multi-column grids, absolute positioning) renders
+   correctly on every device. Users navigate via .ctrl buttons below. */
+
+/* Controls */
+.ctrl { position: fixed; bottom: 12px; right: 16px; background: rgba(45,45,58,0.55); backdrop-filter: blur(8px); padding: 6px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px; z-index: 100; border: 1px solid rgba(255,255,255,0.08); }
+.ctrl button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); color: #fff; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; font-weight: 700; transition: background 0.15s; }
+.ctrl button:hover { background: rgba(255,255,255,0.18); }
+.ctrl .lbl { color: rgba(255,255,255,0.3); font-size: 9px; letter-spacing: 0.05em; }
+</style>
+</head>
+<body>
+
+<div class="orient-hint" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="6" y="2" width="12" height="20" rx="2" ry="2"></rect>
+    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+  </svg>
+  <span>Please rotate your phone to landscape for the best experience</span>
+</div>
+
+<div class="stage">
+<div class="canvas" id="cv">
+
+<!-- ══════════════════════════════════════════
+     P1: COVER — AI Transformation pitch for SMBs
+══════════════════════════════════════════ -->
+<div class="page p1 on" id="p0">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+    <div class="logo-badge">SMB · AI Workforce Platform</div>
+  </div>
+  <div class="p1-center-col">
+    <div class="p1-eyebrow">
+      <span class="p1-eyebrow-dot"></span>
+      <span class="p1-eyebrow-text">Built for small teams</span>
+    </div>
+    <h1 class="p1-h1">AI Transformation,<br><em>Built for SMBs</em></h1>
+    <p class="p1-desc">
+      Hand the repetitive work to AI. Keep the people for the decisions.
+    </p>
+    <div class="p1-tags">
+      <span class="tag tag-red"><span class="tag-dot"></span>24/7</span>
+      <span class="tag tag-teal"><span class="tag-dot"></span>You approve</span>
+      <span class="tag tag-purple"><span class="tag-dot"></span>Cross-department</span>
+      <span class="tag tag-red"><span class="tag-dot"></span>Data stays in HK</span>
+    </div>
+  </div>
+  <div class="pnum">01 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P2: PAIN POINTS — SMB pain points (replaces the original P1 timeline)
+══════════════════════════════════════════ -->
+<div class="page pain-page" id="p1-pain">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="pain-center">
+    <div class="pain-header">
+      <div class="pain-kicker">A Day in the Life</div>
+      <h1 class="pain-h1">Working past midnight,<br>and still falling behind?</h1>
+      <p class="pain-intro">"Take a 15-person trading company &mdash; out of an 8-hour day, 6 hours are spent on repetitive paperwork."</p>
+    </div>
+    <div class="pain-cards">
+      <div class="pain-card">
+        <div class="pain-card-no">Act 1</div>
+        <div class="pain-card-icon">💬</div>
+        <h3>Messages you can't keep up with</h3>
+        <p>WhatsApp, email, web forms&hellip; customers reach out around the clock. You can't. Miss one message and you might miss a deal.</p>
+        <span class="pain-tag is-1">Slow Response</span>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-no">Act 2</div>
+        <div class="pain-card-icon is-2">👥</div>
+        <h3>Hiring is expensive &mdash; keeping them, harder</h3>
+        <p>An admin hire starts at HK$15,000 &mdash; plus MPF, annual leave, sick days. You can't afford one in the slow season, and you can't go without one in peak season.</p>
+        <span class="pain-tag is-2">High Cost</span>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-no">Act 3</div>
+        <div class="pain-card-icon is-3">📋</div>
+        <h3>The founder becomes the fire brigade</h3>
+        <p>Writing copy, reconciling books, scheduling, redlining contracts&hellip; the time you should be spending on strategy gets eaten by the small stuff.</p>
+        <span class="pain-tag is-3">Wrong Priorities</span>
+      </div>
+    </div>
+    <p class="pain-footer">Stop doing it all yourself. Hire a <strong>team of AI employees</strong> that works 24/7.</p>
+  </div>
+  <div class="pnum">02 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P3: PAIN POINTS (2/2) — Tools tried, tools failed
+══════════════════════════════════════════ -->
+<div class="page pain-page" id="p1-tool">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="pain-center">
+    <div class="pain-header">
+      <div class="pain-kicker" style="background: rgba(232,99,74,0.1); color: var(--accent);">Tools Tried, Tools Failed</div>
+      <h1 class="pain-h1">But the tools you tried<br>just didn't work</h1>
+    </div>
+    <div class="pain-cards">
+      <div class="pain-card">
+        <div class="pain-card-no">Hurdle 1</div>
+        <div class="pain-card-icon">📱</div>
+        <h3>Hard to choose</h3>
+        <p>Dozens of AI tools on the market. Overlapping features, messy pricing, no unified platform. You don't even know where to start.</p>
+        <span class="pain-tag is-1">Decision Fatigue</span>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-no">Hurdle 2</div>
+        <div class="pain-card-icon is-2">🔒</div>
+        <h3>Hard to trust</h3>
+        <p>The moment a customer double-checks AI output, the seams show. No one is accountable for errors, data security is shaky &mdash; companies can't deploy at scale.</p>
+        <span class="pain-tag is-2">Trust Gap</span>
+      </div>
+      <div class="pain-card">
+        <div class="pain-card-no">Hurdle 3</div>
+        <div class="pain-card-icon is-3">🧩</div>
+        <h3>Hard to scale</h3>
+        <p>Tools scattered across platforms, data doesn't sync, employees give up before they even learn them. After a few false starts the whole thing stalls.</p>
+        <span class="pain-tag is-3">Integration Failure</span>
+      </div>
+    </div>
+    <p class="pain-footer">Until these three gaps close, <strong>AI never makes it past the pilot</strong>.</p>
+  </div>
+  <div class="pnum">03 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P4: MARKET OPPORTUNITY — HK + APAC SMB AI demand exploding
+══════════════════════════════════════════ -->
+<div class="page mkt-page" id="p-market">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="mkt-center">
+    <div class="mkt-header">
+      <div class="mkt-kicker">Market Opportunity</div>
+      <h1 class="mkt-h1">Hong Kong + APAC SMBs<br><em>AI demand is exploding</em></h1>
+      <p class="mkt-sub">Your pain isn't unique &mdash; <strong>12,000+ mid-sized SMBs in Hong Kong</strong>, plus a broader market of <strong>~360,000 SMBs</strong>, are all facing the same problem.</p>
+    </div>
+    <div class="mkt-body">
+      <div class="mkt-stats">
+        <div class="mkt-stat">
+          <div class="mkt-stat-num is-teal"><span class="counter" data-count="12000" data-suffix="+">12,000+</span></div>
+          <div class="mkt-stat-label">Mid-sized SMBs in HK (20-99 staff)</div>
+          <div class="mkt-stat-meta">Highest-paying target segment · 2024</div>
+        </div>
+        <div class="mkt-stat">
+          <div class="mkt-stat-num is-coral"><span class="counter" data-prefix="~" data-count="360000">~360,000</span></div>
+          <div class="mkt-stat-label">Total SMBs in Hong Kong</div>
+          <div class="mkt-stat-meta">Total addressable market · 2024</div>
+        </div>
+        <div class="mkt-stat">
+          <div class="mkt-stat-num is-coral"><span class="counter" data-prefix="HK$" data-count="17" data-suffix="K-20K">HK$17K-20K</span></div>
+          <div class="mkt-stat-label">Typical clerk monthly salary</div>
+          <div class="mkt-stat-meta">AI price-performance baseline</div>
+        </div>
+        <div class="mkt-stat">
+          <div class="mkt-stat-num is-purple"><span class="counter" data-prefix="~" data-count="5" data-suffix="-7%">~5-7%</span></div>
+          <div class="mkt-stat-label">Emplix cost vs. an equivalent full-time hire</div>
+          <div class="mkt-stat-meta">HK$990 &divide; monthly salary</div>
+        </div>
+      </div>
+      <div class="mkt-right">
+        <div class="mkt-block">
+          <div class="mkt-block-label">Target Segments</div>
+          <div class="mkt-chips">
+            <span class="mkt-chip is-teal">Trading companies</span>
+            <span class="mkt-chip is-teal">E-commerce</span>
+            <span class="mkt-chip is-teal">Service businesses</span>
+            <span class="mkt-chip is-teal">Clinics</span>
+            <span class="mkt-chip is-teal">Schools</span>
+            <span class="mkt-chip is-teal">Finance / Admin teams</span>
+          </div>
+        </div>
+        <div class="mkt-block">
+          <div class="mkt-block-label">Entry Points</div>
+          <p class="mkt-block-text"><strong>Repetitive admin</strong>, <strong>formatted customer replies</strong>, <strong>frequent sales quotes</strong> &mdash; these three scenarios show ROI fastest and have the strongest willingness to pay.</p>
+          <div class="mkt-chips">
+            <span class="mkt-chip is-purple">Admin</span>
+            <span class="mkt-chip is-purple">Customer Support</span>
+            <span class="mkt-chip is-purple">Sales</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pnum">04 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P5: SOLUTION INTRO — Introducing the solution (formerly P4)
+══════════════════════════════════════════ -->
+<div class="page p2-solution" id="p1">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="p2-sol-center">
+    <h1 class="p2-sol-h1">What you need is an<br><em>AI transformation plan built for SMBs</em></h1>
+    <p class="p2-sol-tagline">Not a chatbot. Not a tool. AI employees with names and memory, that take instructions from you.<br>You approve, AI executes &mdash; every action passes through you, never acts on its own.</p>
+    <div class="p2-sol-cards">
+      <div class="p2-sol-card">
+        <div class="p2-sol-icon" style="background: rgba(232,99,74,0.1)">👤</div>
+        <h3>A dedicated AI employee for every department</h3>
+        <p>Admin, customer support, sales, marketing, accounting &mdash; five roles covering the 80% of repetitive work in your day</p>
+      </div>
+      <div class="p2-sol-card">
+        <div class="p2-sol-icon" style="background: rgba(61,155,138,0.1)">🔒</div>
+        <h3>You approve, AI executes &mdash; every step is traceable</h3>
+        <p>Every outbound action goes through your approval. Complete audit logs stay on your server &mdash; your data never leaves.</p>
+      </div>
+      <div class="p2-sol-card">
+        <div class="p2-sol-icon" style="background: rgba(139,107,207,0.1)">🔌</div>
+        <h3>You don't have to replace what already works</h3>
+        <p>Sits alongside your ERP, CRM, WhatsApp, email, and cloud drive &mdash; no downtime, no reinstall.</p>
+      </div>
+    </div>
+    </div>
+  <div class="pnum">05 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P3: 5 steps to set up your office (first day)
+══════════════════════════════════════════ -->
+<div class="page p3-demo" id="p3">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+    <div class="logo-badge">New · Floor View · Day 1</div>
+  </div>
+  <div class="p3-demo-center">
+    <div class="p3-demo-header">
+      <div class="p3-demo-kicker">Day 1 · 5 steps to set up your office</div>
+      <h1 class="p3-demo-h1">Set up your office in 5 steps</h1>
+      <p class="p3-demo-sub">Starting from a clean floor &mdash; no history, no pending approvals. The system will suggest your first employee.</p>
+    </div>
+    <div class="p3-demo-body">
+      <div class="p3-demo-stage">
+        <div class="p3-stage-frame active" data-stage="1"><svg viewBox="70 55 460 290" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+  <defs>
+  <linearGradient id="s1-spark" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5aa2ff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+  <linearGradient id="s4-approve" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#12a877"/></linearGradient>
+  <linearGradient id="s5-toggle" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+  <linearGradient id="s3-file" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffd494"/><stop offset="100%" stop-color="#ffb454"/></linearGradient>
+  <linearGradient id="s3-file2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a8d8ff"/><stop offset="100%" stop-color="#85b7eb"/></linearGradient>
+  <linearGradient id="s3-file3" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffd9e3"/><stop offset="100%" stop-color="#ed93b1"/></linearGradient>
+  <radialGradient id="s5-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#12a877" stop-opacity="0.22"/><stop offset="100%" stop-color="#12a877" stop-opacity="0"/></radialGradient>
+</defs>
+  <!-- backdrop (matches demo rgba(20,28,45,0.46)) -->
+    <!-- modal card (460 × 290, demo width) -->
+  <g transform="translate(70, 55)">
+    <rect width="460" height="290" rx="14" fill="#fff"/>
+    <!-- header (matches demo .onboarding-header) -->
+    <rect width="460" height="62" rx="14" fill="#fff"/>
+    <rect y="48" width="460" height="14" fill="#fff"/>
+    <line x1="0" y1="62" x2="460" y2="62" stroke="#e5e7eb"/>
+    <!-- sparkle badge (demo gradient linear-gradient(135deg,#5aa2ff,#6438e8)) -->
+    <rect x="18" y="14" width="34" height="34" rx="10" fill="url(#s1-spark)"/>
+    <g transform="translate(28, 22)" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none">
+      <path d="M7 0 L7 14 M0 7 L14 7"/>
+      <path d="M3 3 L11 11 M11 3 L3 11" stroke-width="1.4" opacity="0.7"/>
+    </g>
+    <text x="62" y="29" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#1b2538">Get started with Emplix</text>
+    <text x="62" y="46" font-family="-apple-system, sans-serif" font-size="11.5" fill="#9aa3b5">Static demo · no real accounts, no charges</text>
+    <text x="442" y="36" font-family="-apple-system, sans-serif" font-size="18" fill="#9aa3b5" text-anchor="middle">×</text>
+    <!-- body (matches demo .onboarding-body) -->
+    <g transform="translate(0, 62)">
+      <!-- progress chip -->
+      <g transform="translate(22, 18)">
+        <rect width="60" height="20" rx="10" fill="#e8f1ff"/>
+        <text x="30" y="14" font-family="-apple-system, sans-serif" font-size="10.5" font-weight="700" fill="#2f7fe0" text-anchor="middle">STEP 1/5</text>
+      </g>
+      <!-- Q1: Business type -->
+      <text x="22" y="68" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#9aa3b5" letter-spacing="0.08em">Q1 · Business type</text>
+      <g transform="translate(22, 76)">
+        <rect width="416" height="34" rx="9" fill="#f4f6fa"/>
+        <rect x="3" y="3" width="136" height="28" rx="7" fill="#fff" stroke="#5aa2ff" stroke-width="1.5"/>
+        <text x="71" y="21" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1b2538" text-anchor="middle">Trading companies</text>
+        <text x="212" y="21" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#5a6379" text-anchor="middle">Retail</text>
+        <text x="349" y="21" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#5a6379" text-anchor="middle">Services / Consulting</text>
+      </g>
+      <!-- Q2: Team size -->
+      <text x="22" y="132" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#9aa3b5" letter-spacing="0.08em">Q2 · Team size</text>
+      <g transform="translate(22, 140)">
+        <rect width="416" height="34" rx="9" fill="#f4f6fa"/>
+        <rect x="3" y="3" width="136" height="28" rx="7" fill="#fff" stroke="#5aa2ff" stroke-width="1.5"/>
+        <text x="71" y="21" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#1b2538" text-anchor="middle">1 person</text>
+        <text x="212" y="21" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#5a6379" text-anchor="middle">2-3 people</text>
+        <text x="349" y="21" font-family="-apple-system, sans-serif" font-size="12" font-weight="600" fill="#5a6379" text-anchor="middle">3+ people</text>
+      </g>
+      <!-- primary CTA (demo button) -->
+      <g transform="translate(22, 184)">
+        <rect width="416" height="36" rx="18" fill="#5aa2ff"/>
+        <text x="22" y="23" font-family="-apple-system, sans-serif" font-size="12.5" font-weight="700" fill="#fff">Set up an empty office for you</text>
+        <path d="M 376 18 L 388 18 M 384 14 L 388 18 L 384 22" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg></div>
+        <div class="p3-stage-frame" data-stage="2"><svg viewBox="0 0 600 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s-spark" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5aa2ff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+    <linearGradient id="s-clerk" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+    <linearGradient id="s-sales" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b6bff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+    <linearGradient id="s-toggle" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+    <linearGradient id="s-amber" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffd494"/><stop offset="100%" stop-color="#ffb454"/></linearGradient>
+    <linearGradient id="s-blue" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a8d8ff"/><stop offset="100%" stop-color="#85b7eb"/></linearGradient>
+  </defs>
+    <!-- panel -->
+  <rect x="30" y="15" width="540" height="370" rx="14" fill="#fff"/>
+  
+  <!-- header -->
+  <rect x="30" y="15" width="540" height="60" rx="14" fill="#fff"/>
+  <rect x="30" y="61" width="540" height="14" fill="#fff"/>
+  <line x1="30" y1="75" x2="570" y2="75" stroke="#e5e7eb"/>
+  <rect x="48" y="29" width="32" height="32" rx="9" fill="url(#s-clerk)"/>
+  <text x="64" y="50" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">AD</text>
+  <text x="92" y="44" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1b2538">System suggests your first employee</text>
+  <text x="92" y="61" font-family="-apple-system, sans-serif" font-size="11" fill="#9aa3b5">Trading company → Admin Assistant</text>
+  <text x="552" y="49" font-family="-apple-system, sans-serif" font-size="16" fill="#9aa3b5" text-anchor="middle">×</text>
+
+  <!-- body content -->
+  <g transform="translate(30, 75)">
+    <!-- employee avatar (large, centered) -->
+    <g transform="translate(225, 18)">
+      <circle cx="45" cy="45" r="42" fill="url(#s-clerk)"/>
+      <circle cx="45" cy="38" r="14" fill="#b98a62"/>
+      <path d="M 31 30 Q 45 22 59 30 L 58 38 L 32 38 Z" fill="#2c2622"/>
+      <path d="M 25 75 Q 45 56 65 75 L 65 90 L 25 90 Z" fill="#5f7373"/>
+      <circle cx="80" cy="20" r="8" fill="#12a877" stroke="#fff" stroke-width="2"/>
+      <path d="M 76 20 L 79 23 L 84 17" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- employee name + role -->
+    <text x="270" y="135" font-family="Georgia, serif" font-size="20" font-weight="700" fill="#1b2538" text-anchor="middle">Admin Assistant</text>
+    <text x="270" y="156" font-family="-apple-system, sans-serif" font-size="12" fill="#5a6379" text-anchor="middle">Admin Assistant · Clerk</text>
+
+    <!-- 3 reasons (why clerk) -->
+    <g transform="translate(48, 178)">
+      <circle cx="10" cy="10" r="9" fill="#12a877" fill-opacity="0.15"/>
+      <path d="M 6 10 L 9 13 L 14 7" stroke="#11a079" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="14" font-family="-apple-system, sans-serif" font-size="11.5" fill="#1b2538">Handle price-list queries · follow up on quotes</text>
+    </g>
+    <g transform="translate(48, 204)">
+      <circle cx="10" cy="10" r="9" fill="#12a877" fill-opacity="0.15"/>
+      <path d="M 6 10 L 9 13 L 14 7" stroke="#11a079" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="14" font-family="-apple-system, sans-serif" font-size="11.5" fill="#1b2538">File-driven · pauses when data is missing</text>
+    </g>
+    <g transform="translate(48, 230)">
+      <circle cx="10" cy="10" r="9" fill="#12a877" fill-opacity="0.15"/>
+      <path d="M 6 10 L 9 13 L 14 7" stroke="#11a079" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="28" y="14" font-family="-apple-system, sans-serif" font-size="11.5" fill="#1b2538">You can switch to another role anytime</text>
+    </g>
+  </g>
+
+</svg></div>
+        <div class="p3-stage-frame" data-stage="3"><svg viewBox="0 0 600 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s-spark" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5aa2ff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+    <linearGradient id="s-clerk" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+    <linearGradient id="s-sales" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b6bff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+    <linearGradient id="s-toggle" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+    <linearGradient id="s-amber" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffd494"/><stop offset="100%" stop-color="#ffb454"/></linearGradient>
+    <linearGradient id="s-blue" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a8d8ff"/><stop offset="100%" stop-color="#85b7eb"/></linearGradient>
+  </defs>
+    <!-- panel -->
+  <rect x="30" y="15" width="540" height="370" rx="14" fill="#fff"/>
+  
+  <!-- header -->
+  <rect x="30" y="15" width="540" height="60" rx="14" fill="#fff"/>
+  <rect x="30" y="61" width="540" height="14" fill="#fff"/>
+  <line x1="30" y1="75" x2="570" y2="75" stroke="#e5e7eb"/>
+  <rect x="48" y="29" width="32" height="32" rx="9" fill="url(#s-amber)"/>
+  <text x="64" y="50" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">PDF</text>
+  <text x="92" y="44" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1b2538">Add 3 to 5 documents</text>
+  <text x="92" y="61" font-family="-apple-system, sans-serif" font-size="11" fill="#9aa3b5">The employee will cite exactly which file it used</text>
+  <text x="552" y="49" font-family="-apple-system, sans-serif" font-size="16" fill="#9aa3b5" text-anchor="middle">×</text>
+
+  <!-- body content -->
+  <g transform="translate(30, 75)">
+    <!-- File row 1: price-list.pdf (joined, amber) -->
+    <g transform="translate(20, 16)">
+      <rect width="500" height="50" rx="10" fill="#fff5e6" stroke="#ffb454" stroke-width="1.5"/>
+      <rect x="14" y="11" width="28" height="28" rx="6" fill="url(#s-amber)"/>
+      <rect x="20" y="16" width="16" height="2" fill="#fff" opacity="0.7"/>
+      <rect x="20" y="20" width="16" height="2" fill="#fff" opacity="0.7"/>
+      <rect x="20" y="24" width="16" height="2" fill="#fff" opacity="0.7"/>
+      <text x="54" y="24" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#1b2538">Price List</text>
+      <text x="54" y="38" font-family="-apple-system, sans-serif" font-size="10.5" fill="#9aa3b5">price-list.pdf · 2.4 MB · Trading Co. Q4</text>
+      <g transform="translate(388, 14)">
+        <rect width="98" height="22" rx="11" fill="#12a877" fill-opacity="0.15"/>
+        <circle cx="14" cy="11" r="4" fill="#12a877"/>
+        <path d="M 11 11 L 13 13 L 17 9" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="60" y="15" font-family="-apple-system, sans-serif" font-size="10.5" font-weight="700" fill="#11a079" text-anchor="middle">Added</text>
+      </g>
+    </g>
+
+    <!-- File row 2: faq.docx (joined, blue) -->
+    <g transform="translate(20, 76)">
+      <rect width="500" height="50" rx="10" fill="#eaf3fc" stroke="#85b7eb" stroke-width="1.5"/>
+      <rect x="14" y="11" width="28" height="28" rx="6" fill="url(#s-blue)"/>
+      <rect x="20" y="16" width="16" height="2" fill="#fff" opacity="0.7"/>
+      <rect x="20" y="20" width="16" height="2" fill="#fff" opacity="0.7"/>
+      <rect x="20" y="24" width="16" height="2" fill="#fff" opacity="0.7"/>
+      <text x="54" y="24" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#1b2538">FAQ</text>
+      <text x="54" y="38" font-family="-apple-system, sans-serif" font-size="10.5" fill="#9aa3b5">faq.docx · 0.8 MB · 12 common questions</text>
+      <g transform="translate(388, 14)">
+        <rect width="98" height="22" rx="11" fill="#12a877" fill-opacity="0.15"/>
+        <circle cx="14" cy="11" r="4" fill="#12a877"/>
+        <path d="M 11 11 L 13 13 L 17 9" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="60" y="15" font-family="-apple-system, sans-serif" font-size="10.5" font-weight="700" fill="#11a079" text-anchor="middle">Added</text>
+      </g>
+    </g>
+
+    <!-- File row 3: contract-template (pending, dashed) -->
+    <g transform="translate(20, 136)">
+      <rect width="500" height="50" rx="10" fill="#fafbfc" stroke="#9aa3b5" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <rect x="14" y="11" width="28" height="28" rx="6" fill="#f4f6fa" stroke="#cbd5e1"/>
+      <path d="M 22 18 L 22 32 M 30 18 L 30 32 M 22 25 L 30 25" stroke="#9aa3b5" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <text x="54" y="24" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#5a6379">Contract template</text>
+      <text x="54" y="38" font-family="-apple-system, sans-serif" font-size="10.5" fill="#9aa3b5">Not added · optional</text>
+      <text x="476" y="29" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#5a6379" text-anchor="end">+ Upload</text>
+    </g>
+  </g>
+
+</svg></div>
+        <div class="p3-stage-frame" data-stage="4"><svg viewBox="0 0 600 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s-spark" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5aa2ff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+    <linearGradient id="s-clerk" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+    <linearGradient id="s-sales" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b6bff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+    <linearGradient id="s-toggle" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+    <linearGradient id="s-amber" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffd494"/><stop offset="100%" stop-color="#ffb454"/></linearGradient>
+    <linearGradient id="s-blue" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a8d8ff"/><stop offset="100%" stop-color="#85b7eb"/></linearGradient>
+  </defs>
+    <!-- panel -->
+  <rect x="30" y="15" width="540" height="370" rx="14" fill="#fff"/>
+
+  <!-- header -->
+  <rect x="30" y="15" width="540" height="60" rx="14" fill="#fff"/>
+  <rect x="30" y="61" width="540" height="14" fill="#fff"/>
+  <line x1="30" y1="75" x2="570" y2="75" stroke="#e5e7eb"/>
+  <rect x="48" y="29" width="32" height="32" rx="9" fill="url(#s-clerk)"/>
+  <text x="64" y="50" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">AD</text>
+  <text x="92" y="44" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1b2538">Try a first task on one document</text>
+  <text x="92" y="61" font-family="-apple-system, sans-serif" font-size="11" fill="#9aa3b5">Admin Assistant AD flags 3 risks &mdash; awaiting your approval</text>
+  <text x="552" y="49" font-family="-apple-system, sans-serif" font-size="16" fill="#9aa3b5" text-anchor="middle">×</text>
+
+  <!-- body content -->
+  <g transform="translate(30, 75)">
+    <!-- chips row -->
+    <g transform="translate(20, 12)">
+      <rect width="74" height="22" rx="11" fill="#12a877" fill-opacity="0.15"/>
+      <text x="37" y="15" font-family="-apple-system, sans-serif" font-size="10" font-weight="700" fill="#11a079" text-anchor="middle">Ready &middot; High</text>
+      <rect x="80" y="0" width="78" height="22" rx="11" fill="#e8a94f" fill-opacity="0.2"/>
+      <text x="119" y="15" font-family="-apple-system, sans-serif" font-size="10" font-weight="700" fill="#d98a12" text-anchor="middle">Risk · Medium</text>
+      <rect x="164" y="0" width="118" height="22" rx="11" fill="#2f7fe0" fill-opacity="0.15"/>
+      <text x="223" y="15" font-family="-apple-system, sans-serif" font-size="10" font-weight="700" fill="#2f7fe0" text-anchor="middle">Basis &middot; rule</text>
+      <text x="498" y="15" font-family="-apple-system, sans-serif" font-size="10" fill="#9aa3b5" text-anchor="end">14:32</text>
+    </g>
+
+    <!-- contract clauses input (demo verbatim) -->
+    <g transform="translate(20, 48)">
+      <rect width="500" height="142" rx="10" fill="#f4f6fa"/>
+      <text x="16" y="22" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#5a6379">Sample input · Distribution agreement (3 clauses)</text>
+      <line x1="16" y1="30" x2="484" y2="30" stroke="#e5e7eb" stroke-dasharray="3 3"/>
+      <text x="16" y="50" font-family="-apple-system, sans-serif" font-size="11" fill="#1b2538"><tspan font-weight="700" fill="#5a6379">Clause 5.3  </tspan>Party B commits to a minimum quarterly purchase of 5,000 units</text>
+      <text x="16" y="70" font-family="-apple-system, sans-serif" font-size="11" fill="#1b2538"><tspan font-weight="700" fill="#5a6379">Clause 8.1  </tspan>Either party may terminate this agreement at any time with 30 days' written notice</text>
+      <text x="16" y="90" font-family="-apple-system, sans-serif" font-size="11" fill="#1b2538"><tspan font-weight="700" fill="#5a6379">Clause 11.2  </tspan>Disputes arising from this agreement shall be submitted to an overseas arbitration body</text>
+      <line x1="16" y1="102" x2="484" y2="102" stroke="#e5e7eb" stroke-dasharray="3 3"/>
+      <text x="16" y="120" font-family="-apple-system, sans-serif" font-size="10.5" font-weight="700" fill="#e0484d">Output delivered · 3 risks flagged</text>
+      <text x="16" y="134" font-family="-apple-system, sans-serif" font-size="10" font-style="italic" fill="#9aa3b5">&mdash; vs. "Standard Contract Template.docx" + company review policy (12 rules)</text>
+    </g>
+
+    <!-- action buttons -->
+    <g transform="translate(20, 208)">
+      <rect width="98" height="36" rx="18" fill="#fff" stroke="#e5e7eb" stroke-width="1.4"/>
+      <text x="49" y="23" font-family="-apple-system, sans-serif" font-size="11.5" font-weight="700" fill="#1b2538" text-anchor="middle">↶ Send back</text>
+      <rect x="106" y="0" width="138" height="36" rx="18" fill="#fff" stroke="#8b6bff" stroke-width="1.4"/>
+      <text x="175" y="23" font-family="-apple-system, sans-serif" font-size="11.5" font-weight="700" fill="#6438e8" text-anchor="middle">✎ Edit &amp; return</text>
+      <rect x="252" y="0" width="248" height="36" rx="18" fill="url(#s-toggle)"/>
+      <text x="376" y="23" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Approve &amp; send back to sales</text>
+    </g>
+
+    <!-- Run trace link -->
+    <text x="270" y="270" font-family="-apple-system, sans-serif" font-size="10.5" fill="#5a6379" text-anchor="middle">Run trace · read sample contract &rarr; compare against "Standard Contract Template.docx" + 12 rules &rarr; flag 3 risks &rarr; await your approval</text>
+  </g>
+
+
+</svg></div>
+        <div class="p3-stage-frame" data-stage="5"><svg viewBox="0 0 600 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="s-spark" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5aa2ff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+    <linearGradient id="s-clerk" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+    <linearGradient id="s-sales" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b6bff"/><stop offset="100%" stop-color="#6438e8"/></linearGradient>
+    <linearGradient id="s-toggle" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#2fd1a5"/><stop offset="100%" stop-color="#11a079"/></linearGradient>
+    <linearGradient id="s-amber" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffd494"/><stop offset="100%" stop-color="#ffb454"/></linearGradient>
+    <linearGradient id="s-blue" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a8d8ff"/><stop offset="100%" stop-color="#85b7eb"/></linearGradient>
+  </defs>
+    <!-- panel -->
+  <rect x="30" y="15" width="540" height="370" rx="14" fill="#fff"/>
+  
+  <!-- header -->
+  <rect x="30" y="15" width="540" height="60" rx="14" fill="#fff"/>
+  <rect x="30" y="61" width="540" height="14" fill="#fff"/>
+  <line x1="30" y1="75" x2="570" y2="75" stroke="#e5e7eb"/>
+  <rect x="48" y="29" width="32" height="32" rx="9" fill="url(#s-toggle)"/>
+  <text x="64" y="50" font-family="Georgia, serif" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">✓</text>
+  <text x="92" y="44" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#1b2538">Approvals are on by default</text>
+  <text x="92" y="61" font-family="-apple-system, sans-serif" font-size="11" fill="#9aa3b5">Employee drafts &rarr; you decide &rarr; record is kept</text>
+  <text x="552" y="49" font-family="-apple-system, sans-serif" font-size="16" fill="#9aa3b5" text-anchor="middle">×</text>
+
+  <!-- body content -->
+  <g transform="translate(30, 75)">
+    <!-- toggle row (compact, 2 lines) -->
+    <g transform="translate(50, 18)">
+      <rect width="440" height="68" rx="14" fill="#f4f6fa" stroke="#dde2eb" stroke-width="1"/>
+      <!-- Label (2 lines only) -->
+      <text x="24" y="28" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#1b2538">Approval before sending</text>
+      <text x="24" y="48" font-family="-apple-system, sans-serif" font-size="12" fill="#5a6379">Every outbound message pauses for you &mdash; employees only draft</text>
+      <!-- Toggle (ON) - clear and visible -->
+      <g transform="translate(360, 14)">
+        <rect width="60" height="40" rx="20" fill="url(#s-toggle)" stroke="#11a079" stroke-width="1"/>
+        <circle cx="40" cy="20" r="14" fill="#fff" stroke="#e5e7eb" stroke-width="1.2"/>
+        <path d="M 33 20 L 38 25 L 47 14" stroke="#11a079" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </g>
+
+    <!-- 3 confirmation chips - compact -->
+    <g transform="translate(50, 108)">
+      <!-- chip 1 -->
+      <g>
+        <rect width="140" height="50" rx="10" fill="#fff" stroke="#11a079" stroke-width="1.4"/>
+        <circle cx="22" cy="18" r="8" fill="#12a877" fill-opacity="0.18"/>
+        <path d="M 18 18 L 21 21 L 27 14" stroke="#11a079" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="70" y="22" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#11a079" text-anchor="middle">Every send</text>
+        <text x="70" y="38" font-family="-apple-system, sans-serif" font-size="10" fill="#5a6379" text-anchor="middle">Pauses with you</text>
+      </g>
+      <!-- chip 2 -->
+      <g transform="translate(150, 0)">
+        <rect width="140" height="50" rx="10" fill="#fff" stroke="#11a079" stroke-width="1.4"/>
+        <circle cx="22" cy="18" r="8" fill="#12a877" fill-opacity="0.18"/>
+        <path d="M 18 18 L 21 21 L 27 14" stroke="#11a079" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="70" y="22" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#11a079" text-anchor="middle">Employees only</text>
+        <text x="70" y="38" font-family="-apple-system, sans-serif" font-size="10" fill="#5a6379" text-anchor="middle">draft, never send</text>
+      </g>
+      <!-- chip 3 -->
+      <g transform="translate(300, 0)">
+        <rect width="140" height="50" rx="10" fill="#fff" stroke="#11a079" stroke-width="1.4"/>
+        <circle cx="22" cy="18" r="8" fill="#12a877" fill-opacity="0.18"/>
+        <path d="M 18 18 L 21 21 L 27 14" stroke="#11a079" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="70" y="22" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#11a079" text-anchor="middle">Every decision</text>
+        <text x="70" y="38" font-family="-apple-system, sans-serif" font-size="10" fill="#5a6379" text-anchor="middle">is audit-logged</text>
+      </g>
+    </g>
+
+    <!-- bottom tagline -->
+    <text x="270" y="180" font-family="Georgia, serif" font-size="14" font-weight="700" fill="#11a079" text-anchor="middle">You are always the last gate</text>
+  </g>
+
+
+</svg></div>
+      </div>
+      <div class="p3-demo-info">
+        <div class="p3-info-step active" data-info="1">
+          <div class="p3-info-num">1 / 5</div>
+          <h2 class="p3-info-title">Pick a business type and team size</h2>
+          <p class="p3-info-desc">Two quick questions &mdash; trading, retail, or services? 1-3 people or 3+? We'll spin up an empty office for you.</p>
+          <div class="p3-info-quote"><strong>Me:</strong>Just two checkboxes &mdash; way easier than I expected.</div>
+        </div>
+        <div class="p3-info-step" data-info="2">
+          <div class="p3-info-num">2 / 5</div>
+          <h2 class="p3-info-title">The wizard suggests your first employee</h2>
+          <p class="p3-info-desc">Trading companies get an Admin Assistant first. Retail gets a Customer Support Assistant first. You can swap the role manually any time.</p>
+          <div class="p3-info-quote"><strong>Me:</strong>An Admin Assistant? That's exactly the file-management work I dread.</div>
+        </div>
+        <div class="p3-info-step" data-info="3">
+          <div class="p3-info-num">3 / 5</div>
+          <h2 class="p3-info-title">Add 3 to 5 documents</h2>
+          <p class="p3-info-desc">A price list, an FAQ, a contract template &mdash; anything. The employee will always cite which file it used, and will stop if a required file is missing. Skippable.</p>
+          <div class="p3-info-quote"><strong>Me:</strong>I dropped last quarter's price list in. Took 10 seconds.</div>
+        </div>
+        <div class="p3-info-step" data-info="4">
+          <div class="p3-info-num">4 / 5</div>
+          <h2 class="p3-info-title">Try a first task on one document</h2>
+          <p class="p3-info-desc">Upload a contract &middot; Admin Assistant AD cross-checks it against "Standard Contract Template.docx" plus your 12-rule review policy, flags 3 risks, and drops the result on My Desk for you</p>
+          <div class="p3-info-quote"><strong>Me:</strong>3 risks called out &mdash; the rest is my call.</div>
+        </div>
+        <div class="p3-info-step" data-info="5">
+          <div class="p3-info-num">5 / 5</div>
+          <h2 class="p3-info-title">Approvals are on by default</h2>
+          <p class="p3-info-desc">Every outbound action pauses for your call. Employees draft, you decide. Every decision is logged &mdash; and you can pull it back if anything goes wrong.</p>
+          <div class="p3-info-quote"><strong>Me:</strong>I can see every record. If something goes sideways, I can pull it back on the spot.</div>
+        </div>
+      </div>
+    </div>
+    <div class="p3-demo-controls">
+      <button class="p3-demo-btn" id="p3-prev">◀ Previous</button>
+      <button class="p3-demo-btn primary" id="p3-autoplay">▶ Autoplay 18s</button>
+      <button class="p3-demo-btn" id="p3-next">Next ▶</button>
+      <div class="p3-progress">
+        <span class="p3-dot active" data-step="1"></span>
+        <span class="p3-dot" data-step="2"></span>
+        <span class="p3-dot" data-step="3"></span>
+        <span class="p3-dot" data-step="4"></span>
+        <span class="p3-dot" data-step="5"></span>
+      </div>
+    </div>
+  </div>
+  <div class="pnum">06 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P7: RunTrace contract approval — 8-step timeline
+══════════════════════════════════════════ -->
+<div class="page p4-cycle" id="p4">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg></div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+    <div class="logo-badge">Day 2 · 10:02</div>
+  </div>
+  <div class="p4-cycle-center">
+    <div class="p4-cycle-header">
+      <div class="p4-cycle-kicker">Trust mechanism · You approve &rarr; AI executes &rarr; every step logged</div>
+      <h1 class="p4-cycle-h1">Press <em>one button</em>,<br>AI logs all 8 steps automatically</h1>
+      <p class="p4-cycle-sub">Contract uploaded &rarr; Admin Assistant reads "Standard Contract Template.docx" + 12 rules &rarr; flags 3 risks &rarr; awaits your approval &rarr; returns to sales &rarr; logged.</p>
+    </div>
+        <div class="p4-cycle-row">
+      <div class="p4-trace-wrap">
+      <div class="p4-trace-head">
+        <span class="p4-trace-tag" style="background:#fff5e6; color:#d98a12;"><span class="p4-trace-dot"></span>Audit</span>
+        <span class="p4-trace-time">11:05</span>
+        <span class="p4-trace-conf">Ready · Med</span>
+      </div>
+      <div class="p4-trace-title">Admin Assistant AD · Contract risk flagging · Distribution agreement (3 risks)</div>
+      <div class="p4-trace-steps">
+        <div class="p4-trace-step done"><div class="p4-trace-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="5 12 10 17 19 8"/></svg></div><div class="p4-trace-body"><div class="p4-trace-label">11:05 · Started</div><div class="p4-trace-sub">Contract file uploaded · Sales submitted for review</div></div><div class="p4-trace-state">Done</div></div>
+        <div class="p4-trace-step done"><div class="p4-trace-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="5 12 10 17 19 8"/></svg></div><div class="p4-trace-body"><div class="p4-trace-label">11:05 · Read file</div><div class="p4-trace-sub">Read sample contract · extracted 3 key clauses</div></div><div class="p4-trace-state">Done</div></div>
+        <div class="p4-trace-step done"><div class="p4-trace-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="5 12 10 17 19 8"/></svg></div><div class="p4-trace-body"><div class="p4-trace-label">11:05 · Matched against rules</div><div class="p4-trace-sub">Cross-checked against "Standard Contract Template.docx" + company review policy (12 rules)</div></div><div class="p4-trace-state">Done</div></div>
+        <div class="p4-trace-step done"><div class="p4-trace-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><polyline points="5 12 10 17 19 8"/></svg></div><div class="p4-trace-body"><div class="p4-trace-label">11:05 · Marked 3 risks</div><div class="p4-trace-sub"><tspan fill="#e0484d" font-weight="700">High</tspan> Clause 5.3 minimum purchase 5,000 units &middot; <tspan fill="#d98a12" font-weight="700">Med</tspan> Clause 8.1 30-day termination notice &middot; <tspan fill="#d98a12" font-weight="700">Med</tspan> Clause 11.2 overseas arbitration</div></div><div class="p4-trace-state">Done</div></div>
+        <div class="p4-trace-step current"><div class="p4-trace-mark"><span class="p4-trace-pulse"></span></div><div class="p4-trace-body"><div class="p4-trace-label">11:05 · Waiting for your approval</div><div class="p4-trace-sub">3 risks now on My Desk &middot; <strong>this is where you press the button</strong></div></div><div class="p4-trace-state" style="color:#d98a12; font-weight:800;">Now</div></div>
+        <div class="p4-trace-step pending"><div class="p4-trace-mark"></div><div class="p4-trace-body"><div class="p4-trace-label">+11:10 · Send back to sales</div><div class="p4-trace-sub">You can approve &mdash; or send back asking for a longer &sect;8.1 notice period and a different &sect;11.2 arbitration venue</div></div><div class="p4-trace-state">Next</div></div>
+        <div class="p4-trace-step pending"><div class="p4-trace-mark"></div><div class="p4-trace-body"><div class="p4-trace-label">+11:15 · Audit logged</div><div class="p4-trace-sub">3 risk flags + your approval decision are permanently logged (rule 2 fired)</div></div><div class="p4-trace-state">Next</div></div>
+        <div class="p4-trace-step pending"><div class="p4-trace-mark"></div><div class="p4-trace-body"><div class="p4-trace-label">+11:15 · Memory updated</div><div class="p4-trace-sub">AD learns your preference for the &sect;11.2 arbitration venue &mdash; next time it will suggest HKIAC in Hong Kong by default</div></div><div class="p4-trace-state">Next</div></div>
+      </div>
+    </div>
+      <div class="p4-videos">
+      <figure class="p4-video-card">
+        <img src="./video/admin-contract-review-en.gif" alt="Admin Assistant &middot; contract approval demo &mdash; employee overview &rarr; task configuration &rarr; trial run &rarr; 3 risks flagged">
+        <figcaption>Admin Assistant &middot; Contract approval <span>~18s &middot; autoplay</span></figcaption>
+      </figure>
+    </div>
+    </div>
+    <div class="p4-cycle-footer">
+      <div class="p4-cycle-foot-item">Approval on by default</div>
+      <div class="p4-cycle-foot-item">Senior unlocks low-risk repeats</div>
+      <div class="p4-cycle-foot-item">10-minute recall window</div>
+      <div class="p4-cycle-foot-item">Audit log on every step</div>
+    </div>
+  </div>
+  <div class="pnum">07 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P5: AI EMPLOYEE TEAM — 5 roles
+══════════════════════════════════════════ -->
+<div class="page p3" id="p2">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="p3-center">
+    <div class="p3-header">
+      <div class="p3-kicker">Your AI Employee Team</div>
+      <h1 class="p3-h1">Every role has a name and a memory</h1>
+      <p class="p3-sub">They use only the files you provide, and every outbound action goes through your approval</p>
+    </div>
+    <div class="p3-grid">
+      <div class="p3-card">
+        <div class="p3-card-badge p3-badge-std">Standard AI Employee</div>
+        <div class="p3-avatar" style="background: linear-gradient(135deg,#4A7FBF,#2d5f9f)">AD</div>
+        <h3>Admin Assistant</h3>
+        <div class="p3-dept">Files &middot; Email &middot; Documents</div>
+        <div class="p3-tags"><span class="p3-tag t-running">Running</span><span class="p3-tag t-pending">Needs approval</span></div>
+        <p class="p3-desc">Organizes files, replies to email, drafts documents &mdash; every action runs only after your approval</p>
+      </div>
+      <div class="p3-card">
+        <div class="p3-card-badge p3-badge-std">Standard AI Employee</div>
+        <div class="p3-avatar" style="background: linear-gradient(135deg,#3D9B8A,#2a7a6a)">CS</div>
+        <h3>Customer Support</h3>
+        <div class="p3-dept">Customer replies &middot; Complaints</div>
+        <div class="p3-tags"><span class="p3-tag t-running">Running</span><span class="p3-tag t-pending">Needs files</span></div>
+        <p class="p3-desc">Replies to customers using your knowledge base, and proactively pauses when info is missing</p>
+      </div>
+      <div class="p3-card">
+        <div class="p3-card-badge p3-badge-std">Standard AI Employee</div>
+        <div class="p3-avatar" style="background: linear-gradient(135deg,#E8634A,#c94030)">SA</div>
+        <h3>Sales Assistant</h3>
+        <div class="p3-dept">Quotes &middot; Customer follow-up</div>
+        <div class="p3-tags"><span class="p3-tag t-running">Running</span><span class="p3-tag t-pending">Draft only</span></div>
+        <p class="p3-desc">Drafts quotes, follows up with prospects, manages your schedule &mdash; every send waits for your approval</p>
+      </div>
+      <div class="p3-card">
+        <div class="p3-card-badge p3-badge-std">Standard AI Employee</div>
+        <div class="p3-avatar" style="background: linear-gradient(135deg,#8B6BCF,#6a4fb5)">MK</div>
+        <h3>Marketing Assistant</h3>
+        <div class="p3-dept">Posts &middot; Messages &middot; Campaigns</div>
+        <div class="p3-tags"><span class="p3-tag t-trial">In trial</span><span class="p3-tag t-pending">Review only</span></div>
+        <p class="p3-desc">Drafts social posts, community messages, campaigns &mdash; nothing goes live without your sign-off</p>
+      </div>
+      <div class="p3-card">
+        <div class="p3-card-badge p3-badge-sen">Senior AI Employee</div>
+        <div class="p3-avatar" style="background: linear-gradient(135deg,#D4A853,#b08030)">AC</div>
+        <h3>Accounting Assistant</h3>
+        <div class="p3-dept">Receipts &middot; Monthly close &middot; Reconciliation</div>
+        <div class="p3-tags"><span class="p3-tag t-soon">Off by default</span><span class="p3-tag t-pending">Activated on opt-in</span></div>
+        <p class="p3-desc">Full feature set &middot; off by default &middot; HK$2,480/mo once activated &middot; handles monthly close, still awaits your signature</p>
+      </div>
+    </div>
+    <div class="p3-note">
+      <div class="p3-note-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <p><strong>Every AI employee:</strong> &check; only uses the files you assign &nbsp; &check; every outbound action requires your approval &nbsp; &check; will refuse to act when data is missing &nbsp; <strong>&check; if the AI gets it wrong, the responsibility stays with the business owner</strong></p>
+    </div>
+  </div>
+  <div class="pnum">08 / 14</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     P6: ROI
+══════════════════════════════════════════ -->
+<div class="page p5" id="p4">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="p5-center">
+    <div class="p5-header">
+      <div class="p5-kicker">Competitor Comparison</div>
+      <h1 class="p5-h1">Emplix <span style="color: var(--accent);">vs</span> the traditional alternatives</h1>
+      <p class="p5-sub">It's not just cheaper &mdash; it's a complete solution built for small and medium businesses</p>
+    </div>
+    <table class="p5-table">
+      <thead>
+        <tr class="p5-thead-row">
+          <th class="p5-tcell is-head is-feature">Feature</th>
+          <th class="p5-tcell is-head is-emplix"><span class="p5-tcell-name is-emplix">Emplix</span></th>
+          <th class="p5-tcell is-head"><span class="p5-tcell-name">ChatGPT Plus</span></th>
+          <th class="p5-tcell is-head"><span class="p5-tcell-name">Hiring</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="p5-tbody-row">
+          <td class="p5-tcell is-feature">Monthly fee</td>
+          <td class="p5-tcell is-emplix"><span class="p5-tcell-val is-emplix">HK$990</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-val">US$20+</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-val">HK$18,000+</span></td>
+        </tr>
+        <tr class="p5-tbody-row">
+          <td class="p5-tcell is-feature">Knows your business files</td>
+          <td class="p5-tcell is-emplix"><span class="p5-tcell-check">&check; Automatic</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-cross">&times; Re-upload every time</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-check">&check; Needs training</span></td>
+        </tr>
+        <tr class="p5-tbody-row">
+          <td class="p5-tcell is-feature">Approval mechanism</td>
+          <td class="p5-tcell is-emplix"><span class="p5-tcell-check">&check; On by default</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-cross">&times; None</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-check">&check; Manual</span></td>
+        </tr>
+        <tr class="p5-tbody-row">
+          <td class="p5-tcell is-feature">Audit log</td>
+          <td class="p5-tcell is-emplix"><span class="p5-tcell-check">&check; Tamper-proof</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-cross">&times; None</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-tri">&#9651; Depends on manual notes</span></td>
+        </tr>
+        <tr class="p5-tbody-row">
+          <td class="p5-tcell is-feature">Multi-role collaboration</td>
+          <td class="p5-tcell is-emplix"><span class="p5-tcell-check">&check; 5+ roles</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-cross">&times; Single chat</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-check">&check; Multiple hires</span></td>
+        </tr>
+        <tr class="p5-tbody-row">
+          <td class="p5-tcell is-feature">ROI tracking</td>
+          <td class="p5-tcell is-emplix"><span class="p5-tcell-check">&check; Real-time dashboard</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-cross">&times; None</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-cross">&times; Hard to measure</span></td>
+        </tr>
+        <tr class="p5-tbody-row">
+          <td class="p5-tcell is-feature">Hong Kong compliance</td>
+          <td class="p5-tcell is-emplix"><span class="p5-tcell-check">&check; Compliant with the Privacy Ordinance</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-tri">&#9651; Data leaves HK</span></td>
+          <td class="p5-tcell"><span class="p5-tcell-check">&check; Local</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="p5-summary">Emplix isn't another <strong>ChatGPT</strong> &mdash; it's a complete AI employee team <strong>built for SMBs</strong>.</p>
+  </div>
+  <div class="pnum">09 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P10: Cost & efficiency · the numbers speak
+══════════════════════════════════════════ -->
+<div class="page roi-page" id="p-roi">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="roi-content">
+    <div class="roi-header">
+      <div class="roi-kicker">My Recommendation</div>
+      <div class="roi-h1">Outcome data &middot; Lower cost, higher output, <em>the numbers speak</em></div>
+      <div class="roi-sub">Cumulative 30-day data from the demo environment (real &amp; de-identified)</div>
+    </div>
+    <div class="roi-grid">
+      <!-- LEFT: Data card + chart + suggestion -->
+      <div class="roi-col-left">
+        <div class="roi-card">
+          <div class="roi-data-kicker">
+            <span class="roi-live-dot"></span>
+            Outcome data &middot; Demo environment, 30-day cumulative
+          </div>
+          <div class="roi-data-title">Tasks completed and hours saved</div>
+          <div class="roi-stat-row">
+            <div class="roi-stat-cell">
+              <div class="roi-stat-num"><span class="counter" data-count="312">312</span></div>
+              <div class="roi-stat-label">Tasks completed</div>
+            </div>
+            <div class="roi-stat-cell">
+              <div class="roi-stat-num"><span class="counter" data-count="312">312</span></div>
+              <div class="roi-stat-label">Hours saved</div>
+            </div>
+            <div class="roi-stat-cell">
+              <div class="roi-stat-num"><span class="counter" data-count="18" data-suffix="%">18%</span></div>
+              <div class="roi-stat-label">Weekly growth</div>
+            </div>
+          </div>
+          <div class="roi-chart-legend">
+            <div class="roi-legend-dot"></div>
+            <span style="font-size: 11px; color: var(--ink-2); font-weight: 600;">Tasks completed per week</span>
+            <div class="roi-chart-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+              &#9650;18%
+            </div>
+          </div>
+          <div class="roi-chart-area">
+            <svg viewBox="0 0 460 110" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="roi-areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#E8634A" stop-opacity="0.16"/>
+                  <stop offset="100%" stop-color="#E8634A" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <line x1="30" y1="16" x2="455" y2="16" stroke="rgba(26,26,46,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+              <line x1="30" y1="42" x2="455" y2="42" stroke="rgba(26,26,46,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+              <line x1="30" y1="68" x2="455" y2="68" stroke="rgba(26,26,46,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+              <line x1="30" y1="94" x2="455" y2="94" stroke="rgba(26,26,46,0.06)" stroke-width="1" stroke-dasharray="4 4"/>
+              <text x="24" y="20" text-anchor="end" font-size="10" fill="#7A7A8C" font-weight="600">200</text>
+              <text x="24" y="46" text-anchor="end" font-size="10" fill="#7A7A8C" font-weight="600">150</text>
+              <text x="24" y="72" text-anchor="end" font-size="10" fill="#7A7A8C" font-weight="600">100</text>
+              <text x="24" y="98" text-anchor="end" font-size="10" fill="#7A7A8C" font-weight="600">50</text>
+              <text x="64" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W1</text>
+              <text x="140" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W2</text>
+              <text x="216" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W3</text>
+              <text x="292" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W4</text>
+              <text x="368" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W5</text>
+              <text x="444" y="104" text-anchor="middle" font-size="10" fill="#7A7A8C" font-weight="600">W6</text>
+              <path d="M64,82 L140,70 L216,56 L292,42 L368,28 L444,12 L444,95 L64,95 Z" fill="url(#roi-areaGrad)"/>
+              <path d="M64,82 L140,70 L216,56 L292,42 L368,28 L444,12" fill="none" stroke="#E8634A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="64" cy="82" r="3.5" fill="#E8634A" stroke="#fff" stroke-width="2"/>
+              <circle cx="140" cy="70" r="3.5" fill="#E8634A" stroke="#fff" stroke-width="2"/>
+              <circle cx="216" cy="56" r="3.5" fill="#E8634A" stroke="#fff" stroke-width="2"/>
+              <circle cx="292" cy="42" r="3.5" fill="#E8634A" stroke="#fff" stroke-width="2"/>
+              <circle cx="368" cy="28" r="3.5" fill="#E8634A" stroke="#fff" stroke-width="2"/>
+              <circle cx="444" cy="12" r="4.5" fill="#E8634A" stroke="#fff" stroke-width="2.5"/>
+              <text x="64" y="74" text-anchor="middle" font-size="10" fill="#E8634A" font-weight="700">92</text>
+              <text x="140" y="62" text-anchor="middle" font-size="10" fill="#E8634A" font-weight="700">108</text>
+              <text x="216" y="48" text-anchor="middle" font-size="10" fill="#E8634A" font-weight="700">127</text>
+              <text x="292" y="34" text-anchor="middle" font-size="10" fill="#E8634A" font-weight="700">150</text>
+              <text x="368" y="20" text-anchor="middle" font-size="10" fill="#E8634A" font-weight="700">178</text>
+              <text x="444" y="4" text-anchor="middle" font-size="10" fill="#E8634A" font-weight="700">194</text>
+            </svg>
+          </div>
+          <div class="roi-data-note">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            Data source: 30 days of real de-identified data &middot; Emplix internal test environment
+          </div>
+        </div>
+        <div class="roi-suggestion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          <p><strong>My recommendation:</strong> Start with one role first. Validate the approval flow, then expand from there<span class="pill">Start small</span></p>
+        </div>
+      </div>
+      <!-- RIGHT: ROI Calculator -->
+      <div class="roi-card">
+        <div class="roi-calc-kicker">ROI Calculator</div>
+        <div class="roi-calc-headline">&ldquo;How much could your company save?&rdquo;</div>
+        <div class="roi-calc-tagline">Adjust the inputs to see a custom estimate</div>
+        <div class="roi-input-row">
+          <div class="roi-input-group">
+            <label>Current staff count</label>
+            <input type="number" id="inp-staff" class="roi-input" value="10" min="1" max="500">
+          </div>
+          <div class="roi-input-group">
+            <label>Average monthly salary (HK$)</label>
+            <input type="number" id="inp-salary" class="roi-input" value="15000" min="1000" max="200000" step="1000">
+          </div>
+        </div>
+        <div class="roi-slider-group">
+          <div class="roi-slider-head">
+            <label>AI replacement ratio</label>
+            <span class="roi-slider-val" id="slider-pct">60%</span>
+          </div>
+          <input type="range" id="inp-ratio" class="roi-slider" min="10" max="90" value="60" step="5">
+        </div>
+        <div class="roi-calc-steps">
+          <div class="roi-calc-step" id="step-1">
+            <div class="roi-step-num">1</div>
+            <div class="roi-step-content">
+              <div class="roi-step-formula">Total monthly payroll</div>
+              <div class="roi-step-result"><span id="s1-staff">10</span> staff &times; HK$<span id="s1-salary">15,000</span> = <span class="hl" id="s1-total">HK$150,000/mo</span></div>
+            </div>
+          </div>
+          <div class="roi-calc-step" id="step-2">
+            <div class="roi-step-num">2</div>
+            <div class="roi-step-content">
+              <div class="roi-step-formula">AI-handled share</div>
+              <div class="roi-step-result">Handled by AI: <span class="hl" id="s2-pct">60%</span> = = <span class="hl" id="s2-heads">6</span> headcount freed</div>
+            </div>
+          </div>
+          <div class="roi-calc-step" id="step-3">
+            <div class="roi-step-num">3</div>
+            <div class="roi-step-content">
+              <div class="roi-step-formula">Monthly savings</div>
+              <div class="roi-step-result"><span id="s3-heads">6</span> staff &times; HK$<span id="s3-salary">15,000</span> = <span class="hl" id="s3-total">HK$90,000/mo</span> saved</div>
+            </div>
+          </div>
+        </div>
+        <div class="roi-calc-results">
+          <div class="roi-calc-result-card is-monthly">
+            <div class="rc-label">Monthly savings</div>
+            <div class="rc-value" id="res-monthly">HK$90,000</div>
+          </div>
+          <div class="roi-calc-result-card is-yearly">
+            <div class="rc-label">Yearly savings</div>
+            <div class="rc-value" id="res-yearly">HK$1,080,000</div>
+          </div>
+        </div>
+        <div class="roi-disclaimer">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/></svg>
+          Monthly value is an estimate, not a guarantee of actual savings
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="roi-footer">EMPLIX &middot; AI Workforce Platform &middot; BY WEB3LABS</div>
+  <div class="roi-watermark">Created by Huashu-Design</div>
+  <div class="roi-num">10 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P11: PRICING (formerly P10)
+══════════════════════════════════════════ -->
+<div class="page p6" id="p5">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="p6-center">
+    <div class="p6-header">
+      <div class="p6-kicker">Simple pricing</div>
+      <h1 class="p6-h1">Up-front pricing<br>no hidden costs</h1>
+      <p class="p6-sub">14-day free trial, cancel anytime</p>
+    </div>
+    <div class="p6-plans">
+      <div class="p6-plan">
+        <div class="p6-plan-name">Standard AI Employee</div>
+        <div class="p6-plan-price"><b>HK$990</b><span>/employee/mo</span></div>
+        <div class="p6-plan-tag">Admin &middot; Support &middot; Sales &middot; Marketing<br>Roughly 600 tasks / month included</div>
+        <div class="p6-plan-div"></div>
+        <div class="p6-plan-feats">
+          <div class="p6-feat"><span class="ck">&check;</span> Admin, Customer Support, Sales &amp; Marketing AI employees</div>
+          <div class="p6-feat"><span class="ck">&check;</span> File management &amp; approval workflows</div>
+          <div class="p6-feat"><span class="ck">&check;</span> Full audit log</div>
+          <div class="p6-feat"><span class="ck">&check;</span> 14-day free trial</div>
+        </div>
+        <button class="p6-plan-btn outline">Start free trial</button>
+      </div>
+      <div class="p6-plan pop">
+        <div class="p6-plan-badge">Most popular</div>
+        <div class="p6-plan-name">Senior AI Employee</div>
+        <div class="p6-plan-price"><b>HK$2,480</b><span>/employee/mo</span></div>
+        <div class="p6-plan-tag">Accounting &amp; multi-step complex judgments<br>Auto-handles low-risk repetitive work &middot; 10-minute recall window</div>
+        <div class="p6-plan-div"></div>
+        <div class="p6-plan-feats">
+          <div class="p6-feat"><span class="ck">&check;</span> Senior AI employee (Accounting)</div>
+          <div class="p6-feat"><span class="ck">&check;</span> Multi-step task handling</div>
+          <div class="p6-feat"><span class="ck">&check;</span> Auto repetitive work (Senior-only)</div>
+          <div class="p6-feat"><span class="ck">&check;</span> 14-day free trial</div>
+        </div>
+        <button class="p6-plan-btn primary">Start free trial</button>
+      </div>
+      <div class="p6-plan">
+        <div class="p6-plan-name">Scale Plan</div>
+        <div class="p6-plan-price"><b>Custom quote</b></div>
+        <div class="p6-plan-tag">3 or more AI employees<br>For fast-growing startup teams</div>
+        <div class="p6-plan-div"></div>
+        <div class="p6-plan-feats">
+          <div class="p6-feat"><span class="ck">&check;</span> Hire 3+ and save 10% across the board</div>
+          <div class="p6-feat"><span class="ck">&check;</span> Mix Standard and Senior roles</div>
+          <div class="p6-feat"><span class="ck">&check;</span> Shared task quota</div>
+          <div class="p6-feat"><span class="ck">&check;</span> Dedicated onboarding support</div>
+        </div>
+        <button class="p6-plan-btn outline">Contact us</button>
+      </div>
+    </div>
+    <div class="p6-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      A task is one completed draft delivered to your approval desk. Pricing excludes third-party channel or model fees. Cancel anytime &mdash; zero lock-in.
+    </div>
+  </div>
+  <div class="pnum">11 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P8: RISK REVERSAL
+══════════════════════════════════════════ -->
+<div class="page p25" id="p15">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="p25-center">
+    <div class="p25-header">
+      <div class="p25-kicker">Who it's for + How fast you start + Risk reversal</div>
+      <h1 class="p25-h1">Before you decide,<br>here are <em>the 4 things to check</em></h1>
+      <p class="p25-sub">Built for 5-50 person SMBs &middot; 5 steps in 5 minutes &middot; 14-day free trial</p>
+    </div>
+    <div class="p25-grid p25-grid-4">
+
+      <!-- Q1 — Who it is for (4 SMB archetypes) -->
+      <div class="p25-quad">
+        <div class="p25-quad-icon">🏢</div>
+        <h3>Who it's for</h3>
+        <div class="p25-archetypes">
+          <div class="p25-arch">
+            <div class="p25-arch-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+            <div class="p25-arch-label">Import / Export trade</div>
+          </div>
+          <div class="p25-arch">
+            <div class="p25-arch-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"></path><path d="M5 9v11h14V9"></path><path d="M9 20v-6h6v6"></path></svg></div>
+            <div class="p25-arch-label">Retail / F&amp;B</div>
+          </div>
+          <div class="p25-arch">
+            <div class="p25-arch-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></div>
+            <div class="p25-arch-label">Professional services</div>
+          </div>
+          <div class="p25-arch">
+            <div class="p25-arch-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V11l5 3V11l5 3V11l5 3V8h3v13"></path><path d="M3 21h18"></path></svg></div>
+            <div class="p25-arch-label">Engineering / Manufacturing</div>
+          </div>
+        </div>
+        <div class="p25-formula">Your team + 5 AI employees = 2&times; the capacity</div>
+      </div>
+
+      <!-- Q2 — Integrations (now / next blocks) -->
+      <div class="p25-quad">
+        <div class="p25-quad-icon">🔌</div>
+        <h3>Integrated now / Coming next</h3>
+        <div class="p25-int-grid">
+          <div class="p25-int-block is-now">
+            <div class="p25-int-head"><span class="p25-int-head-dot"></span>Integrated now</div>
+            <div class="p25-int-item">Email</div>
+            <div class="p25-int-item">Instagram</div>
+            <div class="p25-int-item">Google Drive</div>
+          </div>
+          <div class="p25-int-block is-next">
+            <div class="p25-int-head"><span class="p25-int-head-dot"></span>Coming next</div>
+            <div class="p25-int-item">WhatsApp Business</div>
+            <div class="p25-int-item">Dropbox &middot; OneDrive</div>
+            <div class="p25-int-item">Box</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 — 5 steps (horizontal stepper) -->
+      <div class="p25-quad p25-quad-steps">
+        <div class="p25-quad-icon">🚀</div>
+        <h3>Set up in 5 steps, 5 minutes</h3>
+        <p class="p25-quad-lead">Same flow as the P3 walkthrough</p>
+        <div class="p25-stepper">
+          <div class="p25-step">
+            <div class="p25-step-dot">1</div>
+            <div class="p25-step-connector"></div>
+            <div class="p25-step-label">Pick<br>your business</div>
+          </div>
+          <div class="p25-step">
+            <div class="p25-step-dot">2</div>
+            <div class="p25-step-connector"></div>
+            <div class="p25-step-label">Wizard<br>suggests a hire</div>
+          </div>
+          <div class="p25-step">
+            <div class="p25-step-dot">3</div>
+            <div class="p25-step-connector"></div>
+            <div class="p25-step-label">Add<br>3-5 documents</div>
+          </div>
+          <div class="p25-step">
+            <div class="p25-step-dot">4</div>
+            <div class="p25-step-connector"></div>
+            <div class="p25-step-label">Run<br>your first task</div>
+          </div>
+          <div class="p25-step">
+            <div class="p25-step-dot">5</div>
+            <div class="p25-step-label">Approval<br>on by default</div>
+          </div>
+        </div>
+        <div class="p25-formula">No IT &middot; No 3-day rollout</div>
+      </div>
+
+      <!-- Q4 — Risk reversal (big checks) -->
+      <div class="p25-quad">
+        <div class="p25-quad-icon">🛡️</div>
+        <h3>Risk reversal</h3>
+        <div class="p25-check-grid">
+          <div class="p25-check">
+            <div class="p25-check-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="p25-check-text">14 days free<small>No credit card needed</small></div>
+          </div>
+          <div class="p25-check">
+            <div class="p25-check-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="p25-check-text">Cancel anytime<small>Zero lock-in</small></div>
+          </div>
+          <div class="p25-check">
+            <div class="p25-check-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="p25-check-text">Export your files<small>Your data, your call</small></div>
+          </div>
+          <div class="p25-check">
+            <div class="p25-check-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="p25-check-text">No contract<small>Monthly &middot; downgrade anytime</small></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="pnum">12 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P9: FLYWHEEL — Ecosystem
+══════════════════════════════════════════ -->
+<div class="page p7" id="p6">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="p9-aurora"><div class="p9-blob b1"></div><div class="p9-blob b2"></div><div class="p9-blob b3"></div></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="p7-center">
+    <div class="p7-header">
+      <div class="p7-kicker">The Web3Labs Ecosystem</div>
+      <h1 class="p7-h1">Why EMPLIX delivers <em>the best value</em></h1>
+      <p class="p7-sub">Compute foundation &rarr; token flywheel &rarr; application breakout. App usage feeds back into compute &mdash; the flywheel only spins faster.</p>
+    </div>
+    <div class="p9-main">
+      <div class="p9-eco">
+        <svg class="p9-orbit" viewBox="0 0 700 580" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="p9g" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#E8634A"/><stop offset="50%" stop-color="#8B6BCF"/><stop offset="100%" stop-color="#3D9B8A"/>
+            </linearGradient>
+            <filter id="p9glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <path id="p9track" d="M350 22 A310 268 0 0 1 350 558 A310 268 0 0 1 350 22" fill="none"/>
+          </defs>
+          <!-- Growing outward: expanding echo rings -->
+          <ellipse class="p9-echo" cx="350" cy="290" rx="310" ry="268" fill="none" stroke="url(#p9g)" stroke-width="2"/>
+          <ellipse class="p9-echo p9-echo-2" cx="350" cy="290" rx="310" ry="268" fill="none" stroke="url(#p9g)" stroke-width="2"/>
+          <!-- Main track: flowing dashed line -->
+          <ellipse class="p9-orbit-line" cx="350" cy="290" rx="310" ry="268" fill="none" stroke="url(#p9g)" stroke-width="2.5" stroke-dasharray="7 13" opacity="0.7"/>
+          <!-- Energy comets: orbit the track, bright head, faded tail -->
+          <g filter="url(#p9glow)">
+            <circle r="3" fill="#8B6BCF" opacity="0.26"><animateMotion dur="6s" begin="0.36s" repeatCount="indefinite"><mpath href="#p9track"/></animateMotion></circle>
+            <circle r="3.6" fill="#3D9B8A" opacity="0.48"><animateMotion dur="6s" begin="0.24s" repeatCount="indefinite"><mpath href="#p9track"/></animateMotion></circle>
+            <circle r="4.6" fill="#8B6BCF" opacity="0.72"><animateMotion dur="6s" begin="0.12s" repeatCount="indefinite"><mpath href="#p9track"/></animateMotion></circle>
+            <circle r="6.5" fill="#E8634A"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#p9track"/></animateMotion></circle>
+          </g>
+        </svg>
+
+        <div class="p9-stack">
+          <div class="p9-spin-net">
+            <svg class="p9-connections" viewBox="0 0 700 600" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="p9conn" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"  stop-color="#3D9B8A" stop-opacity="0.75"/>
+                  <stop offset="50%" stop-color="#8B6BCF" stop-opacity="0.75"/>
+                  <stop offset="100%" stop-color="#E8634A" stop-opacity="0.75"/>
+                </linearGradient>
+              </defs>
+              <!-- Three discs sit on circle r=175 centered at (350,300) in an equilateral triangle; three arcs connect them along the same circle -->
+              <path d="M 350 125 A 175 175 0 0 0 198 388" stroke="url(#p9conn)" stroke-width="2" stroke-dasharray="6 9" stroke-linecap="round" fill="none"/>
+              <path d="M 350 125 A 175 175 0 0 1 502 388" stroke="url(#p9conn)" stroke-width="2" stroke-dasharray="6 9" stroke-linecap="round" fill="none"/>
+              <path d="M 198 388 A 175 175 0 0 1 502 388" stroke="url(#p9conn)" stroke-width="2" stroke-dasharray="6 9" stroke-linecap="round" fill="none"/>
+            </svg>
+            <div class="p9-disc-col pos-top">
+              <div class="p9-disc l-app">
+                <div class="p9-disc-orbit"></div>
+                <div class="p9-disc-core"></div>
+                <div class="p9-ic c-teal">🚀</div>
+              </div>
+              <div class="p9-disc-text">
+                <span class="p9-title">AI Apps &middot; Emplix</span>
+              </div>
+            </div>
+            <div class="p9-disc-col pos-bl">
+              <div class="p9-disc l-token">
+                <div class="p9-disc-orbit"></div>
+                <div class="p9-disc-core"></div>
+                <div class="p9-ic c-purple">🪙</div>
+              </div>
+              <div class="p9-disc-text">
+                <span class="p9-title">TOKEN &middot; ModelPier</span>
+              </div>
+            </div>
+            <div class="p9-disc-col pos-br">
+              <div class="p9-disc l-power">
+                <div class="p9-disc-orbit"></div>
+                <div class="p9-disc-core"></div>
+                <div class="p9-ic c-coral">⚡</div>
+              </div>
+              <div class="p9-disc-text">
+                <span class="p9-title">Compute Hub</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p9-flow f-right">Usage feeds compute</div>
+        <div class="p9-flow f-left-up">Token loop, shared profit</div>
+        <div class="p9-flow f-left-dn">Cheap compute, hard-bottoms the cost</div>
+        <div class="p9-grow-cap">Flywheel only spins faster &#8599;</div>
+      </div>
+
+      <div class="p9-side">
+        <div class="p9-side-h">Three layers of the ecosystem</div>
+        <div class="p9-side-item">
+          <div class="p9-side-bar c-teal"></div>
+          <div>
+            <div class="p9-side-t">AI Applications &middot; Emplix<span class="p9-tag c-teal">Breakout</span></div>
+            <div class="p9-side-d">The productivity breakout engine that actually serves B2B customers. Focused on the highest-frequency workflows, zero technical setup &mdash; SMBs plug in and instantly lift the whole company's efficiency.</div>
+          </div>
+        </div>
+        <div class="p9-side-item">
+          <div class="p9-side-bar c-purple"></div>
+          <div>
+            <div class="p9-side-t">TOKEN Economy &middot; ModelPier<span class="p9-tag c-purple">Interchange</span></div>
+            <div class="p9-side-d">The Web3Labs-native token interchange. Through tokenomics, profits and equity accrue between businesses and compute providers &mdash; keeping the flywheel in motion on its own.</div>
+          </div>
+        </div>
+        <div class="p9-side-item">
+          <div class="p9-side-bar c-coral"></div>
+          <div>
+            <div class="p9-side-t">Compute Hub &middot; Distributed GPU<span class="p9-tag c-coral">Foundation</span></div>
+            <div class="p9-side-d">The strategic distributed GPU / inference pool that powers Web3Labs. It takes on every inference, file index, and tenant data-isolation workload &mdash; locking down hardware and bandwidth cost at the source and underwriting the most aggressive compute pricing in the stack.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p7-trust">
+      <div class="p7-trust-item"><div class="p7-trust-dot coral"></div>Data stays in HK</div>
+      <div class="p7-trust-item"><div class="p7-trust-dot teal"></div>Full audit log</div>
+      <div class="p7-trust-item"><div class="p7-trust-dot coral"></div>6-city incubator network</div>
+      <div class="p7-trust-item"><div class="p7-trust-dot teal"></div>HK$10M accelerator program</div>
+    </div>
+  </div>
+  <div class="pnum">13 / 14</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     P10: CTA
+══════════════════════════════════════════ -->
+<div class="page p8" id="p7">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+  <div class="logo-bar">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+      </div>
+      <span class="logo-text">EMPLIX</span>
+    </div>
+  </div>
+  <div class="p8-deco p8-deco-1"></div>
+  <div class="p8-deco p8-deco-2"></div>
+  <div class="p8-center">
+    <h1 class="p8-h1">Start your<br><em>AI team tonight</em></h1>
+    <p class="p8-sub">14-day free trial, no credit card &middot; cancel anytime, zero lock-in.</p>
+    <div class="p8-main">
+      <div class="p8-qr-row">
+        <div class="p8-qr-item">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://emplix-command.pages.dev/" alt="Scan to start trial" width="160" height="160" style="border-radius:10px; box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+          <div class="p8-qr-label">Scan to start trial</div>
+          <div class="p8-qr-sub">emplix-command.pages.dev</div>
+        </div>
+        <div class="p8-qr-item">
+          <!-- TODO: Sales contact QR code, pending real email / WhatsApp number before wiring up api.qrserver.com -->
+          <div style="width:160px; height:160px; border-radius:10px; background:rgba(45,45,58,0.04); border:1.5px dashed rgba(45,45,58,0.18); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.08); font-size:12px; color:var(--ink-3); font-weight:600; text-align:center; padding:16px;">Scan to connect<br>Launching soon</div>
+          <div class="p8-qr-label">Talk to sales</div>
+          <div class="p8-qr-sub">Custom plan consultation</div>
+        </div>
+      </div>
+      <div class="p8-cta-col">
+        <div class="p8-cta">
+          <a href="https://emplix-command.pages.dev/" target="_blank" rel="noopener" class="p8-btn-primary">
+            Start your 14-day free trial
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#" class="p8-btn-ghost">Book a 1-on-1 demo</a>
+        </div>
+        <div class="p8-trust">
+          <div class="p8-trust-item"><div class="p8-trust-dot"></div>No credit card</div>
+          <div class="p8-trust-item"><div class="p8-trust-dot"></div>14 days free</div>
+          <div class="p8-trust-item"><div class="p8-trust-dot"></div>Cancel anytime</div>
+          <div class="p8-trust-item"><div class="p8-trust-dot"></div> emplix-command.pages.dev</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pnum">14 / 14</div>
+</div>
+
+</div><!-- canvas -->
+</div><!-- stage -->
+
+<div class="ctrl">
+  <span class="lbl">PAGE</span>
+  <span id="ctrlNum">01/14</span>
+  <button onclick="prev()">←</button>
+  <button onclick="next()">→</button>
+</div>
+
+<script>
+// Simple page navigation — pattern copied from deck-new.html (proven on iOS Safari)
+const pages = document.querySelectorAll('.page');
+let cur = 0;
+const ctrlNum = document.getElementById('ctrlNum');
+const total = pages.length;
+
+function showPage(n) {
+  pages[cur].classList.remove('on');
+  cur = n;
+  pages[cur].classList.add('on');
+  ctrlNum.textContent = String(cur + 1).padStart(2, '0') + '/' + String(total).padStart(2, '0');
+}
+
+function next() { showPage((cur + 1) % total); }
+function prev() { showPage((cur - 1 + total) % total); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); next(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prev(); }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+});
+
+// P3 — 5-step state machine
+(function(){
+  const stages = document.querySelectorAll('.p3-stage-frame');
+  const infos = document.querySelectorAll('.p3-info-step');
+  const dots = document.querySelectorAll('.p3-dot');
+  const prevBtn = document.getElementById('p3-prev');
+  const nextBtn = document.getElementById('p3-next');
+  const autoBtn = document.getElementById('p3-autoplay');
+  if (!stages.length || !prevBtn) return;
+  let cur = 1, total = stages.length, autoTimer = null, autoPlaying = false;
+  function go(step) {
+    step = Math.max(1, Math.min(total, step));
+    cur = step;
+    stages.forEach((s,i) => s.classList.toggle('active', i+1 === step));
+    infos.forEach((s,i) => s.classList.toggle('active', i+1 === step));
+    dots.forEach((d,i) => d.classList.toggle('active', i+1 === step));
+  }
+  function startAuto() {
+    if (autoPlaying) return;
+    autoPlaying = true;
+    autoBtn.textContent = '⏸ Pause';
+    go(1);
+    autoTimer = setInterval(() => {
+      if (cur >= total) { stopAuto(); return; }
+      go(cur + 1);
+    }, 3500);
+  }
+  function stopAuto() {
+    autoPlaying = false;
+    autoBtn.textContent = '▶ Autoplay 18s';
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+  prevBtn.addEventListener('click', () => { stopAuto(); go(cur - 1); });
+  nextBtn.addEventListener('click', () => { stopAuto(); go(cur + 1); });
+  autoBtn.addEventListener('click', () => autoPlaying ? stopAuto() : startAuto());
+  dots.forEach((d,i) => d.addEventListener('click', () => { stopAuto(); go(i+1); }));
+
+  // Auto-start whenever this page becomes visible (every navigation)
+  document.querySelectorAll('.page').forEach(function (page) {
+    var obs = new MutationObserver(function () {
+      if (page.classList.contains('on') && page.id === 'p3') {
+        // small delay so page transition finishes
+        setTimeout(function () {
+          if (!autoPlaying) startAuto();
+        }, 350);
+      }
+    });
+    obs.observe(page, { attributes: true, attributeFilter: ['class'] });
+  });
+  // If P6 is the starting page, kick off immediately
+  if (document.querySelector('.page.on#p3')) {
+    setTimeout(startAuto, 350);
+  }
+})();
+
+/* Pinch detection removed — deck-new.html doesn't need it and iOS Safari
+   handles pinch natively with overflow:hidden + no touch-action override.
+   (Original detection was over-engineering that interfered with gestures.) */
+
+function resize() {
+  // Pure uniform scaling — same pattern as deck-new.html.
+  // Canvas (1920×1080) is scaled to fit the viewport; multi-column
+  // grids, absolute positioning, and font sizes all scale together.
+  const cv = document.getElementById('cv');
+  const stage = document.querySelector('.stage');
+  const s = Math.min(stage.clientWidth / 1920, stage.clientHeight / 1080);
+  cv.style.transform = `scale(${s})`;
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* ==================================================
+   Count-up animation — fires every time a page becomes .on
+================================================== */
+(function () {
+  function animateCounter(el) {
+    if (el.dataset.counting === '1') return;
+    el.dataset.counting = '1';
+    var target = parseFloat(el.dataset.count) || 0;
+    var prefix = el.dataset.prefix || '';
+    var suffix = el.dataset.suffix || '';
+    var duration = 1400;
+    var startDelay = parseInt(el.dataset.delay || '0', 10);
+    var startTime = null;
+
+    function format(n) { return n.toLocaleString('en-US'); }
+
+    function tick(now) {
+      if (startTime === null) startTime = now + startDelay;
+      var elapsed = Math.max(0, now - startTime);
+      var p = Math.min(elapsed / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
+      var current = Math.floor(target * eased);
+      el.textContent = prefix + format(current) + suffix;
+      if (p < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.classList.add('is-pop');
+        setTimeout(function () { el.classList.remove('is-pop'); el.dataset.counting = '0'; }, 600);
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function runCountersIn(pageEl) {
+    if (!pageEl) return;
+    var counters = pageEl.querySelectorAll('.counter');
+    counters.forEach(function (el, i) {
+      el.dataset.counting = '0';
+      el.dataset.delay = String(i * 120);
+      animateCounter(el);
+    });
+  }
+
+  // Observe each page for the .on class
+  document.querySelectorAll('.page').forEach(function (page) {
+    var obs = new MutationObserver(function () {
+      if (page.classList.contains('on')) runCountersIn(page);
+    });
+    obs.observe(page, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  // Initial run for the page that's .on at load
+  var initial = document.querySelector('.page.on');
+  if (initial) {
+    setTimeout(function () { runCountersIn(initial); }, 100);
+  }
+})();
+
+/* ==================================================
+   P10 ROI calculator + chart label animation
+================================================== */
+(function () {
+  var staffEl = document.getElementById('inp-staff');
+  var salaryEl = document.getElementById('inp-salary');
+  var ratioEl = document.getElementById('inp-ratio');
+  if (!staffEl || !salaryEl || !ratioEl) return;
+
+  var stepTimers = [];
+
+  function recalc() {
+    var staff = parseInt(staffEl.value, 10) || 1;
+    var salary = parseInt(salaryEl.value, 10) || 1000;
+    var ratio = parseInt(ratioEl.value, 10);
+
+    document.getElementById('slider-pct').textContent = ratio + '%';
+
+    var monthlyTotal = staff * salary;
+    var aiHeads = Math.round(staff * ratio / 100);
+    var monthlySavings = aiHeads * salary;
+    var yearlySavings = monthlySavings * 12;
+
+    document.getElementById('s1-staff').textContent = staff;
+    document.getElementById('s1-salary').textContent = salary.toLocaleString();
+    document.getElementById('s1-total').textContent = 'HK$' + monthlyTotal.toLocaleString();
+    document.getElementById('s2-pct').textContent = ratio + '%';
+    document.getElementById('s2-heads').textContent = aiHeads;
+    document.getElementById('s3-heads').textContent = aiHeads;
+    document.getElementById('s3-salary').textContent = salary.toLocaleString();
+    document.getElementById('s3-total').textContent = 'HK$' + monthlySavings.toLocaleString();
+    document.getElementById('res-monthly').textContent = 'HK$' + monthlySavings.toLocaleString();
+    document.getElementById('res-yearly').textContent = 'HK$' + yearlySavings.toLocaleString();
+
+    // Reset & animate the 3 steps in sequence
+    stepTimers.forEach(function (t) { clearTimeout(t); });
+    stepTimers = [];
+    ['step-1', 'step-2', 'step-3'].forEach(function (id, i) {
+      var el = document.getElementById(id);
+      el.classList.remove('is-active', 'is-done');
+      stepTimers.push(setTimeout(function () {
+        el.classList.add('is-active');
+        stepTimers.push(setTimeout(function () {
+          el.classList.add('is-done');
+          el.classList.remove('is-active');
+        }, 350));
+      }, i * 200));
+    });
+  }
+
+  // Animate chart labels (92, 108, 127, 150, 178, 194)
+  function animateChartLabels() {
+    var targets = [92, 108, 127, 150, 178, 194];
+    var texts = document.querySelectorAll('#p-roi .roi-chart-area svg text');
+    if (!texts.length) return;
+    // The labels are the last 6 <text> elements with fill #E8634A
+    var labels = Array.from(texts).filter(function (t) {
+      return (t.getAttribute('fill') || '').toUpperCase() === '#E8634A';
+    });
+    if (labels.length < 6) return;
+    labels.forEach(function (el, i) {
+      var target = targets[i];
+      var start = null;
+      function tick(now) {
+        if (start === null) start = now;
+        var elapsed = now - start;
+        var p = Math.min(elapsed / 900, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(target * eased);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // Update slider visual fill to match its value
+  function updateSliderFill() {
+    var min = parseInt(ratioEl.min, 10) || 0;
+    var max = parseInt(ratioEl.max, 10) || 100;
+    var val = parseInt(ratioEl.value, 10);
+    var pct = ((val - min) / (max - min)) * 100;
+    ratioEl.style.background = 'linear-gradient(to right, var(--accent) 0%, var(--accent) ' + pct + '%, rgba(26,26,46,.1) ' + pct + '%, rgba(26,26,46,.1) 100%)';
+  }
+
+  staffEl.addEventListener('input', recalc);
+  salaryEl.addEventListener('input', recalc);
+  ratioEl.addEventListener('input', function () { updateSliderFill(); recalc(); });
+  updateSliderFill();
+
+  // Hook into page navigation — when P10 (p-roi) becomes active, recalc + animate chart labels
+  document.querySelectorAll('.page').forEach(function (page) {
+    var obs = new MutationObserver(function () {
+      if (page.classList.contains('on') && page.id === 'p-roi') {
+        recalc();
+        animateChartLabels();
+      }
+    });
+    obs.observe(page, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  // Initial run if P10 is the starting page
+  if (document.querySelector('.page.on#p-roi')) {
+    recalc();
+    animateChartLabels();
+  }
+})();
+
+/* ==================================================
+   Replay entrance animations on every page visit.
+
+   Without this, entrance animations only play once on
+   first load and stay at the final state forever after
+   (because of animation-fill-mode: forwards + the global
+   animation-play-state: paused rule on hidden pages).
+   This re-triggers them every time the page becomes .on.
+================================================== */
+(function () {
+  function replayEntrance(page) {
+    var toReset = [];
+    page.querySelectorAll('*').forEach(function (el) {
+      var computed = window.getComputedStyle(el);
+      var name = computed.animationName;
+      if (!name || name === 'none') return;
+      // Skip infinite-iteration animations (logo spin, icon-pulse, flywheel, etc.)
+      // — we only want to replay one-shot entrance animations.
+      if (computed.animationIterationCount === 'infinite') return;
+      toReset.push(el);
+    });
+    if (!toReset.length) return;
+
+    // 1) Disable animations -> elements snap back to base styles.
+    toReset.forEach(function (el) { el.style.animation = 'none'; });
+    // 2) Force reflow so the browser registers the style change.
+    void page.offsetHeight;
+    // 3) Re-enable animations -> they restart from the beginning.
+    toReset.forEach(function (el) { el.style.animation = ''; });
+  }
+
+  document.querySelectorAll('.page').forEach(function (page) {
+    var obs = new MutationObserver(function () {
+      if (page.classList.contains('on')) {
+        // Small delay so the .page opacity transition (0.45s) starts first,
+        // then the entrance animations re-fire on top of it.
+        setTimeout(function () { replayEntrance(page); }, 30);
+      }
+    });
+    obs.observe(page, { attributes: true, attributeFilter: ['class'] });
+  });
+})();
+</script>
+</body>
+</html>
