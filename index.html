@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EMPLIX · 多语言产品讲解投屏演示</title>
+  <meta name="description" content="EMPLIX 多语言产品讲解投屏演示 · AI 员工工作台 · 三语切换 + 五类演讲对象">
+  <style>
+    :root{
+      --ink:#111318;--muted:#667085;--line:#e7e8ec;--paper:#fff;--wash:#f6f7f9;
+      --accent:#5b35e8;--accent-soft:#f0edff;--dark:#151524;--radius:22px;
+      --shadow:0 18px 50px rgba(26,25,43,.08)
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:#f7f8fc;color:var(--ink);font-family:Inter,"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+    body{min-height:100dvh;display:grid;place-items:center;padding:40px 20px}
+    .card{
+      width:min(640px,100%);padding:42px 38px;border:1px solid var(--line);
+      border-radius:var(--radius);background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(248,247,255,.96));
+      box-shadow:0 18px 48px rgba(35,28,72,.075),inset 0 1px 0 rgba(255,255,255,.9)
+    }
+    .logo{display:flex;align-items:baseline;gap:8px;font-size:28px;font-weight:800;letter-spacing:-.04em}
+    .logo b{color:var(--accent)}
+    .logo small{color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.18em;
+      font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    .kicker{display:inline-flex;margin:18px 0 14px;padding:7px 11px;border-radius:999px;
+      background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:750;
+      font-family:ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.06em}
+    h1{margin:0 0 14px;font-size:30px;line-height:1.18;letter-spacing:-.04em}
+    p{margin:0 0 22px;color:var(--muted);font-size:15px;line-height:1.7}
+    .countdown{
+      display:flex;align-items:center;gap:14px;margin:18px 0;padding:16px 18px;
+      border:1px solid rgba(91,53,232,.18);border-radius:14px;background:#faf9ff;
+      color:var(--ink);font-size:14px;font-weight:650
+    }
+    .countdown i{width:9px;height:9px;border-radius:50%;background:var(--accent);
+      box-shadow:0 0 0 5px var(--accent-soft);animation:p 1.4s ease-in-out infinite}
+    @keyframes p{50%{box-shadow:0 0 0 9px rgba(91,53,232,.12),0 0 18px rgba(91,53,232,.3)}}
+    .countdown b{color:var(--accent);font-variant-numeric:tabular-nums;margin-left:auto}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border:0;border-radius:13px;
+      background:linear-gradient(135deg,#6840f0,#4b27d5);color:#fff;font-size:15px;font-weight:750;
+      text-decoration:none;box-shadow:0 10px 24px rgba(91,53,232,.28);transition:transform .18s ease
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn::after{content:"→"}
+    .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}
+    .meta div{padding:14px;border-radius:12px;background:var(--wash)}
+    .meta b{display:block;font-size:18px;letter-spacing:-.02em}
+    .meta span{display:block;margin-top:5px;color:var(--muted);font-size:11px;font-weight:700;
+      letter-spacing:.06em;text-transform:uppercase}
+    footer{margin-top:30px;color:var(--muted);font-size:12px;text-align:center}
+    footer a{color:var(--accent);text-decoration:none;font-weight:700}
+    .links{margin-top:14px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo"><b>EM</b>PLIX<small>SYSTEM / AI WORKFORCE</small></div>
+    <span class="kicker">MULTI-LANG · MULTI-AUDIENCE · OFFLINE</span>
+    <h1>EMPLIX 多语言产品讲解投屏演示</h1>
+    <p>单文件 HTML 投屏演示,内联样式与脚本。支持 <b>简体中文 / 繁體中文 / English</b> 三语切换,以及销售运营、产品、开发、客户、领导汇报 5 类演讲对象。</p>
+
+    <div class="countdown">
+      <i></i>
+      <span>即将进入演示页面…</span>
+      <b id="cd">3</b>
+    </div>
+
+    <a class="btn" id="go" href="#">立即打开演示</a>
+
+    <div class="meta">
+      <div><b>11</b><span>FILES</span></div>
+      <div><b>3</b><span>LANGUAGES</span></div>
+      <div><b>5</b><span>AUDIENCES</span></div>
+    </div>
+
+    <footer>
+      <div>Hosted on GitHub Pages · Repo
+        <a href="https://github.com/yammy1222/emplix-deck" target="_blank" rel="noopener">yammy1222/emplix-deck</a>
+      </div>
+      <div class="links">
+        <a href="./EMPLIX%E6%8A%95%E5%B1%8F%E6%BC%94%E7%A4%BA.html">演示页面</a>
+        <a href="https://github.com/yammy1222/emplix-deck" target="_blank" rel="noopener">源代码</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // 自动跳转到演示页(避免中文 URL 编码问题)
+    var target = 'EMPLIX投屏演示.html';
+    var a = document.getElementById('go');
+    a.href = target;
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.location.href = target;
+    });
+
+    // 倒计时
+    var n = 3, cd = document.getElementById('cd');
+    var t = setInterval(function () {
+      n--; cd.textContent = n;
+      if (n <= 0) { clearInterval(t); window.location.href = target; }
+    }, 1000);
+  </script>
+</body>
+</html>
