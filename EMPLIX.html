@@ -2,14 +2,14 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>EMPLIX 多语言产品讲解</title>
   <style>
     :root{
       --ink:#111318;--muted:#667085;--line:#e7e8ec;--paper:#fff;--wash:#f6f7f9;
       --accent:#5b35e8;--accent-soft:#f0edff;--dark:#151524;--radius:22px;
       --shadow:0 18px 50px rgba(26,25,43,.08);
-      --mobile-scale:.45;--mobile-width:222.222%;--mobile-height:222.222dvh
+      --mobile-fit-scale:1
     }
     *{box-sizing:border-box}
     html{min-width:100%;min-height:100%;scroll-behavior:smooth}
@@ -542,8 +542,9 @@
     @media (orientation:landscape) and (pointer:coarse),(orientation:landscape) and (max-height:600px){
       html,body{width:100%;height:100%;overflow:hidden}
       .presentation-stage{
-        position:absolute;left:0;top:0;width:var(--mobile-width);height:var(--mobile-height);
-        min-height:0;overflow:hidden;transform:scale(var(--mobile-scale));transform-origin:0 0
+        position:absolute;left:50%;top:50%;width:1920px;height:1080px;
+        min-height:0;overflow:hidden;
+        transform:translate(-50%,-50%) scale(var(--mobile-fit-scale));transform-origin:center
       }
       .presenter{position:fixed;height:80px}
       .presenter-inner{width:calc(100% - 44px);min-height:80px;justify-content:flex-end;gap:12px;padding:8px 0}
@@ -553,9 +554,9 @@
       .mobile-scale-control{display:flex;align-items:center;gap:6px;height:62px;padding:6px;border:1px solid var(--line);border-radius:16px;background:#fff}
       .mobile-scale-control button{display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;border-radius:11px;background:var(--accent-soft);color:var(--accent);font-size:28px;font-weight:900}
       .mobile-scale-control span{min-width:72px;text-align:center;color:var(--ink);font-size:19px;font-weight:850}
-      .deck{height:var(--mobile-height)}
-      .slide{height:var(--mobile-height);min-height:0;overflow:hidden;padding:104px 0 100px!important}
-      section.slide>.shell,.hero.slide>.shell{width:min(1120px,calc(100% - 96px));max-width:none}
+      .deck{height:1080px}
+      .slide{height:1080px;min-height:0;overflow:hidden;padding:104px 0 100px!important}
+      section.slide>.shell,.hero.slide>.shell{width:calc(100% - 160px);max-width:none}
       .hero.slide,.closing.slide{width:100%}
       .hero.slide .hero-grid{gap:34px}.hero.slide h1{font-size:48px}
       .hero.slide .ui-body{min-height:290px}.hero.slide .metrics{margin-top:18px}
@@ -1105,13 +1106,13 @@
     let lang="zh-CN", audience="salesops", currentStep=0, currentSlide=0;
     const $=id=>document.getElementById(id);
     const esc=value=>String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]));
-    let mobileScale=Math.max(.35,Math.min(.65,Number(localStorage.getItem("emplix-mobile-scale"))||.45));
+    let mobileScale=Math.max(.75,Math.min(1,Number(localStorage.getItem("emplix-mobile-fit-v2"))||1));
     function applyMobileScale(){
-      document.documentElement.style.setProperty("--mobile-scale",mobileScale);
-      document.documentElement.style.setProperty("--mobile-width",`${100/mobileScale}%`);
-      document.documentElement.style.setProperty("--mobile-height",`${100/mobileScale}dvh`);
+      const landscape=matchMedia("(orientation:landscape) and ((pointer:coarse) or (max-height:600px))").matches;
+      const fit=landscape?Math.min(innerWidth/1920,innerHeight/1080)*mobileScale:1;
+      document.documentElement.style.setProperty("--mobile-fit-scale",fit);
       $("scaleValue").textContent=`${Math.round(mobileScale*100)}%`;
-      localStorage.setItem("emplix-mobile-scale",mobileScale);
+      localStorage.setItem("emplix-mobile-fit-v2",mobileScale);
     }
     const scenarioArt=index=>[
       `<svg viewBox="0 0 300 120" aria-hidden="true"><path class="thin" d="M36 92C74 48 106 42 146 60s70 18 116-23"/><rect class="paper" x="62" y="25" width="83" height="50" rx="14"/><path class="soft" d="M82 75l-10 14 28-14z"/><circle class="dot" cx="86" cy="50" r="4"/><circle class="dot" cx="103" cy="50" r="4"/><circle class="dot" cx="120" cy="50" r="4"/><rect class="paper" x="162" y="48" width="76" height="43" rx="13"/><path class="line" d="M180 69h39M180 78h25"/></svg>`,
@@ -1230,8 +1231,10 @@
     $("language").value=lang;
     $("language").addEventListener("change",e=>{lang=e.target.value;render()});
     $("audience").addEventListener("change",e=>{audience=e.target.value;currentSlide=0;currentStep=0;render()});
-    $("scaleDown").addEventListener("click",()=>{mobileScale=Math.max(.35,Math.round((mobileScale-.05)*100)/100);applyMobileScale()});
-    $("scaleUp").addEventListener("click",()=>{mobileScale=Math.min(.65,Math.round((mobileScale+.05)*100)/100);applyMobileScale()});
+    $("scaleDown").addEventListener("click",()=>{mobileScale=Math.max(.75,Math.round((mobileScale-.05)*100)/100);applyMobileScale()});
+    $("scaleUp").addEventListener("click",()=>{mobileScale=Math.min(1,Math.round((mobileScale+.05)*100)/100);applyMobileScale()});
+    addEventListener("resize",applyMobileScale,{passive:true});
+    addEventListener("orientationchange",applyMobileScale,{passive:true});
     $("moduleMap").addEventListener("click",e=>{const card=e.target.closest("[data-module-index]");if(card){const deepOrder=[7,6,4,1,2,3,8,5,0,9];currentSlide=8+deepOrder[Number(card.dataset.moduleIndex)];updateSlides()}});
     $("workforceGrid").addEventListener("click",e=>{const card=e.target.closest("[data-employee-index]");if(card){currentSlide=3+Number(card.dataset.employeeIndex);updateSlides()}});
     $("workflow").addEventListener("click",e=>{const button=e.target.closest("[data-step]");if(button){currentStep=Number(button.dataset.step);renderStep()}});
