@@ -487,17 +487,65 @@
       @keyframes deskScan{0%,18%{transform:rotate(16deg) translateX(-180%)}58%,100%{transform:rotate(16deg) translateX(520%)}}
       @keyframes onlinePulse{50%{box-shadow:0 0 0 5px rgba(81,217,255,.12),0 0 14px rgba(81,217,255,.65)}}
     }
+    .orientation-hint{display:none}
+    @media(max-width:900px) and (orientation:portrait){
+      .orientation-hint{
+        position:fixed;z-index:9999;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+        padding:34px;text-align:center;color:#fff;
+        background:linear-gradient(145deg,#131323,#251b52)
+      }
+      .rotate-device{position:relative;width:76px;height:116px;margin-bottom:30px;border:3px solid #9e8afb;border-radius:16px;animation:rotateHint 2.2s ease-in-out infinite}
+      .rotate-device::after{content:"";position:absolute;left:50%;bottom:7px;width:8px;height:8px;border-radius:50%;background:#65d9ff;transform:translateX(-50%);box-shadow:0 0 14px #65d9ff}
+      .orientation-hint b{font-size:25px}.orientation-hint p{max-width:310px;margin:12px 0 0;color:#bfc0d0;font-size:14px;line-height:1.65}
+      .orientation-hint small{margin-top:24px;color:#8f82cc;font:800 10px/1 ui-monospace,Consolas,monospace;letter-spacing:.16em}
+      @keyframes rotateHint{0%,25%{transform:rotate(0)}65%,100%{transform:rotate(90deg)}}
+    }
+    @media(max-width:900px) and (orientation:landscape){
+      .presenter{position:fixed;height:54px}
+      .presenter-inner{min-height:54px;flex-wrap:nowrap;gap:10px;padding:6px 0}
+      .presenter .logo{width:auto;margin-right:auto;font-size:17px;white-space:nowrap}
+      .presenter .logo::after,.control label,.print-btn{display:none}
+      .control{flex:0 0 auto;display:block}
+      .presenter select{width:auto;min-width:118px;max-width:160px;height:38px;padding:6px 29px 6px 10px;border-radius:10px;font-size:12px}
+      .fullscreen-btn{display:block!important;height:38px;padding:6px 11px;font-size:12px}
+      body{overflow:hidden}
+      .deck{height:100dvh}
+      .slide{height:100dvh;min-height:0;overflow:hidden;padding-top:68px!important;padding-bottom:62px!important}
+      .hero.slide,.closing.slide{width:100%}
+      section.slide>.shell,.hero.slide>.shell{width:min(100% - 36px,1120px)}
+      .deck-controls{bottom:7px;width:min(520px,calc(100% - 28px));padding:6px 8px}
+    }
     @media(max-width:900px){
       .presenter-inner{flex-wrap:wrap;padding:13px 0}.logo{width:100%}.control{flex:1;flex-direction:column;align-items:flex-start}select{width:100%;min-width:0}
       .hero-grid,.section-head,.talk{grid-template-columns:1fr}.section-head p{grid-column:1}.metrics{grid-template-columns:repeat(2,1fr)}
       .workflow-nav{grid-template-columns:repeat(4,1fr);row-gap:18px}.flow-node:nth-child(4)::after{display:none}.step-explorer{grid-template-columns:1fr}.scenarios{grid-template-columns:1fr}.hero{padding-top:60px}
       body{overflow:auto}.presenter{position:sticky}.deck{height:auto}.slide{height:auto;min-height:100dvh;overflow:visible;padding-top:60px!important;padding-bottom:90px!important}.hero.slide,.closing.slide{width:min(100% - 48px,1120px)}.slide.active{display:flex!important}.deck-controls{position:fixed}.fullscreen-btn{display:none}
     }
+    @media(max-width:900px) and (orientation:landscape){
+      body{overflow:hidden}.presenter{position:fixed;height:54px}
+      .presenter-inner{min-height:54px;flex-wrap:nowrap;gap:10px;padding:6px 0}
+      .presenter .logo{width:auto;margin-right:auto;font-size:17px;white-space:nowrap}
+      .presenter .logo::after,.control label,.print-btn{display:none}
+      .control{flex:0 0 auto;display:block}
+      .presenter select{width:auto;min-width:118px;max-width:160px;height:38px;padding:6px 29px 6px 10px;border-radius:10px;font-size:12px}
+      .fullscreen-btn{display:block!important;height:38px;padding:6px 11px;font-size:12px}
+      .deck{height:100dvh}
+      .slide{height:100dvh;min-height:0;overflow:hidden;padding-top:68px!important;padding-bottom:62px!important}
+      .hero.slide,.closing.slide{width:100%}
+      section.slide>.shell,.hero.slide>.shell{width:min(100% - 36px,1120px)}
+      .deck-controls{bottom:7px;width:min(520px,calc(100% - 28px));padding:6px 8px}
+    }
     @media(max-width:560px){.shell{width:min(100% - 24px,1120px)}.metrics,.focus-grid{grid-template-columns:1fr}.workflow-stage{padding:14px}.workflow-nav{grid-template-columns:repeat(2,1fr);gap:14px}.flow-node::after{display:none}.step-info{padding:24px}.io-grid{grid-template-columns:1fr}.ui-body{grid-template-columns:1fr}.sidebar{display:none}.talk{padding:26px}.print-btn{display:none}}
     @media print{.presenter,.deck-controls{display:none!important}body{overflow:visible;background:#fff}.deck{height:auto}.slide{display:flex!important;height:auto;min-height:100vh;overflow:visible;padding:36px 0!important;page-break-after:always}.hero-ui,.metric,.focus-card,.scenario{box-shadow:none;break-inside:avoid}.talk{background:#fff;color:#111;border:1px solid #ddd}.talk-copy p,.talk-row div span{color:#555}}
   </style>
 </head>
 <body>
+  <div class="orientation-hint" role="dialog" aria-label="请横屏观看">
+    <div class="rotate-device" aria-hidden="true"></div>
+    <b id="orientationTitle">请横屏观看</b>
+    <p id="orientationCopy">为了完整显示系统界面和操作流程，请将手机旋转至横屏。</p>
+    <small>ROTATE FOR BEST VIEW</small>
+  </div>
   <header class="presenter">
     <div class="shell presenter-inner">
       <div class="logo"><b>EM</b>PLIX</div>
@@ -1034,6 +1082,8 @@
     function render(){
       const c=common[lang], a=audiences[lang][audience];
       document.documentElement.lang=lang;
+      $("orientationTitle").textContent=lang==="en"?"Rotate your phone":lang==="zh-TW"?"請橫螢幕觀看":"请横屏观看";
+      $("orientationCopy").textContent=lang==="en"?"Rotate to landscape to view the full system interface and workflow.":lang==="zh-TW"?"為了完整顯示系統介面和操作流程，請將手機旋轉至橫螢幕。":"为了完整显示系统界面和操作流程，请将手机旋转至横屏。";
       $("languageLabel").textContent=c.language;$("audienceLabel").textContent=c.audience;$("printBtn").textContent=c.print;
       $("fullscreenBtn").textContent=lang==="en"?"Full screen":lang==="zh-TW"?"全螢幕":"全屏";
       $("audience").innerHTML=audienceOrder.map(key=>`<option value="${key}" ${key===audience?"selected":""}>${esc(audiences[lang][key].name)}</option>`).join("");
