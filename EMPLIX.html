@@ -536,6 +536,29 @@
       .deck-controls{bottom:7px;width:min(520px,calc(100% - 28px));padding:6px 8px}
     }
     @media(max-width:560px){.shell{width:min(100% - 24px,1120px)}.metrics,.focus-grid{grid-template-columns:1fr}.workflow-stage{padding:14px}.workflow-nav{grid-template-columns:repeat(2,1fr);gap:14px}.flow-node::after{display:none}.step-info{padding:24px}.io-grid{grid-template-columns:1fr}.ui-body{grid-template-columns:1fr}.sidebar{display:none}.talk{padding:26px}.print-btn{display:none}}
+    @media (orientation:landscape) and (pointer:coarse),(orientation:landscape) and (max-height:600px){
+      body{overflow:hidden}
+      .presenter{position:fixed;height:42px}
+      .presenter-inner{width:calc(100% - 20px);min-height:42px;justify-content:flex-end;gap:7px;padding:4px 0}
+      .presenter .logo,.presenter .logo::after,.presenter label,.print-btn,.fullscreen-btn{display:none!important}
+      .presenter .control{display:block;flex:0 0 auto}
+      .presenter select{width:auto;min-width:112px;max-width:155px;height:34px;padding:4px 26px 4px 9px;border-radius:9px;font-size:11px}
+      .deck{height:100dvh}
+      .slide{height:100dvh;min-height:0;overflow:hidden;padding:48px 0 47px!important}
+      section.slide>.shell,.hero.slide>.shell{
+        width:160%;max-width:none;zoom:.61
+      }
+      .hero.slide,.closing.slide{width:100%}
+      .hero.slide .hero-grid{gap:34px}.hero.slide h1{font-size:48px}
+      .hero.slide .ui-body{min-height:290px}.hero.slide .metrics{margin-top:18px}
+      .slide .section-head{margin-bottom:18px}
+      .deck-controls{
+        bottom:4px;width:min(440px,calc(100% - 20px));height:40px;
+        grid-template-columns:30px minmax(120px,1fr) 92px 30px;gap:7px;padding:4px 7px;border-radius:12px
+      }
+      .deck-controls>button{width:28px;height:28px;border-radius:8px;font-size:14px}
+      .slide-status span{font-size:10px}.slide-status b{font-size:9px}.deck-progress{height:4px}
+    }
     @media print{.presenter,.deck-controls{display:none!important}body{overflow:visible;background:#fff}.deck{height:auto}.slide{display:flex!important;height:auto;min-height:100vh;overflow:visible;padding:36px 0!important;page-break-after:always}.hero-ui,.metric,.focus-card,.scenario{box-shadow:none;break-inside:avoid}.talk{background:#fff;color:#111;border:1px solid #ddd}.talk-copy p,.talk-row div span{color:#555}}
   </style>
 </head>
