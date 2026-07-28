@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EMPLIX 多语言产品讲解</title>
+  <style>
+    :root{
+      --ink:#111318;--muted:#667085;--line:#e7e8ec;--paper:#fff;--wash:#f6f7f9;
+      --accent:#5b35e8;--accent-soft:#f0edff;--dark:#151524;--radius:22px;
+      --shadow:0 18px 50px rgba(26,25,43,.08)
+    }
+    *{box-sizing:border-box}
+    html{min-width:100%;min-height:100%;scroll-behavior:smooth}
+    body{position:relative;isolation:isolate;margin:0;background:#f7f8fc;color:var(--ink);font-family:Inter,"Noto Sans SC","Noto Sans TC","Microsoft YaHei",system-ui,sans-serif}
+    body::before{
+      content:"";position:fixed;z-index:-1;inset:0;width:100vw;height:100dvh;pointer-events:none;
+      background:#f7f8fc
+    }
+    button,select{font:inherit}
+    button{cursor:pointer}
+    .shell{width:min(1120px,calc(100% - 96px));margin:auto}
+    .presenter{
+      position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);
+      background:rgba(255,255,255,.94);backdrop-filter:blur(18px)
+    }
+    .presenter-inner{min-height:72px;display:flex;align-items:center;gap:20px}
+    .logo{margin-right:auto;font-size:22px;font-weight:800;letter-spacing:-.04em}
+    .logo b{color:var(--accent)}
+    .control{display:flex;align-items:center;gap:9px}
+    .control label{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+    select{
+      min-width:158px;padding:11px 38px 11px 13px;border:1px solid var(--line);
+      border-radius:12px;background:var(--paper);color:var(--ink);font-weight:650
+    }
+    .print-btn{padding:11px 15px;border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:700}
+    .hero{padding:88px 0 56px}
+    .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:58px;align-items:center}
+    .kicker{display:inline-flex;padding:7px 11px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:750}
+    h1{max-width:760px;margin:20px 0 22px;font-size:clamp(48px,6vw,76px);line-height:1.06;letter-spacing:-.055em}
+    .hero-copy{max-width:700px;margin:0;color:var(--muted);font-size:19px;line-height:1.75}
+    .audience-note{display:flex;align-items:center;gap:12px;margin-top:30px;color:var(--muted);font-size:14px}
+    .audience-note b{color:var(--ink)}
+    .pulse{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 7px var(--accent-soft)}
+    .hero-ui{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);box-shadow:var(--shadow)}
+    .hero-ui::before{content:"";position:absolute;z-index:4;inset:-1px;pointer-events:none;border-radius:inherit;border:1px solid rgba(91,53,232,.28);box-shadow:inset 0 0 30px rgba(91,53,232,.045),0 0 34px rgba(91,53,232,.10)}
+    .hero-ui::after{content:"";position:absolute;z-index:3;left:-30%;top:-55%;width:42%;height:210%;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(100,220,255,.12),transparent);transform:rotate(16deg) translateX(-180%)}
+    .ui-top{height:48px;display:flex;align-items:center;gap:7px;padding:0 18px;border-bottom:1px solid var(--line)}
+    .ui-top i{width:9px;height:9px;border-radius:50%;background:#d8d9df}.ui-top i:nth-child(2){background:#6b43ef}.ui-top i:nth-child(3){background:#51d9ff}
+    .ui-top b{margin-left:auto;font-size:11px;letter-spacing:.1em}
+    .ui-body{display:grid;grid-template-columns:70px 1fr;min-height:400px}
+    .sidebar{display:flex;flex-direction:column;align-items:center;gap:18px;padding:20px 12px;background:var(--dark)}
+    .sidebar strong{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--accent);color:#fff}
+    .sidebar i{width:26px;height:8px;border-radius:8px;background:#fff;opacity:.18}.sidebar i.active{opacity:1;background:#8c75f4}
+    .ui-content{padding:26px}
+    .ui-head{display:flex;justify-content:space-between;gap:12px}
+    .ui-head small{color:var(--accent);font-weight:750}.ui-head h3{margin:6px 0 0;font-size:18px}
+    .review-badge{height:fit-content;padding:7px 9px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:10px;font-weight:750}
+    .draft{margin-top:20px;padding:18px;border:1px solid var(--line);border-radius:15px}
+    .draft small{color:var(--muted)}.draft h4{margin:18px 0 9px}.draft p{color:var(--muted);font-size:12px;line-height:1.65}
+    .source{display:inline-block;padding:6px 8px;border-radius:7px;background:var(--wash);color:var(--muted);font-size:9px}
+    .ui-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+    .ui-actions button{padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:10px;font-weight:700}
+    .ui-actions button:first-child{border-color:var(--accent);background:var(--accent);color:#fff}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:58px}
+    .metric{padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
+    .metric b{display:block;font-size:25px}.metric span{display:block;margin-top:7px;color:var(--muted);font-size:13px}
+    section{padding:78px 0}
+    .section-head{display:grid;grid-template-columns:.72fr 1.28fr;gap:40px;margin-bottom:38px}
+    .section-head small{color:var(--accent);font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .section-head h2{margin:0;font-size:clamp(34px,4vw,48px);line-height:1.14;letter-spacing:-.04em}
+    .section-head p{grid-column:2;margin:0;color:var(--muted);font-size:17px;line-height:1.7}
+    .white-section{background:var(--paper)}
+    .workflow-stage{padding:24px;border:1px solid var(--line);border-radius:var(--radius);background:var(--wash)}
+    .workflow-nav{display:grid;grid-template-columns:repeat(8,1fr);gap:0;margin-bottom:24px}
+    .flow-node{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px;padding:0 4px;border:0;background:transparent;color:var(--muted)}
+    .flow-node::after{content:"";position:absolute;top:18px;left:60%;width:80%;height:2px;background:var(--line)}
+    .flow-node:last-child::after{display:none}
+    .flow-node i{position:relative;z-index:1;display:grid;place-items:center;width:38px;height:38px;border:2px solid var(--line);border-radius:50%;background:var(--paper);font-style:normal;font-size:11px;font-weight:800}
+    .flow-node span{font-size:11px;font-weight:700;text-align:center}
+    .flow-node.active{color:var(--accent)}.flow-node.active i{border-color:var(--accent);background:var(--accent);color:#fff;box-shadow:0 0 0 7px var(--accent-soft)}
+    .flow-node.done i{border-color:var(--accent);color:var(--accent)}.flow-node.done::after{background:var(--accent)}
+    .step-explorer{display:grid;grid-template-columns:1.02fr .98fr;min-height:410px;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:var(--paper)}
+    .step-visual{padding:26px;background:var(--dark);color:#fff}
+    .visual-toolbar{display:flex;align-items:center;justify-content:space-between;color:#a9aabb;font-size:11px}
+    .visual-toolbar b{color:#fff;letter-spacing:.08em}
+    .module-preview{margin-top:22px;padding:22px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:#1e1e31}
+    .module-preview-head{display:flex;align-items:center;gap:12px}
+    .module-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:var(--accent);font-size:12px;font-weight:850}
+    .module-preview-head div{display:flex;flex-direction:column;gap:4px}.module-preview-head small{color:#a9aabb}
+    .real-screen-shell{margin-top:14px;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:#fff}
+    .real-screen-head{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;background:#1e1e31}
+    .real-screen-head .module-icon{width:34px;height:34px;border-radius:10px}
+    .real-screen-head .module-preview-head b{font-size:12px}.real-screen-head .module-preview-head small{font-size:9px}
+    .live-label{padding:6px 8px;border-radius:7px;background:rgba(91,53,232,.3);color:#c8bfff;font-size:9px;font-weight:800;letter-spacing:.05em}
+    .real-screen-viewport{position:relative;height:255px;overflow:hidden;background:#f3f6fa}
+    .real-screen-viewport iframe{width:200%;height:510px;border:0;transform:scale(.5);transform-origin:top left;pointer-events:none;background:#f3f6fa}
+    .screen-flow-caption{display:grid;grid-template-columns:1fr 24px 1fr;align-items:center;gap:8px;margin-top:12px}
+    .screen-flow-caption>div{min-height:62px;padding:10px 12px;border-radius:10px;background:#29293d}
+    .screen-flow-caption small{color:#9fa0ad;font-size:9px}.screen-flow-caption b{display:block;margin-top:7px;font-size:10px;line-height:1.35}
+    .screen-flow-caption>span{text-align:center;color:#9f8bf7;font-weight:900}
+    .visual-flow{display:grid;grid-template-columns:1fr 30px 1fr;align-items:center;gap:10px;margin-top:24px}
+    .visual-box{min-height:108px;padding:15px;border-radius:12px;background:#29293d}
+    .visual-box small{color:#a9aabb}.visual-box b{display:block;margin-top:14px;font-size:13px;line-height:1.45}
+    .visual-arrow{text-align:center;color:#9f8bf7;font-size:22px}
+    .control-gate{display:flex;align-items:center;gap:10px;margin-top:14px;padding:13px;border-radius:11px;background:rgba(91,53,232,.22);font-size:12px}
+    .control-gate i{width:9px;height:9px;border-radius:50%;background:#9f8bf7}
+    .step-info{display:flex;flex-direction:column;padding:34px}
+    .step-info-top{display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .step-counter{color:var(--accent);font-size:13px;font-weight:850;letter-spacing:.08em}
+    .module-chip{padding:7px 10px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:750}
+    .step-info h3{margin:26px 0 12px;font-size:31px;letter-spacing:-.03em}.step-info>p{margin:0;color:var(--muted);font-size:16px;line-height:1.7}
+    .io-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+    .io-card{padding:15px;border:1px solid var(--line);border-radius:12px}.io-card small{color:var(--muted);font-size:10px;font-weight:750;text-transform:uppercase;letter-spacing:.08em}.io-card b{display:block;margin-top:9px;font-size:13px;line-height:1.45}
+    .step-controls{display:flex;justify-content:flex-end;gap:8px;margin-top:auto;padding-top:20px}.step-controls button{padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:700}.step-controls button:last-child{border-color:var(--accent);background:var(--accent);color:#fff}.step-controls button:disabled{cursor:not-allowed;opacity:.35}
+    .focus-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .focus-card{position:relative;display:grid;grid-template-columns:1fr 128px;gap:22px;align-items:center;overflow:hidden;min-height:220px;padding:26px;border:1px solid var(--line);border-radius:18px;background:var(--paper)}
+    .focus-card::after{content:"";position:absolute;left:0;bottom:0;width:var(--meter,70%);height:5px;background:var(--accent)}
+    .focus-card>b{position:absolute;left:26px;top:26px;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-size:12px}
+    .focus-copy{padding-top:42px}
+    .focus-card h3{margin:0 0 10px;font-size:22px}.focus-card p{margin:0;color:var(--muted);line-height:1.65}
+    .focus-visual{display:grid;place-items:center;width:124px;height:124px;border-radius:30px;background:linear-gradient(145deg,#f7f4ff,#ece7ff);color:var(--accent)}
+    .focus-visual svg{width:82px;height:82px}.focus-visual .soft{fill:#ddd5ff}.focus-visual .paper{fill:#fff;stroke:#c8bbff;stroke-width:2}
+    .focus-visual .line{fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}.focus-visual .dot{fill:currentColor}
+    .scenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .scenario{display:flex;flex-direction:column;min-height:350px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--paper)}
+    .scenario small{color:var(--accent);font-weight:750}.scenario h3{margin:16px 0 20px;font-size:23px}
+    .scenario-visual{
+      position:relative;display:grid;place-items:center;height:150px;margin:0 0 18px;overflow:hidden;
+      border:1px solid #e8e3ff;border-radius:16px;
+      background:
+        radial-gradient(circle at 18% 22%,rgba(91,53,232,.10) 0 3px,transparent 4px),
+        radial-gradient(circle at 82% 76%,rgba(91,53,232,.09) 0 4px,transparent 5px),
+        linear-gradient(145deg,#faf9ff,#f2efff)
+    }
+    .scenario-visual::before,.scenario-visual::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(91,53,232,.12)}
+    .scenario-visual::before{width:118px;height:118px;left:-44px;bottom:-62px}
+    .scenario-visual::after{width:88px;height:88px;right:-28px;top:-42px}
+    .scenario-visual svg{width:82%;height:118px;color:var(--accent)}
+    .scenario-visual .soft{fill:#e9e3ff}.scenario-visual .paper{fill:#fff;stroke:#cfc4ff;stroke-width:2}
+    .scenario-visual .line{fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+    .scenario-visual .thin{fill:none;stroke:#9d89ef;stroke-width:1.8;stroke-linecap:round}
+    .scenario-visual .dot{fill:currentColor}
+    .journey{display:grid;gap:8px;margin-top:auto}
+    .journey-node{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;padding:12px;border-radius:11px;background:var(--wash)}
+    .journey-node i{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);font-style:normal;font-size:10px;font-weight:850}
+    .journey-node b{font-size:12px;line-height:1.45}.journey-arrow{text-align:center;color:var(--accent);font-weight:900;line-height:10px}
+    .journey-outcome{margin-top:14px;padding:13px;border:1px solid #dcd5ff;border-radius:11px;color:var(--ink);background:var(--accent-soft);font-size:12px;line-height:1.5}
+    .talk{display:grid;grid-template-columns:.68fr 1.32fr;gap:54px;padding:42px;border-radius:var(--radius);background:var(--dark);color:#fff}
+    .talk-copy h2{margin:16px 0 14px;font-size:38px;line-height:1.17}.talk-copy p{color:#b9bac5;line-height:1.65}
+    .talk-list{display:grid;gap:0}
+    .talk-row{display:grid;grid-template-columns:38px 1fr auto;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+    .talk-row:last-child{border-bottom:0}.talk-row>span{color:#a993ff;font-weight:800}.talk-row div{display:flex;flex-direction:column;gap:4px}
+    .talk-row div span{color:#b9bac5;font-size:13px}.talk-row em{color:#a8a9b4;font-size:12px;font-style:normal}
+    .closing{padding:80px 0 100px}
+    .closing-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:70px;align-items:center}
+    .closing-copy{text-align:left}
+    .closing-copy .kicker{margin-bottom:18px}
+    .closing h2{max-width:650px;margin:0 0 18px;font-size:clamp(38px,4.4vw,58px);line-height:1.08;letter-spacing:-.05em}
+    .closing p{max-width:590px;margin:0;color:var(--muted);font-size:17px;line-height:1.72}
+    .pilot-panel{padding:28px;border:1px solid var(--line);border-radius:24px;background:var(--paper);box-shadow:var(--shadow)}
+    .pilot-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .pilot-head b{font-size:13px;letter-spacing:.08em}.pilot-head span{padding:7px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:800}
+    .pilot-steps{display:grid;gap:12px}
+    .pilot-step{display:grid;grid-template-columns:48px 1fr auto;gap:15px;align-items:center;padding:17px;border-radius:15px;background:var(--wash)}
+    .pilot-step>i{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:var(--dark);color:#fff;font-style:normal;font-size:12px;font-weight:850}
+    .pilot-step b{display:block;margin-bottom:4px;font-size:15px}.pilot-step small{color:var(--muted);font-size:12px;line-height:1.5}
+    .pilot-step>span{color:var(--accent);font-size:19px;font-weight:900}
+    .pilot-result{display:flex;align-items:center;gap:12px;margin-top:17px;padding:15px 17px;border:1px solid #dcd5ff;border-radius:14px;background:var(--accent-soft);font-size:13px;font-weight:750}
+    .pilot-result i{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:var(--accent);color:#fff;font-style:normal}
+    .module-map{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+    .module-map-card{position:relative;min-height:122px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--paper);color:var(--ink);text-align:left}
+    .module-map-card i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-style:normal;font-size:11px;font-weight:850}
+    .module-map-card b{display:block;margin-top:18px;font-size:15px}.module-map-card span{display:block;margin-top:7px;color:var(--muted);font-size:11px;line-height:1.5}
+    .module-map-card::after{content:"";position:absolute;right:14px;top:17px;width:5px;height:5px;border-radius:50%;background:#55d4ff;box-shadow:0 0 12px #55d4ff}
+    .module-map-card.active{border-color:var(--accent);background:linear-gradient(145deg,#fff,#f2efff);box-shadow:0 12px 30px rgba(91,53,232,.13)}
+    .detail-dock{display:grid;grid-template-columns:160px 1fr 1fr 1fr;gap:16px;align-items:center;margin-top:16px;padding:18px 20px;border:1px solid rgba(91,53,232,.18);border-radius:17px;background:linear-gradient(135deg,#171629,#211a43);color:#fff}
+    .detail-dock-title small{display:block;color:#6edbff;font:800 9px/1 ui-monospace,Consolas,monospace;letter-spacing:.12em}.detail-dock-title b{display:block;margin-top:9px;font-size:18px}
+    .detail-cell{padding-left:16px;border-left:1px solid rgba(255,255,255,.13)}.detail-cell small{display:block;color:#aeb1c2;font-size:9px;font-weight:800;letter-spacing:.08em}.detail-cell b{display:block;margin-top:8px;font-size:11px;line-height:1.55}
+    .workforce{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+    .employee-card{position:relative;min-height:275px;padding:18px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(155deg,#fff,#f8f6ff);color:var(--ink);text-align:left}
+    .employee-avatar{display:grid;place-items:center;width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,#6b43ef,#4c29d3);color:#fff;font-size:12px;font-weight:850;box-shadow:0 10px 22px rgba(91,53,232,.23)}
+    .employee-card h3{margin:20px 0 8px;font-size:18px}.employee-card>p{min-height:58px;margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+    .employee-tasks{display:grid;gap:7px;margin-top:20px}.employee-tasks span{padding:9px 10px;border-radius:9px;background:var(--wash);font-size:11px;font-weight:700}
+    .employee-control{position:absolute;left:20px;right:20px;bottom:18px;display:flex;align-items:center;gap:7px;color:var(--accent);font-size:10px;font-weight:800}
+    .employee-control i{width:7px;height:7px;border-radius:50%;background:#55d4ff;box-shadow:0 0 10px #55d4ff}
+    .employee-card.active{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 18px 38px rgba(91,53,232,.14)}
+    .employee-detail{grid-template-columns:150px 1fr 1fr 1fr}
+    .dynamic-slides{display:contents}
+    .deep-layout{display:grid;grid-template-columns:.72fr 1.28fr;gap:28px}
+    .deep-identity,.deep-content{padding:30px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(150deg,#fff,#f8f6ff)}
+    .deep-avatar{display:grid;place-items:center;width:76px;height:76px;border-radius:22px;background:linear-gradient(135deg,#6b43ef,#4021bd);color:#fff;font-size:19px;font-weight:900;box-shadow:0 14px 32px rgba(91,53,232,.25)}
+    .deep-identity h3{margin:25px 0 10px;font-size:30px}.deep-identity p{color:var(--muted);line-height:1.65}
+    .deep-status{display:flex;align-items:center;gap:9px;margin-top:28px;color:#148b67;font-size:11px;font-weight:850}.deep-status i{width:8px;height:8px;border-radius:50%;background:#3ad5a1;box-shadow:0 0 12px #3ad5a1}
+    .deep-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px}.deep-block{padding:17px;border-radius:14px;background:var(--wash)}
+    .deep-block small{color:var(--accent);font-size:10px;font-weight:850;letter-spacing:.08em}.deep-block b{display:block;margin-top:9px;font-size:13px;line-height:1.55}
+    .capability-list{display:grid;gap:9px;margin-top:18px}.capability-list span{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:11px;font-size:12px;font-weight:700}
+    .capability-list span::before{content:"✓";display:grid;place-items:center;width:23px;height:23px;border-radius:7px;background:var(--accent-soft);color:var(--accent)}
+    .module-deep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .module-deep-card{min-height:300px;padding:24px;border:1px solid var(--line);border-radius:19px;background:linear-gradient(150deg,#fff,#f8f7ff)}
+    .module-deep-card i{display:grid;place-items:center;width:45px;height:45px;border-radius:13px;background:var(--accent-soft);color:var(--accent);font-style:normal;font-size:12px;font-weight:850}
+    .module-deep-card h3{margin:21px 0 9px;font-size:21px}.module-deep-card>p{min-height:52px;color:var(--muted);font-size:12px;line-height:1.55}
+    .module-actions{display:grid;gap:8px;margin-top:19px}.module-actions span{padding:10px;border-radius:9px;background:var(--wash);font-size:11px;font-weight:700}
+    .module-screen-layout{display:grid;grid-template-columns:1.18fr .82fr;gap:24px;min-height:430px}
+    .system-capture{overflow:hidden;border:1px solid rgba(91,53,232,.2);border-radius:20px;background:#141422;box-shadow:0 20px 50px rgba(24,20,54,.15)}
+    .capture-bar{height:54px;display:flex;align-items:center;gap:8px;padding:0 18px;color:#fff}.capture-bar i{width:8px;height:8px;border-radius:50%;background:#676779}.capture-bar i:nth-child(2){background:#6e48ee}.capture-bar b{margin-left:auto;font:800 10px/1 ui-monospace,Consolas,monospace;letter-spacing:.12em}
+    .capture-viewport{position:relative;height:376px;overflow:hidden;background:#eef2f7}.capture-viewport iframe{width:150%;height:564px;border:0;transform:scale(.667);transform-origin:top left;pointer-events:none;background:#eef2f7}
+    .capture-viewport::before{content:"AUTO SCROLL";position:absolute;z-index:3;right:10px;bottom:10px;padding:6px 8px;border:1px solid rgba(255,255,255,.45);border-radius:7px;background:rgba(20,20,34,.72);color:#8be5ff;font:800 8px/1 ui-monospace,Consolas,monospace;letter-spacing:.1em;backdrop-filter:blur(8px)}
+    .capture-viewport:hover::before{content:"PAUSED";color:#fff}
+    .capture-viewport.scroll-unavailable::before{content:"STATIC PREVIEW";color:#d9d9e4}
+    .capture-viewport::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(75,205,255,.09),transparent);background-size:100% 90px;transform:translateY(-100%)}
+    .module-narrative{display:flex;flex-direction:column;padding:28px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(150deg,#fff,#f8f6ff)}
+    .module-narrative .module-code{display:grid;place-items:center;width:46px;height:46px;border-radius:13px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:900}
+    .module-narrative h3{margin:22px 0 9px;font-size:28px}.module-narrative>p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+    .module-narrative .module-actions{margin-top:24px}.module-narrative .module-actions span{display:flex;align-items:center;gap:9px;padding:12px}.module-narrative .module-actions span::before{content:"";width:7px;height:7px;border-radius:50%;background:#45cfff;box-shadow:0 0 10px #45cfff}
+    .system-proof{margin-top:auto;padding-top:18px;color:var(--accent);font-size:10px;font-weight:850;letter-spacing:.05em}
+    .governance-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:24px}
+    .control-stack,.value-console{padding:28px;border:1px solid var(--line);border-radius:20px;background:var(--paper)}
+    .panel-label{color:var(--accent);font:800 11px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.1em}
+    .control-stack h3,.value-console h3{margin:13px 0 20px;font-size:25px}
+    .control-row{display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+    .control-row:last-child{border-bottom:0}.control-row>i{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);font-style:normal;font-size:11px;font-weight:850}
+    .control-row b{display:block;font-size:13px}.control-row small{display:block;margin-top:3px;color:var(--muted);font-size:10px}.control-row>span{color:#18a878;font-size:10px;font-weight:850}
+    .value-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}.value-tile{padding:16px;border-radius:13px;background:var(--wash)}
+    .value-tile b{display:block;font-size:22px}.value-tile span{display:block;margin-top:5px;color:var(--muted);font-size:10px}
+    .audit-line{display:flex;align-items:center;gap:10px;margin-top:18px;padding:14px;border:1px solid #dcd5ff;border-radius:12px;background:var(--accent-soft);font-size:11px;font-weight:750}
+    .audit-line i{width:9px;height:9px;border-radius:50%;background:#36caff;box-shadow:0 0 12px #36caff}
+    footer{padding:28px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+    footer .shell{display:flex;justify-content:space-between;gap:20px}footer b{color:var(--ink)}
+    body{overflow:hidden}
+    .presenter{position:fixed;inset:0 0 auto}
+    .presenter-inner{min-height:64px}
+    .presenter .logo{font-size:19px}
+    .presenter select{min-width:145px;padding-top:9px;padding-bottom:9px}
+    .fullscreen-btn{padding:11px 15px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:700}
+    .deck{height:100dvh}
+    .deck::before,.deck::after{display:none}
+    .slide{
+      display:none!important;width:100%;height:100dvh;overflow:hidden;
+      padding-top:112px!important;padding-bottom:112px!important;animation:slideIn .34s ease
+    }
+    .slide.active{display:flex!important;flex-direction:column;justify-content:center}
+    section.slide>.shell{width:min(1120px,calc(100% - 120px));margin:auto}
+    .hero.slide{width:100%;margin:0;padding-left:0;padding-right:0}
+    .closing.slide{width:min(1120px,calc(100% - 120px));margin-left:auto;margin-right:auto;padding-left:0;padding-right:0}
+    .hero.slide .hero-grid{gap:64px}.hero.slide h1{font-size:clamp(42px,4.5vw,64px)}
+    .hero.slide .ui-body{min-height:350px}.hero.slide .metrics{margin-top:28px}
+    .slide .section-head{margin-bottom:36px}.slide .section-head h2{font-size:clamp(31px,3.2vw,42px)}
+    .slide .workflow-stage{max-height:690px}.slide .step-explorer{min-height:385px}
+    .slide .focus-card{min-height:190px}.slide .scenario{min-height:330px}
+    .slide .talk{max-height:660px}
+    .closing.slide{justify-content:center;padding-top:88px!important}
+    footer{display:none}
+    .deck-controls{
+      position:fixed;z-index:60;left:50%;bottom:22px;transform:translateX(-50%);
+      display:grid;grid-template-columns:38px minmax(190px,1fr) 140px 38px;align-items:center;gap:10px;
+      width:min(600px,calc(100% - 48px));padding:8px 10px;border:1px solid var(--line);
+      border-radius:15px;background:rgba(255,255,255,.94);box-shadow:0 12px 34px rgba(24,25,38,.11);backdrop-filter:blur(14px)
+    }
+    .deck-controls>button{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:17px;font-weight:800}
+    .deck-controls>button:last-child{border-color:var(--accent);background:var(--accent);color:#fff}
+    .deck-controls>button:disabled{opacity:.3;cursor:not-allowed}
+    .slide-status{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+    .slide-status span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:750}
+    .slide-status b{color:var(--accent);font-size:11px}
+    .deck-progress{height:5px;overflow:hidden;border-radius:99px;background:var(--line)}
+    .deck-progress i{display:block;width:16.66%;height:100%;border-radius:99px;background:var(--accent);transition:width .3s ease}
+    .focus-grid,.scenarios{gap:22px}
+    .workflow-stage{padding:24px}
+    .talk{padding:46px 50px}
+    .hero-ui,.workflow-stage,.focus-card,.scenario,.pilot-panel{box-shadow:0 16px 46px rgba(24,25,38,.08)}
+    html:fullscreen .slide[data-slide="1"]{
+      justify-content:flex-start;padding-top:88px!important;padding-bottom:78px!important
+    }
+    html:fullscreen .slide[data-slide="1"]>.shell{
+      display:flex;height:100%;min-height:0;flex-direction:column
+    }
+    html:fullscreen .slide[data-slide="1"] .section-head{flex:0 0 auto;margin-bottom:22px}
+    html:fullscreen .slide[data-slide="1"] .workflow-stage{
+      display:flex;min-height:0;max-height:none;flex:1;flex-direction:column
+    }
+    html:fullscreen .slide[data-slide="1"] .workflow-nav{flex:0 0 auto;margin-bottom:18px}
+    html:fullscreen .slide[data-slide="1"] .step-explorer{min-height:0;flex:1}
+    html:fullscreen .slide[data-slide="1"] .step-visual{
+      display:flex;min-height:0;flex-direction:column
+    }
+    html:fullscreen .slide[data-slide="1"] .real-screen-shell{
+      display:flex;min-height:0;flex:1;flex-direction:column
+    }
+    html:fullscreen .slide[data-slide="1"] .real-screen-head{flex:0 0 58px}
+    html:fullscreen .slide[data-slide="1"] .real-screen-viewport{
+      height:auto;min-height:220px;flex:1
+    }
+    html:fullscreen .slide[data-slide="1"] .real-screen-viewport iframe{height:200%}
+    html:fullscreen .slide[data-slide="1"] .screen-flow-caption{flex:0 0 auto}
+    html:fullscreen .slide[data-slide="1"] .step-info{padding-top:40px;padding-bottom:30px}
+    html:fullscreen .slide[data-slide="1"] .step-info h3{margin-top:32px}
+    html:fullscreen .slide[data-slide="1"] .io-grid{margin-top:28px}
+    @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+    @media(max-height:820px) and (min-width:901px){
+      .slide{padding-top:82px!important;padding-bottom:70px!important}
+      .hero.slide .ui-body{min-height:300px}.hero.slide .window-content{padding:20px}
+      .hero.slide .metrics{margin-top:16px}.hero.slide .metric{padding:14px}
+      .slide .section-head{margin-bottom:18px}.slide .section-head p{font-size:15px}
+      .slide .step-explorer{min-height:330px}.slide .step-visual{padding:18px}.slide .step-info{padding:24px}
+      .slide .focus-card{min-height:165px;padding:20px}.slide .scenario{min-height:285px;padding:19px}
+      .deck-controls{bottom:10px}
+      .slide[data-slide="1"]{justify-content:flex-start;padding-top:78px!important;padding-bottom:66px!important}
+      .slide[data-slide="1"]>.shell{display:flex;height:100%;min-height:0;flex-direction:column}
+      .slide[data-slide="1"] .section-head{
+        flex:0 0 auto;grid-template-columns:130px 1fr;gap:8px 24px;align-items:end;margin-bottom:12px
+      }
+      .slide[data-slide="1"] .section-head small{grid-row:1 / span 2;align-self:center}
+      .slide[data-slide="1"] .section-head h2{font-size:30px;line-height:1.08}
+      .slide[data-slide="1"] .section-head p{grid-column:2;font-size:13px;line-height:1.4}
+      .slide[data-slide="1"] .workflow-stage{display:flex;min-height:0;flex:1;flex-direction:column;padding:15px}
+      .slide[data-slide="1"] .workflow-nav{flex:0 0 auto;margin-bottom:13px}
+      .slide[data-slide="1"] .flow-node{gap:6px;font-size:10px}
+      .slide[data-slide="1"] .flow-node i{width:34px;height:34px}
+      .slide[data-slide="1"] .flow-node::after{top:16px}
+      .slide[data-slide="1"] .step-explorer{min-height:0;flex:1}
+      .slide[data-slide="1"] .step-visual{padding:14px 16px}
+      .slide[data-slide="1"] .real-screen-shell{margin-top:9px}
+      .slide[data-slide="1"] .real-screen-head{height:48px}
+      .slide[data-slide="1"] .real-screen-viewport{height:174px}
+      .slide[data-slide="1"] .real-screen-viewport iframe{height:348px}
+      .slide[data-slide="1"] .screen-flow-caption{margin-top:8px}
+      .slide[data-slide="1"] .screen-flow-caption>div{min-height:48px;padding:8px 10px}
+      .slide[data-slide="1"] .step-info{padding:20px 24px}
+      .slide[data-slide="1"] .step-info h3{margin:18px 0 8px;font-size:27px}
+      .slide[data-slide="1"] .step-info>p{font-size:14px;line-height:1.5}
+      .slide[data-slide="1"] .io-grid{margin-top:16px}
+      .slide[data-slide="1"] .io-card{padding:12px}
+      .slide[data-slide="1"] .step-controls{margin-top:auto}
+      .slide[data-slide="2"]{justify-content:flex-start;padding-top:78px!important;padding-bottom:66px!important}
+      .slide[data-slide="2"]>.shell{display:flex;height:100%;min-height:0;flex-direction:column}
+      .slide[data-slide="2"] .section-head{
+        flex:0 0 auto;grid-template-columns:130px 1fr;gap:8px 24px;align-items:end;margin-bottom:16px
+      }
+      .slide[data-slide="2"] .section-head small{grid-row:1 / span 2;align-self:center}
+      .slide[data-slide="2"] .section-head h2{font-size:30px;line-height:1.08}
+      .slide[data-slide="2"] .section-head p{grid-column:2;font-size:13px;line-height:1.4}
+      .slide[data-slide="2"] .focus-grid{min-height:0;flex:1;grid-template-rows:repeat(2,1fr);gap:14px 18px}
+      .slide[data-slide="2"] .focus-card{grid-template-columns:1fr 92px;gap:14px;min-height:0;padding:18px 22px}
+      .slide[data-slide="2"] .focus-card>b{left:22px;top:18px;width:30px;height:30px}
+      .slide[data-slide="2"] .focus-copy{padding-top:34px}
+      .slide[data-slide="2"] .focus-card h3{margin:0 0 7px;font-size:20px}
+      .slide[data-slide="2"] .focus-card p{font-size:14px;line-height:1.5}
+      .slide[data-slide="2"] .focus-visual{width:86px;height:86px;border-radius:22px}
+      .slide[data-slide="2"] .focus-visual svg{width:58px;height:58px}
+      .slide[data-slide="3"]{justify-content:flex-start;padding-top:78px!important;padding-bottom:66px!important}
+      .slide[data-slide="3"]>.shell{display:flex;height:100%;min-height:0;flex-direction:column}
+      .slide[data-slide="3"] .section-head{
+        flex:0 0 auto;grid-template-columns:130px 1fr;gap:8px 24px;align-items:end;margin-bottom:14px
+      }
+      .slide[data-slide="3"] .section-head small{grid-row:1 / span 2;align-self:center}
+      .slide[data-slide="3"] .section-head h2{font-size:30px;line-height:1.08}
+      .slide[data-slide="3"] .section-head p{grid-column:2;font-size:13px;line-height:1.4}
+      .slide[data-slide="3"] .scenarios{min-height:0;flex:1;gap:18px}
+      .slide[data-slide="3"] .scenario{min-height:0;padding:16px 18px}
+      .slide[data-slide="3"] .scenario small{font-size:11px}
+      .slide[data-slide="3"] .scenario h3{margin:10px 0 12px;font-size:20px}
+      .slide[data-slide="3"] .scenario-visual{height:86px;margin-bottom:9px;border-radius:12px}
+      .slide[data-slide="3"] .scenario-visual svg{height:72px}
+      .slide[data-slide="3"] .journey{gap:4px}
+      .slide[data-slide="3"] .journey-node{grid-template-columns:28px 1fr;gap:8px;padding:8px 10px}
+      .slide[data-slide="3"] .journey-node i{width:26px;height:26px}
+      .slide[data-slide="3"] .journey-node b{font-size:11px}
+      .slide[data-slide="3"] .journey-arrow{line-height:7px;font-size:12px}
+      .slide[data-slide="3"] .journey-outcome{margin-top:9px;padding:9px 11px;font-size:11px}
+      .module-map{gap:8px}.module-map-card{min-height:82px;padding:10px}.module-map-card i{width:25px;height:25px}.module-map-card b{margin-top:7px;font-size:12px}.module-map-card span{display:none}
+      .detail-dock{grid-template-columns:130px 1fr 1fr 1fr;gap:10px;margin-top:10px;padding:11px 14px}.detail-dock-title b{font-size:15px}.detail-cell{padding-left:10px}.detail-cell b{font-size:9px}
+      .workforce{gap:9px}.employee-card{min-height:205px;padding:13px}.employee-avatar{width:38px;height:38px}.employee-card h3{margin:9px 0 5px;font-size:14px}.employee-card>p{min-height:32px;font-size:9px}.employee-tasks{margin-top:8px;gap:5px}.employee-tasks span{padding:5px 6px;font-size:8px}.employee-control{left:13px;bottom:9px;font-size:8px}
+      .control-stack,.value-console{padding:20px}.control-stack h3,.value-console h3{margin:9px 0 12px;font-size:21px}.control-row{padding:9px 0}.value-tile{padding:12px}
+      .deep-identity,.deep-content{padding:20px}.deep-avatar{width:58px;height:58px}.deep-identity h3{margin:16px 0 7px;font-size:24px}.deep-columns{gap:10px}.deep-block{padding:12px}.capability-list{gap:6px;margin-top:12px}.capability-list span{padding:8px 10px;font-size:10px}
+      .module-deep-card{min-height:235px;padding:18px}.module-deep-card h3{margin:14px 0 7px;font-size:18px}.module-actions{margin-top:12px}.module-actions span{padding:7px;font-size:9px}
+      .module-screen-layout{min-height:345px}.capture-bar{height:44px}.capture-viewport{height:301px}.capture-viewport iframe{height:452px}.module-narrative{padding:20px}.module-narrative h3{margin:14px 0 7px;font-size:23px}.module-narrative .module-actions{margin-top:14px}.module-narrative .module-actions span{padding:8px;font-size:10px}
+    }
+    html:fullscreen .slide[data-slide="1"] .real-screen-shell{display:flex;min-height:0;flex:1;flex-direction:column}
+    html:fullscreen .slide[data-slide="1"] .real-screen-viewport{height:auto;min-height:180px;flex:1}
+    html:fullscreen .slide[data-slide="1"] .real-screen-viewport iframe{height:200%}
+    html:fullscreen .slide[data-slide="3"]{justify-content:flex-start;padding-top:88px!important;padding-bottom:78px!important}
+    html:fullscreen .slide[data-slide="3"]>.shell{display:flex;height:100%;min-height:0;flex-direction:column}
+    html:fullscreen .slide[data-slide="3"] .section-head{flex:0 0 auto;margin-bottom:22px}
+    html:fullscreen .slide[data-slide="3"] .scenarios{min-height:0;flex:1}
+    html:fullscreen .slide[data-slide="3"] .scenario{min-height:0}
+    html:fullscreen .slide[data-slide="3"] .scenario-visual{
+      height:auto;min-height:120px;flex:1;margin-bottom:18px
+    }
+    html:fullscreen .slide[data-slide="3"] .scenario-visual svg{
+      width:76%;height:58%;min-height:105px;max-height:190px
+    }
+    html:fullscreen .slide[data-slide="3"] .journey{margin-top:0;flex:0 0 auto}
+    html:fullscreen .slide[data-slide="3"] .journey-outcome{flex:0 0 auto}
+    html:fullscreen .slide[data-slide="2"]{justify-content:flex-start;padding-top:88px!important;padding-bottom:78px!important}
+    html:fullscreen .slide[data-slide="2"]>.shell{display:flex;height:100%;min-height:0;flex-direction:column}
+    html:fullscreen .slide[data-slide="2"] .section-head{flex:0 0 auto;margin-bottom:22px}
+    html:fullscreen .slide[data-slide="2"] .focus-grid{min-height:0;flex:1;grid-template-rows:repeat(2,1fr)}
+    html:fullscreen .slide[data-slide="2"] .focus-card{min-height:0;grid-template-columns:1fr 168px;padding:30px 34px}
+    html:fullscreen .slide[data-slide="2"] .focus-card>b{left:34px;top:30px}
+    html:fullscreen .slide[data-slide="2"] .focus-copy{padding-top:32px}
+    html:fullscreen .slide[data-slide="2"] .focus-visual{width:158px;height:158px;border-radius:38px}
+    html:fullscreen .slide[data-slide="2"] .focus-visual svg{width:106px;height:106px}
+    /* Technology visual layer */
+    html,body,.deck,.hero.slide{background:#f7f8fc!important;background-image:none!important}
+    body{min-width:100%;min-height:100dvh}
+    .deck{width:100%;background:transparent}
+    .presenter{
+      border-bottom-color:rgba(91,53,232,.12);
+      background:rgba(252,252,255,.88);
+      box-shadow:0 8px 30px rgba(31,24,65,.045)
+    }
+    .logo{position:relative;letter-spacing:-.035em}
+    .logo::after{content:"SYSTEM / AI WORKFORCE";display:block;margin-top:2px;color:#8a8fa4;font:700 7px/1.1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.18em}
+    .print-btn{background:linear-gradient(135deg,#6840f0,#4b27d5);box-shadow:0 8px 22px rgba(91,53,232,.24)}
+    .fullscreen-btn,select{background:rgba(255,255,255,.82);box-shadow:0 5px 16px rgba(23,22,45,.04)}
+    .slide{position:relative;isolation:isolate}
+    .slide::before{display:none}
+    .kicker,.section-head small{
+      font-family:ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.08em
+    }
+    .section-head small::before{content:"// ";color:#8f79ed}
+    .hero-ui,.workflow-stage,.focus-card,.scenario,.pilot-panel,.metric{
+      border-color:rgba(91,53,232,.14);
+      box-shadow:0 18px 48px rgba(35,28,72,.075),inset 0 1px 0 rgba(255,255,255,.9)
+    }
+    .hero-ui,.pilot-panel{background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(248,247,255,.96))}
+    .workflow-stage{
+      background:
+        linear-gradient(rgba(91,53,232,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(91,53,232,.025) 1px,transparent 1px),
+        rgba(247,248,252,.94);
+      background-size:24px 24px
+    }
+    .focus-card,.scenario,.metric{background:linear-gradient(150deg,#fff 55%,#faf9ff)}
+    .focus-card::before,.scenario::before{
+      content:"";position:absolute;right:18px;top:17px;width:6px;height:6px;border-radius:50%;
+      background:#62d8ff;box-shadow:0 0 0 5px rgba(98,216,255,.11),0 0 18px rgba(98,216,255,.45)
+    }
+    .scenario{position:relative;overflow:hidden}
+    .focus-card::after{box-shadow:0 0 13px rgba(91,53,232,.28)}
+    .flow-node i{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#fff}
+    .flow-node.active i{background:linear-gradient(135deg,#6e45f3,#4d28d7);box-shadow:0 0 0 7px var(--accent-soft),0 0 24px rgba(91,53,232,.3)}
+    .step-visual{background:linear-gradient(145deg,#131323,#1b1733)}
+    .visual-toolbar b,.step-counter,.live-label{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    .real-screen-shell{box-shadow:0 12px 30px rgba(0,0,0,.24),0 0 0 1px rgba(119,92,240,.15)}
+    .screen-flow-caption>span,.journey-arrow{color:#54cfff;text-shadow:0 0 12px rgba(84,207,255,.45)}
+    .module-chip,.review-badge,.source{border:1px solid rgba(91,53,232,.12)}
+    .io-card{background:linear-gradient(145deg,#fff,#faf9ff)}
+    .focus-visual,.scenario-visual{box-shadow:inset 0 0 30px rgba(91,53,232,.055)}
+    .deck-controls{
+      border-color:rgba(91,53,232,.17);
+      background:rgba(252,252,255,.88);
+      box-shadow:0 16px 42px rgba(30,25,62,.14),inset 0 1px 0 #fff
+    }
+    .deck-progress{background:#e8e6f2}.deck-progress i{background:linear-gradient(90deg,#6540ef,#48c9ff);box-shadow:0 0 10px rgba(91,53,232,.35)}
+    .deck-controls>button:last-child{background:linear-gradient(135deg,#6840f0,#4b27d5);box-shadow:0 7px 18px rgba(91,53,232,.24)}
+    .talk{position:relative;overflow:hidden;background:linear-gradient(135deg,#141422,#20183e)}
+    .talk::after{content:"";position:absolute;right:-90px;bottom:-120px;width:310px;height:310px;border:1px solid rgba(96,211,255,.14);border-radius:50%;box-shadow:0 0 80px rgba(91,53,232,.14)}
+    .pilot-step>i{background:linear-gradient(135deg,#211d3d,#5634df)}
+    .speaker-notes{display:none}
+    .module-map-card,.employee-card,.control-stack,.value-console{box-shadow:0 18px 48px rgba(35,28,72,.065),inset 0 1px 0 #fff}
+    @media(prefers-reduced-motion:no-preference){
+      .pulse{animation:techPulse 2.4s ease-in-out infinite}
+      @keyframes techPulse{50%{box-shadow:0 0 0 10px rgba(91,53,232,.07),0 0 22px rgba(91,53,232,.28)}}
+      .deck::before{animation:ambientA 11s ease-in-out infinite alternate}.deck::after{animation:ambientB 13s ease-in-out infinite alternate}
+      @keyframes ambientA{to{transform:translate(8vw,5vh) scale(1.12)}}@keyframes ambientB{to{transform:translate(-7vw,-6vh) scale(.9)}}
+      .slide.is-entering .section-head>*{animation:riseIn .55s cubic-bezier(.2,.8,.2,1) both}.slide.is-entering .section-head h2{animation-delay:.06s}.slide.is-entering .section-head p{animation-delay:.12s}
+      .slide.is-entering .hero-grid>*,.slide.is-entering .metrics>*{animation:riseIn .62s cubic-bezier(.2,.8,.2,1) both}
+      .slide.is-entering .hero-grid>*:nth-child(2){animation-delay:.09s}.slide.is-entering .metrics>*:nth-child(1){animation-delay:.14s}.slide.is-entering .metrics>*:nth-child(2){animation-delay:.2s}.slide.is-entering .metrics>*:nth-child(3){animation-delay:.26s}.slide.is-entering .metrics>*:nth-child(4){animation-delay:.32s}
+      .slide.is-entering .module-map-card,.slide.is-entering .employee-card,.slide.is-entering .focus-card,.slide.is-entering .scenario,.slide.is-entering .pilot-step,.slide.is-entering .module-screen-layout,.slide.is-entering .deep-layout,.slide.is-entering .governance-grid{animation:riseIn .55s cubic-bezier(.2,.8,.2,1) both}
+      .slide.is-entering .module-map-card:nth-child(2),.slide.is-entering .employee-card:nth-child(2),.slide.is-entering .focus-card:nth-child(2),.slide.is-entering .scenario:nth-child(2){animation-delay:.06s}
+      .slide.is-entering .module-map-card:nth-child(3),.slide.is-entering .employee-card:nth-child(3),.slide.is-entering .focus-card:nth-child(3),.slide.is-entering .scenario:nth-child(3){animation-delay:.12s}
+      .slide.is-entering .module-map-card:nth-child(n+4),.slide.is-entering .employee-card:nth-child(n+4),.slide.is-entering .focus-card:nth-child(4){animation-delay:.18s}
+      .slide.is-entering .capture-viewport::after{animation:scanLine 2.2s .35s ease-out both}
+      @keyframes riseIn{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}@keyframes scanLine{to{transform:translateY(500%)}}
+      .module-map-card,.employee-card,.focus-card,.scenario,.pilot-step,.value-tile,.io-card{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+      .module-map-card:hover,.employee-card:hover,.focus-card:hover,.scenario:hover{transform:translateY(-5px);border-color:rgba(91,53,232,.35);box-shadow:0 22px 48px rgba(35,28,72,.13)}
+      .hero-ui,.system-capture,.focus-visual,.scenario-visual{transform:translate(var(--px,0),var(--py,0));transition:transform .18s ease-out}
+      .flow-node.active i{animation:nodePulse 1.8s ease-in-out infinite}
+      @keyframes nodePulse{50%{box-shadow:0 0 0 10px rgba(91,53,232,.08),0 0 28px rgba(91,53,232,.38)}}
+      .slide.active .hero-ui{animation:deskFloat 4.8s ease-in-out infinite,deskGlow 3.2s ease-in-out infinite}
+      .slide.active .hero-ui::after{animation:deskScan 5.4s 1s ease-in-out infinite}
+      .slide.active .hero-ui .ui-top i:nth-child(3){animation:onlinePulse 1.8s ease-in-out infinite}
+      @keyframes deskFloat{0%,100%{translate:0 0}50%{translate:0 -8px}}
+      @keyframes deskGlow{0%,100%{box-shadow:0 18px 50px rgba(26,25,43,.08),0 0 0 rgba(91,53,232,0)}50%{box-shadow:0 26px 58px rgba(41,29,98,.16),0 0 34px rgba(91,53,232,.13)}}
+      @keyframes deskScan{0%,18%{transform:rotate(16deg) translateX(-180%)}58%,100%{transform:rotate(16deg) translateX(520%)}}
+      @keyframes onlinePulse{50%{box-shadow:0 0 0 5px rgba(81,217,255,.12),0 0 14px rgba(81,217,255,.65)}}
+    }
+    @media(max-width:900px){
+      .presenter-inner{flex-wrap:wrap;padding:13px 0}.logo{width:100%}.control{flex:1;flex-direction:column;align-items:flex-start}select{width:100%;min-width:0}
+      .hero-grid,.section-head,.talk{grid-template-columns:1fr}.section-head p{grid-column:1}.metrics{grid-template-columns:repeat(2,1fr)}
+      .workflow-nav{grid-template-columns:repeat(4,1fr);row-gap:18px}.flow-node:nth-child(4)::after{display:none}.step-explorer{grid-template-columns:1fr}.scenarios{grid-template-columns:1fr}.hero{padding-top:60px}
+      body{overflow:auto}.presenter{position:sticky}.deck{height:auto}.slide{height:auto;min-height:100dvh;overflow:visible;padding-top:60px!important;padding-bottom:90px!important}.hero.slide,.closing.slide{width:min(100% - 48px,1120px)}.slide.active{display:flex!important}.deck-controls{position:fixed}.fullscreen-btn{display:none}
+    }
+    @media(max-width:560px){.shell{width:min(100% - 24px,1120px)}.metrics,.focus-grid{grid-template-columns:1fr}.workflow-stage{padding:14px}.workflow-nav{grid-template-columns:repeat(2,1fr);gap:14px}.flow-node::after{display:none}.step-info{padding:24px}.io-grid{grid-template-columns:1fr}.ui-body{grid-template-columns:1fr}.sidebar{display:none}.talk{padding:26px}.print-btn{display:none}}
+    @media print{.presenter,.deck-controls{display:none!important}body{overflow:visible;background:#fff}.deck{height:auto}.slide{display:flex!important;height:auto;min-height:100vh;overflow:visible;padding:36px 0!important;page-break-after:always}.hero-ui,.metric,.focus-card,.scenario{box-shadow:none;break-inside:avoid}.talk{background:#fff;color:#111;border:1px solid #ddd}.talk-copy p,.talk-row div span{color:#555}}
+  </style>
+</head>
+<body>
+  <header class="presenter">
+    <div class="shell presenter-inner">
+      <div class="logo"><b>EM</b>PLIX</div>
+      <div class="control">
+        <label id="languageLabel" for="language">演讲语言</label>
+        <select id="language">
+          <option value="zh-CN">简体中文</option>
+          <option value="zh-TW">繁體中文</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+      <div class="control">
+        <label id="audienceLabel" for="audience">演讲对象</label>
+        <select id="audience"></select>
+      </div>
+      <button class="print-btn" id="printBtn" type="button">打印 / PDF</button>
+      <button class="fullscreen-btn" id="fullscreenBtn" type="button">全屏</button>
+    </div>
+  </header>
+
+  <main class="deck">
+    <section class="hero slide active" data-slide="0">
+      <div class="shell">
+       <div class="hero-grid">
+        <div>
+          <span class="kicker" id="kicker"></span>
+          <h1 id="heroTitle"></h1>
+          <p class="hero-copy" id="heroCopy"></p>
+          <div class="audience-note"><i class="pulse"></i><span id="audienceNote"></span></div>
+        </div>
+        <div class="hero-ui" aria-label="EMPLIX approval desk preview">
+          <div class="ui-top"><i></i><i></i><i></i><b>EMPLIX</b></div>
+          <div class="ui-body">
+            <aside class="sidebar"><strong>E</strong><i></i><i class="active"></i><i></i><i></i><i></i></aside>
+            <div class="ui-content">
+              <div class="ui-head"><div><small>MY DESK</small><h3 id="uiReviewTitle"></h3></div><span class="review-badge" id="uiWaiting"></span></div>
+              <div class="draft">
+                <small id="uiAssistant"></small>
+                <h4 id="uiDraftTitle"></h4>
+                <p id="uiDraftBody"></p>
+                <span class="source" id="uiSource"></span>
+              </div>
+              <div class="ui-actions"><button id="uiApprove"></button><button id="uiEdit"></button><button id="uiReject"></button></div>
+            </div>
+          </div>
+        </div>
+       </div>
+       <div class="metrics" id="metrics"></div>
+      </div>
+    </section>
+
+    <section class="white-section slide" data-slide="module-map">
+      <div class="shell">
+        <div class="section-head">
+          <small id="mapLabel"></small>
+          <h2 id="mapTitle"></h2>
+          <p id="mapIntro"></p>
+        </div>
+        <div class="module-map" id="moduleMap"></div>
+        <div class="detail-dock" id="moduleDetail"></div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="workforce">
+      <div class="shell">
+        <div class="section-head">
+          <small id="workforceLabel"></small>
+          <h2 id="workforceTitle"></h2>
+          <p id="workforceIntro"></p>
+        </div>
+        <div class="workforce" id="workforceGrid"></div>
+        <div class="detail-dock employee-detail" id="workforceDetail"></div>
+      </div>
+    </section>
+
+    <div class="dynamic-slides" id="employeeSlides"></div>
+    <div class="dynamic-slides" id="moduleSlides"></div>
+
+    <section class="white-section slide" data-slide="1">
+      <div class="shell">
+        <div class="section-head">
+          <small id="workflowLabel"></small>
+          <h2 id="workflowTitle"></h2>
+          <p id="workflowIntro"></p>
+        </div>
+        <div class="workflow-stage">
+          <div class="workflow-nav" id="workflow"></div>
+          <div class="step-explorer">
+            <div class="step-visual">
+              <div class="visual-toolbar"><b>EMPLIX</b><span id="visualStage"></span></div>
+              <div class="real-screen-shell">
+                <div class="real-screen-head">
+                  <div class="module-preview-head">
+                    <span class="module-icon" id="moduleIcon"></span>
+                    <div><b id="moduleName"></b><small id="moduleHint"></small></div>
+                  </div>
+                  <span class="live-label" id="realPageLabel"></span>
+                </div>
+                <div class="real-screen-viewport">
+                  <iframe id="realScreen" title="EMPLIX real system page" loading="eager"></iframe>
+                </div>
+              </div>
+              <div class="screen-flow-caption">
+                <div><small id="inputLabel"></small><b id="visualInput"></b></div>
+                <span>→</span>
+                <div><small id="outputLabel"></small><b id="visualOutput"></b></div>
+              </div>
+            </div>
+            <div class="step-info">
+              <div class="step-info-top"><span class="step-counter" id="stepCounter"></span><span class="module-chip" id="stepModule"></span></div>
+              <h3 id="stepTitle"></h3>
+              <p id="stepDescription"></p>
+              <div class="io-grid">
+                <div class="io-card"><small id="actionLabel"></small><b id="stepAction"></b></div>
+                <div class="io-card"><small id="guardLabel"></small><b id="stepGuard"></b></div>
+              </div>
+              <div class="step-controls"><button type="button" id="prevStep"></button><button type="button" id="nextStep"></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="2">
+      <div class="shell">
+        <div class="section-head">
+          <small id="focusLabel"></small>
+          <h2 id="focusTitle"></h2>
+          <p id="focusIntro"></p>
+        </div>
+        <div class="focus-grid" id="focusGrid"></div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide="governance">
+      <div class="shell">
+        <div class="section-head">
+          <small id="governanceLabel"></small>
+          <h2 id="governanceTitle"></h2>
+          <p id="governanceIntro"></p>
+        </div>
+        <div class="governance-grid">
+          <div class="control-stack">
+            <span class="panel-label" id="controlPanelLabel"></span>
+            <h3 id="controlPanelTitle"></h3>
+            <div id="controlRows"></div>
+          </div>
+          <div class="value-console">
+            <span class="panel-label" id="valuePanelLabel"></span>
+            <h3 id="valuePanelTitle"></h3>
+            <div class="value-metrics" id="valueMetrics"></div>
+            <div class="audit-line"><i></i><span id="auditLine"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="white-section slide" data-slide="3">
+      <div class="shell">
+        <div class="section-head">
+          <small id="scenarioLabel"></small>
+          <h2 id="scenarioTitle"></h2>
+          <p id="scenarioIntro"></p>
+        </div>
+        <div class="scenarios" id="scenarios"></div>
+      </div>
+    </section>
+
+    <section class="speaker-notes" aria-hidden="true">
+      <div class="shell">
+        <div class="talk">
+          <div class="talk-copy">
+            <span class="kicker" id="talkLabel"></span>
+            <h2 id="talkTitle"></h2>
+            <p id="talkIntro"></p>
+          </div>
+          <div class="talk-list" id="talkList"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="shell closing slide" data-slide="5">
+      <div class="closing-grid">
+        <div class="closing-copy">
+          <span class="kicker" id="closingLabel"></span>
+          <h2 id="closingTitle"></h2>
+          <p id="closingCopy"></p>
+        </div>
+        <div class="pilot-panel">
+          <div class="pilot-head"><b id="pilotTitle"></b><span id="pilotDuration"></span></div>
+          <div class="pilot-steps" id="pilotSteps"></div>
+          <div class="pilot-result"><i>✓</i><span id="pilotResult"></span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer><div class="shell"><b>EMPLIX</b><span id="footerText"></span></div></footer>
+  <div class="deck-controls" aria-label="Presentation controls">
+    <button type="button" id="prevSlide" aria-label="Previous slide">←</button>
+    <div class="slide-status"><span id="slideTitle"></span><b id="slideCounter"></b></div>
+    <div class="deck-progress"><i id="deckProgress"></i></div>
+    <button type="button" id="nextSlide" aria-label="Next slide">→</button>
+  </div>
+
+  <script>
+    const workflowData = {
+      "zh-CN":[
+        ["治理配置","确认权限、团队角色与 Sandbox 状态。"],["资料准备","上传批准文件并限定应用授权范围。"],
+        ["员工配置","设置任务能力、审批规则与工作指令。"],["发起任务","选择模板或新建工作单，明确验收条件。"],
+        ["AI 执行","根据输入、指令与批准资料生成草稿。"],["人工审批","核对来源、事实、金额、语气与目标对象。"],
+        ["执行归档","批准后发送、保存或继续下游动作。"],["审计复盘","在 History 与 Value 中核验留痕和价值。"]
+      ],
+      "zh-TW":[
+        ["治理設定","確認權限、團隊角色與 Sandbox 狀態。"],["資料準備","上傳核准文件並限定應用程式授權範圍。"],
+        ["員工設定","設定任務能力、審批規則與工作指令。"],["發起任務","選擇範本或建立工作單，明確驗收條件。"],
+        ["AI 執行","根據輸入、指令與核准資料產生草稿。"],["人工審批","核對來源、事實、金額、語氣與目標對象。"],
+        ["執行歸檔","核准後傳送、儲存或繼續下游動作。"],["稽核複盤","在 History 與 Value 中核驗留痕和價值。"]
+      ],
+      "en":[
+        ["Set governance","Confirm access, team roles, and Sandbox status."],["Prepare knowledge","Upload approved files and limit app access."],
+        ["Configure employees","Set capabilities, approval rules, and instructions."],["Start a task","Use a template or work item with clear acceptance criteria."],
+        ["AI execution","Generate a draft from inputs, rules, and approved sources."],["Human review","Verify sources, facts, amounts, tone, and recipients."],
+        ["Execute & archive","Send, save, or continue only after approval."],["Audit & improve","Review History and Value for traceability and outcomes."]
+      ]
+    };
+
+    const workflowVisual = {
+      "zh-CN":{
+        labels:{input:"输入",output:"输出",action:"系统动作",guard:"人工 / 治理控制",prev:"上一步",next:"下一步",hint:"当前操作模块"},
+        steps:[
+          ["CT","Company & Team","团队成员与治理设置","成员角色、试运行范围","明确的访问权限与 Sandbox 状态","Owner 配置成员级别和组织控制。","权限最小化；首次试用保持 Sandbox 开启。"],
+          ["FI","Files & Apps","企业知识与应用连接","批准的 FAQ、价目表、合同或订单","可供任务使用的受控资料范围","上传文件、分类，并选择 Google Drive 文件范围。","只授权业务必需资料；及时移除过期文件。"],
+          ["ET","Employee Tasks","AI 员工能力设置","岗位、任务开关、工作规则","可执行且受监督的 AI 员工","启停任务，保存 Working instructions，设置 Auto-repeat。","高风险任务开启 Needs approval；必要时暂停员工。"],
+          ["TL","Task Library / Tasks","任务发起与看板","模板、业务输入、截止时间、验收条件","进入 To do / Doing 的工作单","选择模板或新建任务并指定 AI 员工。","Sandbox、成员权限和任务开关共同决定能否启动。"],
+          ["AI","AI Employee","生成与升级","任务输入、工作指令、批准文件","等待审核的业务草稿","AI 根据受控上下文生成内容或提出升级。","资料缺失或冲突时停止猜测并交给人工。"],
+          ["MD","My Desk","人工审批台","AI 草稿、来源、附件和目标对象","批准、编辑、拒绝或召回决定","审核事实、金额、日期、语气和隐私信息。","未经批准不得对外发送；所有决定写入 History。"],
+          ["EX","Execution","执行与归档","已批准的草稿与目标渠道","发送、保存、归档或后续动作","执行批准后的业务动作并返回结果。","Sandbox 阻止自动发送和归档；执行失败需升级。"],
+          ["HV","History & Value","审计与价值复盘","任务、审批、执行和异常事件","可追溯记录与价值指标","记录动作并计算完成量、节省工时和 AI 成本。","关注 Rejected、Escalated、Execution refused 等高信号事件。"]
+        ]
+      },
+      "zh-TW":{
+        labels:{input:"輸入",output:"輸出",action:"系統動作",guard:"人工 / 治理控制",prev:"上一步",next:"下一步",hint:"目前操作模組"},
+        steps:[
+          ["CT","Company & Team","團隊成員與治理設定","成員角色、試運行範圍","明確的存取權限與 Sandbox 狀態","Owner 設定成員級別和組織控制。","權限最小化；首次試用保持 Sandbox 開啟。"],
+          ["FI","Files & Apps","企業知識與應用程式連線","核准的 FAQ、價目表、合約或訂單","可供任務使用的受控資料範圍","上傳檔案、分類，並選擇 Google Drive 檔案範圍。","只授權業務必需資料；及時移除過期檔案。"],
+          ["ET","Employee Tasks","AI 員工能力設定","職位、任務開關、工作規則","可執行且受監督的 AI 員工","啟停任務，儲存 Working instructions，設定 Auto-repeat。","高風險任務開啟 Needs approval；必要時暫停員工。"],
+          ["TL","Task Library / Tasks","任務發起與看板","範本、業務輸入、截止時間、驗收條件","進入 To do / Doing 的工作單","選擇範本或建立任務並指定 AI 員工。","Sandbox、成員權限和任務開關共同決定能否啟動。"],
+          ["AI","AI Employee","產生與升級","任務輸入、工作指令、核准檔案","等待審核的業務草稿","AI 根據受控內容產生結果或提出升級。","資料缺失或衝突時停止猜測並交由人工處理。"],
+          ["MD","My Desk","人工審批台","AI 草稿、來源、附件和目標對象","核准、編輯、拒絕或撤回決定","審核事實、金額、日期、語氣和私隱資訊。","未經核准不得對外傳送；所有決定寫入 History。"],
+          ["EX","Execution","執行與歸檔","已核准的草稿與目標渠道","傳送、儲存、歸檔或後續動作","執行核准後的業務動作並回傳結果。","Sandbox 阻止自動傳送和歸檔；執行失敗需升級。"],
+          ["HV","History & Value","稽核與價值複盤","任務、審批、執行和異常事件","可追溯記錄與價值指標","記錄動作並計算完成量、節省工時和 AI 成本。","關注 Rejected、Escalated、Execution refused 等高訊號事件。"]
+        ]
+      },
+      "en":{
+        labels:{input:"Input",output:"Output",action:"System action",guard:"Human / governance control",prev:"Previous",next:"Next",hint:"Active module"},
+        steps:[
+          ["CT","Company & Team","People and governance","Team roles and pilot scope","Defined access and Sandbox status","The Owner configures access levels and organization controls.","Apply least privilege; keep Sandbox on during the first pilot."],
+          ["FI","Files & Apps","Company knowledge and connections","Approved FAQs, pricing, contracts, or orders","A controlled source set for tasks","Upload and classify files, then select the allowed Drive scope.","Grant only required sources and remove outdated files."],
+          ["ET","Employee Tasks","AI employee configuration","Role, task switches, and working rules","A capable, supervised AI employee","Enable tasks, save instructions, and configure repeat behavior.","Keep high-risk work under approval; pause employees when needed."],
+          ["TL","Task Library / Tasks","Task launch and board","Template, inputs, deadline, and acceptance criteria","A work item moving into To do / Doing","Choose a template or create a task and assign an AI employee.","Sandbox, member access, and task switches all gate launch."],
+          ["AI","AI Employee","Generation and escalation","Task inputs, instructions, and approved files","A business draft waiting for review","Generate from controlled context or escalate the missing decision.","Stop guessing when sources are missing or conflict."],
+          ["MD","My Desk","Human approval desk","Draft, sources, attachments, and target recipient","Approve, edit, reject, or recall decision","Review facts, amounts, dates, tone, privacy, and destination.","Nothing is sent without approval; every decision enters History."],
+          ["EX","Execution","Execution and archive","Approved draft and target channel","Send, save, archive, or downstream action","Execute the approved action and return its result.","Sandbox blocks automatic send/archive; failures must escalate."],
+          ["HV","History & Value","Audit and value review","Task, approval, execution, and exception events","Traceable records and business measures","Record actions and calculate completion, saved hours, and AI cost.","Watch Rejected, Escalated, and Execution refused events."]
+        ]
+      }
+    };
+    const realPages = [
+      {path:"demo-embed/company-team.html",name:"Company & Team"},
+      {path:"demo-embed/files.html",name:"Files"},
+      {path:"demo-embed/employee-tasks.html",name:"Employee Tasks"},
+      {path:"demo-embed/task-library.html",name:"Task Library"},
+      {path:"demo-embed/tasks.html",name:"Tasks"},
+      {path:"demo-embed/my-desk.html",name:"My Desk"},
+      {path:"demo-embed/overview.html",name:"Overview"},
+      {path:"demo-embed/history.html",name:"History"}
+    ];
+    const modulePages={
+      CT:"demo-embed/company-team.html",ET:"demo-embed/employee-tasks.html",
+      FI:"demo-embed/files.html",AP:"demo-embed/apps.html",
+      TL:"demo-embed/task-library.html",TS:"demo-embed/tasks.html",
+      MD:"demo-embed/my-desk.html",OV:"demo-embed/overview.html",
+      VA:"demo-embed/value.html",HI:"demo-embed/history.html"
+    };
+
+    const common = {
+      "zh-CN":{
+        language:"演讲语言",audience:"演讲对象",print:"打印 / PDF",kicker:"AI 员工工作台 · 产品讲解",
+        heroTitle:"把重复工作交给 AI，把关键决定留给人",
+        heroCopy:"EMPLIX 将会计、行政、客服、销售和营销工作标准化为可复用任务。AI 负责生成，人负责审批，系统负责留痕。",
+        uiReview:"审核等待您的工作",waiting:"1 项待处理",assistant:"Customer Support Assistant · 刚刚",
+        draftTitle:"客户回复草稿",draftBody:"您好，我们已根据最新订单资料核对交付时间。预计订单将在本周五前完成安排……",
+        source:"来源：产品FAQ.docx · 订单状态.xlsx",approve:"批准",edit:"编辑",reject:"拒绝",
+        metrics:[["5","类 AI 员工"],["33","项可配置任务"],["默认开启","人工审批"],["全链路","历史审计"]],
+        workflowLabel:"标准流程",workflowTitle:"八个步骤，形成完整的人机协作闭环",
+        workflowIntro:"先治理、再准备、后执行。审批是关键控制点，History 是最终审计底座。",
+        focusLabel:"对象化讲解",scenarioLabel:"场景演示",talkLabel:"演讲提纲",
+        closingLabel:"下一步 · 试点决策",closingTitle:"从一个低风险、高频任务开始试点",
+        closingCopy:"确认业务场景、批准资料、审批负责人和成功指标，再逐步扩展到客户沟通、财务与营销流程。",
+        pilotTitle:"建议试点路径",pilotDuration:"2–4 周",
+        pilotSteps:[["01","选定场景","高频、规则清晰、风险可控"],["02","配置与验证","接入批准资料，明确审批人"],["03","衡量与扩展","对比工时、质量与审批数据"]],
+        pilotResult:"输出一套可复制的任务模板、治理规则与价值基线",
+        footer:"多语言 · 多对象产品讲解工具"
+      },
+      "zh-TW":{
+        language:"演講語言",audience:"演講對象",print:"列印 / PDF",kicker:"AI 員工工作台 · 產品講解",
+        heroTitle:"把重複工作交給 AI，把關鍵決定留給人",
+        heroCopy:"EMPLIX 將會計、行政、客服、銷售和行銷工作標準化為可重複使用的任務。AI 負責產生，人負責審批，系統負責留痕。",
+        uiReview:"審核等待您的工作",waiting:"1 項待處理",assistant:"Customer Support Assistant · 剛剛",
+        draftTitle:"客戶回覆草稿",draftBody:"您好，我們已根據最新訂單資料核對交付時間。預計訂單將於本週五前完成安排……",
+        source:"來源：產品FAQ.docx · 訂單狀態.xlsx",approve:"核准",edit:"編輯",reject:"拒絕",
+        metrics:[["5","類 AI 員工"],["33","項可設定任務"],["預設開啟","人工審批"],["全鏈路","歷史稽核"]],
+        workflowLabel:"標準流程",workflowTitle:"八個步驟，形成完整的人機協作閉環",
+        workflowIntro:"先治理、再準備、後執行。審批是關鍵控制點，History 是最終稽核底座。",
+        focusLabel:"對象化講解",scenarioLabel:"場景示範",talkLabel:"演講提綱",
+        closingLabel:"下一步 · 試點決策",closingTitle:"從一個低風險、高頻任務開始試點",
+        closingCopy:"確認業務場景、核准資料、審批負責人和成功指標，再逐步擴展至客戶溝通、財務與行銷流程。",
+        pilotTitle:"建議試點路徑",pilotDuration:"2–4 週",
+        pilotSteps:[["01","選定場景","高頻、規則清晰、風險可控"],["02","設定與驗證","接入核准資料，明確審批人"],["03","衡量與擴展","比較工時、品質與審批資料"]],
+        pilotResult:"輸出一套可複製的任務範本、治理規則與價值基線",
+        footer:"多語言 · 多對象產品講解工具"
+      },
+      "en":{
+        language:"Language",audience:"Audience",print:"Print / PDF",kicker:"AI Workforce · Product Briefing",
+        heroTitle:"Give repetitive work to AI. Keep critical decisions human.",
+        heroCopy:"EMPLIX turns accounting, admin, support, sales, and marketing work into reusable tasks. AI creates, people approve, and the system records every action.",
+        uiReview:"Review work waiting for you",waiting:"1 waiting",assistant:"Customer Support Assistant · just now",
+        draftTitle:"Customer reply draft",draftBody:"Hello, we reviewed the latest order information and confirmed the delivery timeline. We expect arrangements to be completed by Friday…",
+        source:"Source: Product FAQ.docx · Order Status.xlsx",approve:"Approve",edit:"Edit",reject:"Reject",
+        metrics:[["5","AI employee roles"],["33","Configurable tasks"],["On by default","Human approval"],["End-to-end","Audit history"]],
+        workflowLabel:"Standard workflow",workflowTitle:"Eight steps create a complete human–AI operating loop",
+        workflowIntro:"Govern first, prepare next, then execute. Approval is the control point; History is the audit foundation.",
+        focusLabel:"Audience briefing",scenarioLabel:"Scenario demo",talkLabel:"Speaker outline",
+        closingLabel:"NEXT STEP · PILOT DECISION",closingTitle:"Start with one frequent, low-risk task",
+        closingCopy:"Agree on the use case, approved sources, reviewer, and success measures—then expand into customer communication, finance, and marketing.",
+        pilotTitle:"Recommended pilot path",pilotDuration:"2–4 WEEKS",
+        pilotSteps:[["01","Select a use case","Frequent, rule-based, and controlled"],["02","Configure & validate","Add approved sources and assign a reviewer"],["03","Measure & expand","Compare time, quality, and approval data"]],
+        pilotResult:"Deliver a reusable task template, governance model, and value baseline",
+        footer:"Multilingual · Multi-audience product briefing tool"
+      }
+    };
+
+    const featureContent = {
+      "zh-CN":{
+        mapLabel:"系统功能地图",mapTitle:"十个模块，共同支撑完整工作闭环",mapIntro:"从团队治理、资料准备、任务执行到价值复盘，每个模块承担清晰职责。",
+        modules:[["OV","Overview","运行健康与关键指标"],["MD","My Desk","人工审批与决策"],["TL","Task Library","标准任务模板"],["ET","Employee Tasks","AI 员工能力配置"],["FI","Files","企业资料与问答"],["AP","Apps","受控应用连接"],["VA","Value","工时、价值与成本"],["TS","Tasks","工作单与状态看板"],["CT","Company & Team","成员、权限与 Sandbox"],["HI","History","全链路操作审计"]],
+        workforceLabel:"AI 员工队伍",workforceTitle:"五类 AI 员工，覆盖高频业务工作",workforceIntro:"每位员工拥有独立任务能力、长期工作指令、审批规则和启停状态。",
+        employees:[["AC","会计助理","财务资料与单据处理",["发票与费用整理","付款资料检查"]],["AD","行政助理","文档与日常行政工作",["文件分类与摘要","会议资料准备"]],["CS","客服助理","客户问题与回复草稿",["FAQ 回复","订单问题跟进"]],["SA","销售助理","销售沟通与文件生成",["跟进邮件","报价与提案"]],["MK","营销助理","内容规划与营销草稿",["内容日历","帖子与周报"]]],
+        governanceLabel:"治理与价值",governanceTitle:"让 AI 可控运行，也让业务结果可衡量",governanceIntro:"权限、审批、Sandbox 与 History 构成治理底座；Value 将工作量转换为管理指标。",
+        controlLabel:"CONTROL PLANE",controlTitle:"四层控制机制",controls:[["RB","角色权限","Owner / Manager / Operator / Viewer"],["AP","人工审批","高风险任务默认等待确认"],["SB","Sandbox","阻止新任务、自动发送与归档"],["AU","History","记录批准、编辑、拒绝与召回"]],
+        valueLabel:"VALUE CONSOLE",valueTitle:"从运行数据看投入产出",values:[["33","可配置任务"],["5","AI 员工角色"],["审批率","人工控制指标"],["节省工时","效率与价值基线"]],audit:"每一次关键动作都可以在 History 中追溯"
+      },
+      "zh-TW":{
+        mapLabel:"系統功能地圖",mapTitle:"十個模組，共同支撐完整工作閉環",mapIntro:"從團隊治理、資料準備、任務執行到價值複盤，每個模組承擔清晰職責。",
+        modules:[["OV","Overview","運行健康與關鍵指標"],["MD","My Desk","人工審批與決策"],["TL","Task Library","標準任務範本"],["ET","Employee Tasks","AI 員工能力設定"],["FI","Files","企業資料與問答"],["AP","Apps","受控應用連接"],["VA","Value","工時、價值與成本"],["TS","Tasks","工作單與狀態看板"],["CT","Company & Team","成員、權限與 Sandbox"],["HI","History","全鏈路操作稽核"]],
+        workforceLabel:"AI 員工隊伍",workforceTitle:"五類 AI 員工，覆蓋高頻業務工作",workforceIntro:"每位員工擁有獨立任務能力、長期工作指令、審批規則和啟停狀態。",
+        employees:[["AC","會計助理","財務資料與單據處理",["發票與費用整理","付款資料檢查"]],["AD","行政助理","文件與日常行政工作",["檔案分類與摘要","會議資料準備"]],["CS","客服助理","客戶問題與回覆草稿",["FAQ 回覆","訂單問題跟進"]],["SA","銷售助理","銷售溝通與文件產生",["跟進郵件","報價與提案"]],["MK","行銷助理","內容規劃與行銷草稿",["內容日曆","貼文與週報"]]],
+        governanceLabel:"治理與價值",governanceTitle:"讓 AI 可控運行，也讓業務結果可衡量",governanceIntro:"權限、審批、Sandbox 與 History 構成治理底座；Value 將工作量轉換為管理指標。",
+        controlLabel:"CONTROL PLANE",controlTitle:"四層控制機制",controls:[["RB","角色權限","Owner / Manager / Operator / Viewer"],["AP","人工審批","高風險任務預設等待確認"],["SB","Sandbox","阻止新任務、自動傳送與歸檔"],["AU","History","記錄核准、編輯、拒絕與召回"]],
+        valueLabel:"VALUE CONSOLE",valueTitle:"從運行資料看投入產出",values:[["33","可設定任務"],["5","AI 員工角色"],["審批率","人工控制指標"],["節省工時","效率與價值基線"]],audit:"每一次關鍵動作都可以在 History 中追溯"
+      },
+      "en":{
+        mapLabel:"SYSTEM MAP",mapTitle:"Ten modules support one complete operating loop",mapIntro:"Each module has a clear role—from team governance and approved knowledge to execution, measurement, and audit.",
+        modules:[["OV","Overview","Health and key measures"],["MD","My Desk","Human review and decisions"],["TL","Task Library","Standard task templates"],["ET","Employee Tasks","AI capability configuration"],["FI","Files","Approved knowledge and Q&A"],["AP","Apps","Controlled connections"],["VA","Value","Time, value, and cost"],["TS","Tasks","Work orders and status"],["CT","Company & Team","People, roles, and Sandbox"],["HI","History","End-to-end audit trail"]],
+        workforceLabel:"AI WORKFORCE",workforceTitle:"Five AI employee roles cover frequent business work",workforceIntro:"Each employee has its own task capabilities, persistent instructions, approval rules, and operating status.",
+        employees:[["AC","Accounting","Financial data and documents",["Invoices and expenses","Payment checks"]],["AD","Administration","Documents and daily admin",["Classify and summarize","Prepare meeting material"]],["CS","Customer Support","Questions and reply drafts",["FAQ replies","Order follow-up"]],["SA","Sales","Sales communication and documents",["Follow-up emails","Quotes and proposals"]],["MK","Marketing","Content planning and drafts",["Content calendars","Posts and reports"]]],
+        governanceLabel:"GOVERNANCE & VALUE",governanceTitle:"Keep AI controlled—and make business impact measurable",governanceIntro:"Roles, approval, Sandbox, and History create the control foundation; Value turns activity into management measures.",
+        controlLabel:"CONTROL PLANE",controlTitle:"Four layers of control",controls:[["RB","Role access","Owner / Manager / Operator / Viewer"],["AP","Human approval","High-risk work waits for confirmation"],["SB","Sandbox","Stops new work, sending, and filing"],["AU","History","Records approvals, edits, rejects, and recalls"]],
+        valueLabel:"VALUE CONSOLE",valueTitle:"Read return from operating data",values:[["33","Configurable tasks"],["5","AI employee roles"],["Approval rate","Human control measure"],["Hours saved","Efficiency baseline"]],audit:"Every critical action can be traced in History"
+      }
+    };
+
+    const deepContent = {
+      "zh-CN":{
+        employeeLabel:"AI 员工详解",capability:"核心任务",input:"典型输入",output:"主要输出",control:"控制方式",
+        employeeExtra:[
+          [["发票与费用整理","报价及付款资料核对","财务摘要草稿"],"发票、价目表、付款条款","单据草稿、核对结果","金额和银行信息必须人工审批"],
+          [["文件分类、命名与摘要","会议及行政资料准备","表格信息提取"],"文档、表格、会议资料","分类文件、摘要、清单","仅使用批准资料，敏感文件限制访问"],
+          [["基于 FAQ 起草回复","订单问题跟进","客户信息整理"],"FAQ、订单状态、客户问题","回复草稿、跟进建议","事实、承诺与隐私信息人工复核"],
+          [["销售跟进邮件","报价与提案草稿","客户沟通摘要"],"客户背景、价目表、历史沟通","邮件、报价、提案草稿","价格、折扣和对外承诺必须审批"],
+          [["内容日历规划","社交帖子草稿","营销周报汇总"],"品牌指令、活动资料、渠道要求","日历、帖子、报告草稿","所有公开发布内容进入 My Desk"]
+        ],
+        moduleLabel:"功能模块详解",groups:[
+          ["治理与配置","明确人员权限、AI 能力和试运行边界",[["CT","Company & Team","管理成员、访问级别、计划与 Sandbox",["邀请成员并设置角色","开启 Sandbox 进行试运行","调整离职或变更人员权限"]],["ET","Employee Tasks","配置 AI 员工的任务、指令和审批规则",["暂停或启用 AI 员工","保存长期工作指令","设置 Needs approval 与 Auto-repeat"]]]],
+          ["资料与连接","让 AI 只使用企业批准的信息",[["FI","Files","上传、分类、搜索和询问企业文件",["上传并整理批准文件","按名称筛选和排序","处理 Needs review 并进行文件问答"]],["AP","Apps","连接 Google Drive 等外部资料来源",["完成受控授权","只选择必要文件夹","返回 Files 验证同步范围"]]]],
+          ["任务与审批","从模板或工作单生成草稿并由人决策",[["TL","Task Library","搜索标准任务模板并快速发起",["按职能或关键词查找","查看建议资料","选择 Use this task"]],["TS","Tasks","创建工作单、分配员工并追踪状态",["填写标题和验收要求","选择 AI 员工","追踪 To do / Doing / Done"]],["MD","My Desk","审核 AI 草稿并作出最终决定",["核对来源、事实、金额和对象","批准、编辑、拒绝或召回","确认高风险内容未越过审批"]]]],
+          ["运行、价值与审计","观察系统状态、业务收益和完整记录",[["OV","Overview","查看健康状态、任务量与近期活动",["检查系统运行状态","查看完成量和审批率","进入首个员工任务"]],["VA","Value","衡量节省工时、估算价值与 AI 成本",["查看价值趋势","核对时薪和任务数据","比较模型成本与业务收益"]],["HI","History","查询并导出每一次关键操作",["按人员或动作筛选","验证审批与执行记录","导出 CSV / JSON 用于审计"]]]]
+        ]
+      },
+      "zh-TW":{
+        employeeLabel:"AI 員工詳解",capability:"核心任務",input:"典型輸入",output:"主要輸出",control:"控制方式",
+        employeeExtra:[
+          [["發票與費用整理","報價及付款資料核對","財務摘要草稿"],"發票、價目表、付款條款","單據草稿、核對結果","金額和銀行資訊必須人工審批"],
+          [["檔案分類、命名與摘要","會議及行政資料準備","表格資訊提取"],"文件、表格、會議資料","分類檔案、摘要、清單","僅使用核准資料，敏感檔案限制存取"],
+          [["基於 FAQ 起草回覆","訂單問題跟進","客戶資訊整理"],"FAQ、訂單狀態、客戶問題","回覆草稿、跟進建議","事實、承諾與隱私資訊人工複核"],
+          [["銷售跟進郵件","報價與提案草稿","客戶溝通摘要"],"客戶背景、價目表、歷史溝通","郵件、報價、提案草稿","價格、折扣和對外承諾必須審批"],
+          [["內容日曆規劃","社交貼文草稿","行銷週報彙總"],"品牌指令、活動資料、渠道要求","日曆、貼文、報告草稿","所有公開發布內容進入 My Desk"]
+        ]
+      },
+      "en":{
+        employeeLabel:"AI EMPLOYEE DETAIL",capability:"CORE TASKS",input:"TYPICAL INPUT",output:"MAIN OUTPUT",control:"CONTROL",
+        employeeExtra:[
+          [["Organize invoices and expenses","Check quotes and payment data","Draft financial summaries"],"Invoices, pricing, payment terms","Document drafts and checks","Amounts and banking data require review"],
+          [["Classify, rename, and summarize","Prepare meeting materials","Extract spreadsheet information"],"Documents, sheets, meeting files","Organized files, summaries, lists","Use approved sources and restrict sensitive files"],
+          [["Draft replies from FAQs","Follow up order questions","Organize customer information"],"FAQs, order status, questions","Reply drafts and next steps","People verify facts, commitments, and privacy"],
+          [["Draft follow-up emails","Create quotes and proposals","Summarize customer context"],"Customer context, pricing, history","Email, quote, and proposal drafts","Prices, discounts, and commitments require approval"],
+          [["Plan content calendars","Draft social posts","Compile marketing reports"],"Brand rules, campaigns, channels","Calendars, posts, and report drafts","Every public item goes through My Desk"]
+        ]
+      }
+    };
+    deepContent["zh-TW"].moduleLabel="功能模組詳解";deepContent["zh-TW"].groups=[
+      ["治理與設定","明確人員權限、AI 能力和試運行邊界",[["CT","Company & Team","管理成員、存取級別、計劃與 Sandbox",["邀請成員並設定角色","開啟 Sandbox 試運行","調整人員權限"]],["ET","Employee Tasks","設定 AI 員工任務、指令與審批規則",["暫停或啟用員工","保存長期工作指令","設定審批與重複運行"]]]],
+      ["資料與連接","讓 AI 只使用企業核准資訊",[["FI","Files","上傳、分類、搜尋和詢問企業檔案",["整理核准檔案","篩選和排序","處理 Needs review"]],["AP","Apps","連接 Google Drive 等資料來源",["完成受控授權","選擇必要資料夾","驗證同步範圍"]]]],
+      ["任務與審批","從範本或工作單產生草稿並由人決策",[["TL","Task Library","搜尋標準任務範本",["按職能搜尋","查看建議資料","使用任務範本"]],["TS","Tasks","建立工作單並追蹤狀態",["填寫要求","選擇 AI 員工","追蹤工作狀態"]],["MD","My Desk","審核草稿並作最終決定",["核對關鍵內容","核准、編輯或拒絕","確認審批記錄"]]]],
+      ["運行、價值與稽核","觀察系統狀態、收益與完整記錄",[["OV","Overview","查看健康狀態與近期活動",["檢查系統狀態","查看完成量","進入員工任務"]],["VA","Value","衡量工時、價值與 AI 成本",["查看價值趨勢","核對任務資料","比較成本收益"]],["HI","History","查詢並匯出關鍵操作",["篩選記錄","驗證審批動作","匯出稽核資料"]]]]
+    ];
+    deepContent.en.moduleLabel="MODULE DETAIL";deepContent.en.groups=[
+      ["Govern & configure","Define access, AI capability, and pilot boundaries",[["CT","Company & Team","Manage people, roles, plan, and Sandbox",["Invite people and assign roles","Run safely in Sandbox","Update access when roles change"]],["ET","Employee Tasks","Configure capabilities, instructions, and review",["Pause or enable an employee","Save persistent instructions","Set approval and repeat rules"]]]],
+      ["Knowledge & connections","Limit AI to approved company information",[["FI","Files","Upload, organize, search, and question files",["Organize approved files","Filter and sort","Resolve Needs review"]],["AP","Apps","Connect controlled external sources",["Complete scoped authorization","Select necessary folders","Verify synchronized files"]]]],
+      ["Tasks & approval","Create drafts from templates or work orders, then review",[["TL","Task Library","Find and start standard task templates",["Search by role or keyword","Review suggested sources","Use a task template"]],["TS","Tasks","Create work orders and track status",["Describe requirements","Assign an AI employee","Track To do / Doing / Done"]],["MD","My Desk","Review drafts and make the final decision",["Verify critical content","Approve, edit, reject, or recall","Confirm the audit record"]]]],
+      ["Operations, value & audit","Monitor health, return, and the activity record",[["OV","Overview","See system health and recent activity",["Check operating status","Review completion measures","Open employee work"]],["VA","Value","Measure time, value, and AI cost",["Review value trends","Validate task data","Compare cost and benefit"]],["HI","History","Query and export critical actions",["Filter activity","Verify approval actions","Export audit data"]]]]
+    ];
+
+    const audiences = {
+      "zh-CN":{
+        salesops:{name:"销售 / 运营团队",note:"当前版本强调客户价值、场景映射、异议处理和演示节奏。",
+          focusTitle:"用业务结果讲产品，而不是按菜单念功能",focusIntro:"帮助销售运营团队快速识别客户痛点，并把需求映射到 AI 员工、审批和价值指标。",
+          focus:[["价值定位","把产品概括为“可治理的 AI 工作系统”，避免被理解为普通聊天机器人。"],["场景发现","优先询问重复工作、资料来源、审批责任人和对外发送风险。"],["演示路径","用 Files → Task → My Desk → History 展示完整闭环。"],["异议回应","以最小权限、批准文件、Sandbox 和 History 回应安全顾虑。"]],
+          scenarioTitle:"从客户问题出发，选择最有共鸣的演示",scenarioIntro:"每个场景都应同时展示效率收益与人工控制。",
+          scenarios:[["客户回复","Customer Support Assistant","使用批准 FAQ 与订单文件起草回复。","更快响应，同时保留事实与承诺的人工复核。"],["报价与单据","Sales / Accounting Assistant","依据价目表和付款条款生成报价或发票草稿。","减少重复录入，金额和银行信息仍由授权人员确认。"],["周期营销","Marketing Assistant","按品牌指令规划内容日历、帖子和周报。","内容生产规模化，每次发布仍经过 My Desk。"]],
+          talkTitle:"15 分钟销售讲解顺序",talkIntro:"先讲结果，再演示流程，最后用治理能力消除顾虑。",
+          talk:[["定位","EMPLIX 不是单点聊天工具。","2 分钟"],["价值","说明标准化、审批与留痕。","3 分钟"],["演示","走完一个真实业务场景。","6 分钟"],["治理","解释权限、Sandbox 与审计。","3 分钟"],["收口","确认试点场景和负责人。","1 分钟"]]},
+        product:{name:"产品部门",note:"当前版本强调用户旅程、功能边界、控制点和待确认事项。",
+          focusTitle:"从用户旅程审视产品闭环与体验缺口",focusIntro:"产品团队关注的不只是功能是否存在，还包括状态、权限、异常和跨模块衔接是否清晰。",
+          focus:[["核心旅程","配置 → 准备 → 发起 → 生成 → 审批 → 执行 → 复盘。"],["关键状态","Task 的 To do / Doing / Done 与审批、执行状态需要一致。"],["控制设计","Needs approval、Supervision、Pause employee 与 Sandbox 的优先级应明确。"],["产品缺口","登录、精细权限、Auto-repeat 调度、通知、数据保留与删除仍需确认。"]],
+          scenarioTitle:"用三条旅程验证产品设计",scenarioIntro:"每条旅程都包含正常路径、异常路径和治理路径。",
+          scenarios:[["首次上手","Owner + Operator","从 Sandbox 开始，上传文件并运行低风险任务。","验证引导、权限、空状态和成功反馈。"],["审批异常","Manager","编辑、拒绝、召回或升级一份草稿。","验证状态回退、通知和 History 一致性。"],["资料变更","Owner","替换旧文件并重跑依赖任务。","验证版本、引用来源和影响提示。"]],
+          talkTitle:"产品评审讲解顺序",talkIntro:"按旅程、状态、控制和缺口组织讨论。",
+          talk:[["定位","确认目标用户与核心任务。","3 分钟"],["旅程","走完端到端主路径。","5 分钟"],["状态","检查正常与异常状态。","4 分钟"],["治理","核对权限和控制优先级。","4 分钟"],["决策","记录缺口、负责人和优先级。","4 分钟"]]},
+        dev:{name:"开发部门",note:"当前版本强调逻辑模块、数据流、状态一致性、集成与验收边界。",
+          focusTitle:"把界面流程转换为可实现、可测试的系统边界",focusIntro:"本讲解基于可见页面与操作手册，只描述逻辑职责，不假设尚未确认的技术栈和接口。",
+          focus:[["领域模块","任务模板、AI 员工、文件知识、审批、执行、团队权限、审计与价值统计。"],["状态流转","任务与草稿状态必须可追踪、幂等，并与 History 事件一致。"],["权限控制","成员角色、员工暂停、任务开关、Needs approval 和 Sandbox 需要服务端强制执行。"],["集成边界","Google Drive 选择范围、同步、断开、文件删除及执行渠道需定义失败处理。"]],
+          scenarioTitle:"围绕验收风险设计技术演示",scenarioIntro:"优先覆盖状态一致性、权限绕过、重试和审计完整性。",
+          scenarios:[["审批并发","Approval service","两名用户同时编辑或审批同一草稿。","验证版本冲突、幂等与最终事件记录。"],["资料同步失败","Files / Apps","Drive 文件移除、权限变化或同步中断。","验证依赖任务的错误提示和恢复路径。"],["执行失败","Execution / History","批准后外部渠道不可用或拒绝执行。","验证重试、升级和 Execution refused 留痕。"]],
+          talkTitle:"开发评审讲解顺序",talkIntro:"从领域边界进入状态机、权限、集成和可观测性。",
+          talk:[["模块","确认领域职责和数据所有权。","4 分钟"],["状态","梳理任务、草稿与执行状态机。","6 分钟"],["权限","核对所有服务端控制点。","5 分钟"],["集成","定义同步、重试和失败策略。","5 分钟"],["验收","形成测试矩阵和日志要求。","5 分钟"]]},
+        customer:{name:"客户",note:"当前版本减少术语，重点解释能解决什么问题、如何控制风险、怎样开始试点。",
+          focusTitle:"让团队少做重复工作，同时保持最终控制权",focusIntro:"客户最需要理解的是：AI 不会绕过审批，企业资料的使用范围可控，每一步都能追溯。",
+          focus:[["节省时间","把整理、起草、汇总和检查等重复工作交给 AI。"],["保持控制","草稿默认等待人工审批，未经确认不会对外发送。"],["使用企业资料","AI 只根据获准文件和选定应用范围工作。"],["看见结果","通过完成量、节省工时、审批率和历史记录复盘效果。"]],
+          scenarioTitle:"从您团队最常见的一项工作开始",scenarioIntro:"选择高频、规则清晰、风险较低的工作作为首轮试点。",
+          scenarios:[["回复客户","客服团队","根据 FAQ 或订单资料生成回复草稿。","缩短响应时间，客户承诺仍由人员确认。"],["整理文件","行政团队","总结文档、命名归类或提取表格信息。","减少人工整理，让资料更容易使用。"],["销售跟进","销售团队","根据上次沟通起草跟进邮件或提案。","保持跟进节奏，同时维持品牌语气。"]],
+          talkTitle:"客户介绍顺序",talkIntro:"用一个真实工作展示价值和控制，而不是展示所有菜单。",
+          talk:[["问题","确认最耗时的重复工作。","2 分钟"],["方案","说明 AI 员工如何完成任务。","3 分钟"],["演示","展示生成、审批和留痕。","6 分钟"],["安全","解释资料范围和 Sandbox。","3 分钟"],["试点","确定一个任务和成功标准。","2 分钟"]]},
+        executive:{name:"领导汇报",note:"当前版本强调业务影响、治理责任、试点路径和管理指标。",
+          focusTitle:"以可控方式把 AI 转化为组织生产力",focusIntro:"领导层关注投入产出、风险控制、采用节奏和责任归属，而不是逐项功能细节。",
+          focus:[["战略价值","把分散的 AI 使用变成标准化、可管理的工作方式。"],["风险治理","高风险任务保留人工审批，权限、资料和动作均可追踪。"],["采用路径","先从低风险高频任务试点，再按部门和场景逐步扩展。"],["管理指标","观察任务完成量、节省工时、审批率、AI 成本和异常事件。"]],
+          scenarioTitle:"用三个管理视角说明落地方式",scenarioIntro:"分别回答价值、风险和规模化三个问题。",
+          scenarios:[["试点价值","业务负责人","在一个月内验证节省工时和输出质量。","用真实任务形成投入产出基线。"],["治理机制","Owner / Manager","明确审批、权限、Sandbox 和审计责任。","在扩大使用前建立组织控制。"],["规模扩展","跨部门","复制成熟任务模板和工作指令。","从个人效率升级为组织能力。"]],
+          talkTitle:"领导汇报顺序",talkIntro:"结论先行，用指标和治理框架支撑决策。",
+          talk:[["结论","说明为何现在需要统一 AI 工作平台。","2 分钟"],["价值","展示效率与价值指标。","4 分钟"],["风险","说明人工审批与审计机制。","4 分钟"],["路径","提出分阶段试点与扩展方案。","4 分钟"],["决策","请求场景、负责人和验收标准。","2 分钟"]]}
+      }
+    };
+
+    const tw = audiences["zh-CN"];
+    audiences["zh-TW"] = Object.fromEntries(Object.entries(tw).map(([key,value])=>{
+      const convert = text => text
+        .replaceAll("销售","銷售").replaceAll("运营","營運").replaceAll("团队","團隊").replaceAll("产品","產品")
+        .replaceAll("开发","開發").replaceAll("客户","客戶").replaceAll("领导","領導").replaceAll("讲解","講解")
+        .replaceAll("审批","審批").replaceAll("资料","資料").replaceAll("文件","檔案").replaceAll("权限","權限")
+        .replaceAll("任务","任務").replaceAll("配置","設定").replaceAll("价值","價值").replaceAll("场景","場景")
+        .replaceAll("风险","風險").replaceAll("状态","狀態").replaceAll("历史","歷史").replaceAll("异常","異常")
+        .replaceAll("检查","檢查").replaceAll("用户","使用者").replaceAll("确认","確認").replaceAll("实现","實作")
+        .replaceAll("系统","系統").replaceAll("范围","範圍").replaceAll("连接","連線").replaceAll("输出","輸出")
+        .replaceAll("发送","傳送").replaceAll("归档","歸檔").replaceAll("时间","時間").replaceAll("指标","指標")
+        .replaceAll("经理","經理").replaceAll("开始","開始").replaceAll("说明","說明").replaceAll("响应","回應");
+      const deep = v => typeof v==="string"?convert(v):Array.isArray(v)?v.map(deep):v&&typeof v==="object"?Object.fromEntries(Object.entries(v).map(([k,x])=>[k,deep(x)])):v;
+      return [key,deep(value)];
+    }));
+
+    audiences.en = {
+      salesops:{name:"Sales / Operations",note:"This version emphasizes customer value, scenario mapping, objection handling, and demo flow.",
+        focusTitle:"Lead with business outcomes—not a menu tour",focusIntro:"Help teams identify pain points and map them to AI employees, approvals, and value measures.",
+        focus:[["Positioning","Describe EMPLIX as a governed AI work system, not another chatbot."],["Discovery","Ask about repetitive work, approved sources, reviewers, and outbound risk."],["Demo path","Show Files → Task → My Desk → History as one complete loop."],["Objections","Use least privilege, approved files, Sandbox, and History to address risk."]],
+        scenarioTitle:"Start from the customer problem",scenarioIntro:"Each scenario should show both efficiency and human control.",
+        scenarios:[["Customer replies","Customer Support Assistant","Draft replies from approved FAQs and order files.","Respond faster while people verify facts and commitments."],["Quotes & documents","Sales / Accounting Assistant","Create quote or invoice drafts from approved pricing and terms.","Reduce re-entry while authorized people confirm amounts."],["Recurring marketing","Marketing Assistant","Plan calendars, posts, and reports from brand instructions.","Scale content while every publication remains reviewed."]],
+        talkTitle:"15-minute sales briefing",talkIntro:"Lead with outcomes, demo one flow, then close with governance.",
+        talk:[["Position","Explain why this is more than chat.","2 min"],["Value","Show standardization, approval, and audit.","3 min"],["Demo","Run one realistic scenario end to end.","6 min"],["Govern","Explain roles, Sandbox, and History.","3 min"],["Close","Agree on a pilot and owner.","1 min"]]},
+      product:{name:"Product Team",note:"This version emphasizes user journeys, boundaries, controls, and open product questions.",
+        focusTitle:"Review the operating loop and experience gaps",focusIntro:"Product teams need consistent states, permissions, exceptions, and cross-module handoffs—not just feature presence.",
+        focus:[["Core journey","Configure → prepare → start → generate → review → execute → improve."],["Key states","Task and approval states should remain consistent from To do through Done."],["Control design","Clarify precedence across approval, supervision, pause, and Sandbox controls."],["Open gaps","Confirm sign-in, detailed roles, scheduling, notifications, retention, and deletion."]],
+        scenarioTitle:"Validate design through three journeys",scenarioIntro:"Cover the happy path, exception path, and governance path.",
+        scenarios:[["First run","Owner + Operator","Start in Sandbox, add a file, and run a low-risk task.","Validate onboarding, access, empty states, and success feedback."],["Review exception","Manager","Edit, reject, recall, or escalate a draft.","Validate state rollback, notifications, and History."],["Knowledge change","Owner","Replace an old file and rerun dependent work.","Validate versions, citations, and impact warnings."]],
+        talkTitle:"Product review sequence",talkIntro:"Organize the review around journeys, states, controls, and gaps.",
+        talk:[["Position","Confirm users and core jobs.","3 min"],["Journey","Walk the end-to-end path.","5 min"],["States","Check normal and exception states.","4 min"],["Controls","Review roles and precedence.","4 min"],["Decide","Assign gaps, owners, and priorities.","4 min"]]},
+      dev:{name:"Engineering Team",note:"This version emphasizes logical modules, data flow, state consistency, integrations, and acceptance boundaries.",
+        focusTitle:"Turn the UI journey into implementable, testable boundaries",focusIntro:"This briefing describes logical responsibilities from visible materials; it does not assume an unconfirmed stack or API design.",
+        focus:[["Domain modules","Templates, employees, files, approval, execution, team access, audit, and value."],["State transitions","Task and draft states need traceability, idempotency, and matching History events."],["Authorization","Roles, pause, task toggles, approvals, and Sandbox must be enforced server-side."],["Integration boundaries","Define failures for Drive selection, sync, disconnect, deletion, and execution channels."]],
+        scenarioTitle:"Demo around acceptance risks",scenarioIntro:"Prioritize consistency, authorization bypass, retries, and audit completeness.",
+        scenarios:[["Concurrent approval","Approval service","Two users edit or approve the same draft.","Validate version conflicts, idempotency, and final events."],["Sync failure","Files / Apps","A Drive file is removed or sync access changes.","Validate dependency errors and recovery."],["Execution failure","Execution / History","An approved outbound action fails.","Validate retry, escalation, and refused-event audit."]],
+        talkTitle:"Engineering review sequence",talkIntro:"Move from domains to state machines, authorization, integrations, and observability.",
+        talk:[["Domains","Confirm responsibilities and ownership.","4 min"],["States","Map task, draft, and execution states.","6 min"],["Access","Review server-side control points.","5 min"],["Integrations","Define retries and failure behavior.","5 min"],["Acceptance","Create tests and logging requirements.","5 min"]]},
+      customer:{name:"Customer",note:"This version minimizes terminology and focuses on outcomes, control, and an easy pilot.",
+        focusTitle:"Reduce repetitive work without giving up control",focusIntro:"AI does not bypass approval, access to company sources is limited, and every action remains traceable.",
+        focus:[["Save time","Delegate repetitive organizing, drafting, summarizing, and checking."],["Stay in control","Drafts wait for human approval before anything is sent."],["Use company knowledge","AI works only from approved files and selected app access."],["See results","Review completion, saved time, approval rate, and history."]],
+        scenarioTitle:"Start with one common task",scenarioIntro:"Choose a frequent, rules-based, lower-risk task for the first pilot.",
+        scenarios:[["Reply to customers","Support team","Create a draft from FAQs or order data.","Respond faster while people confirm commitments."],["Organize files","Admin team","Summarize, rename, classify, or extract document data.","Reduce manual sorting and improve findability."],["Sales follow-up","Sales team","Draft follow-ups or proposals from prior contact.","Maintain cadence and brand tone."]],
+        talkTitle:"Customer briefing sequence",talkIntro:"Show one real task and its safeguards instead of every menu.",
+        talk:[["Problem","Identify the most repetitive work.","2 min"],["Approach","Show how an AI employee handles it.","3 min"],["Demo","Show creation, approval, and History.","6 min"],["Safety","Explain sources and Sandbox.","3 min"],["Pilot","Agree on one task and success measure.","2 min"]]},
+      executive:{name:"Executive Briefing",note:"This version emphasizes impact, accountability, adoption, and management measures.",
+        focusTitle:"Turn AI into governed organizational productivity",focusIntro:"Executives need clear value, risk controls, adoption stages, and accountable owners—not feature-level detail.",
+        focus:[["Strategic value","Standardize fragmented AI usage into a managed operating model."],["Risk governance","Keep human approval for high-risk work and trace access, sources, and actions."],["Adoption path","Pilot frequent low-risk work, then expand by function and scenario."],["Management measures","Track completion, saved hours, approval, AI cost, and exception events."]],
+        scenarioTitle:"Explain adoption through three management lenses",scenarioIntro:"Answer the questions of value, control, and scale.",
+        scenarios:[["Pilot value","Business owner","Validate saved time and output quality in one month.","Create a real productivity baseline."],["Governance model","Owner / Manager","Define approval, roles, Sandbox, and audit accountability.","Establish controls before expansion."],["Scale","Cross-functional","Reuse proven templates and instructions.","Move from individual efficiency to organizational capability."]],
+        talkTitle:"Executive briefing sequence",talkIntro:"Lead with the decision; support it with measures and governance.",
+        talk:[["Conclusion","Explain why a unified AI work platform matters.","2 min"],["Value","Show efficiency and value measures.","4 min"],["Risk","Explain human approval and audit.","4 min"],["Path","Propose staged pilot and expansion.","4 min"],["Decision","Request a use case, owner, and success criteria.","2 min"]]}
+    };
+
+    const audienceOrder=["salesops","product","dev","customer","executive"];
+    let lang="zh-CN", audience="salesops", currentStep=0, currentSlide=0;
+    const $=id=>document.getElementById(id);
+    const esc=value=>String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]));
+    const scenarioArt=index=>[
+      `<svg viewBox="0 0 300 120" aria-hidden="true"><path class="thin" d="M36 92C74 48 106 42 146 60s70 18 116-23"/><rect class="paper" x="62" y="25" width="83" height="50" rx="14"/><path class="soft" d="M82 75l-10 14 28-14z"/><circle class="dot" cx="86" cy="50" r="4"/><circle class="dot" cx="103" cy="50" r="4"/><circle class="dot" cx="120" cy="50" r="4"/><rect class="paper" x="162" y="48" width="76" height="43" rx="13"/><path class="line" d="M180 69h39M180 78h25"/></svg>`,
+      `<svg viewBox="0 0 300 120" aria-hidden="true"><path class="thin" d="M48 95h205"/><rect class="paper" x="82" y="18" width="104" height="78" rx="12"/><path class="soft" d="M169 18h17v18z"/><path class="line" d="M103 43h57M103 56h46M103 69h31"/><rect class="soft" x="173" y="56" width="55" height="42" rx="12"/><path class="line" d="M188 70h25M188 80h25M188 90h14"/><circle class="dot" cx="68" cy="36" r="7"/></svg>`,
+      `<svg viewBox="0 0 300 120" aria-hidden="true"><path class="thin" d="M45 94h210"/><rect class="paper" x="64" y="31" width="105" height="65" rx="13"/><path class="line" d="M64 49h105M88 22v18M144 22v18M84 66h17M111 66h17M138 66h13M84 81h17M111 81h17"/><path class="soft" d="M194 41l47-18v62l-47-18z"/><path class="line" d="M194 41v26M241 34c12 7 12 32 0 40"/><path class="line" d="M203 68l9 27h-18l-7-28"/></svg>`
+    ][index%3];
+    const focusArt=index=>[
+      `<svg viewBox="0 0 100 100" aria-hidden="true"><circle class="paper" cx="50" cy="50" r="34"/><path class="line" d="M50 29v23l16 10M35 17l-8 9M65 17l8 9"/><circle class="dot" cx="50" cy="50" r="4"/></svg>`,
+      `<svg viewBox="0 0 100 100" aria-hidden="true"><path class="soft" d="M50 12l31 12v25c0 21-13 33-31 40-18-7-31-19-31-40V24z"/><path class="paper" d="M50 20l23 9v20c0 15-8 24-23 31-15-7-23-16-23-31V29z"/><path class="line" d="M38 50l8 8 17-19"/></svg>`,
+      `<svg viewBox="0 0 100 100" aria-hidden="true"><ellipse class="paper" cx="50" cy="26" rx="29" ry="12"/><path class="paper" d="M21 26v24c0 7 13 12 29 12s29-5 29-12V26"/><path class="paper" d="M21 50v24c0 7 13 12 29 12s29-5 29-12V50"/><path class="line" d="M30 49c10 6 31 6 40 0M30 73c10 6 31 6 40 0"/></svg>`,
+      `<svg viewBox="0 0 100 100" aria-hidden="true"><rect class="paper" x="17" y="18" width="66" height="64" rx="13"/><path class="line" d="M30 68V56M45 68V43M60 68V49M75 68V31M28 32h18"/><circle class="dot" cx="30" cy="32" r="3"/></svg>`
+    ][index%4];
+
+    function render(){
+      const c=common[lang], a=audiences[lang][audience];
+      document.documentElement.lang=lang;
+      $("languageLabel").textContent=c.language;$("audienceLabel").textContent=c.audience;$("printBtn").textContent=c.print;
+      $("fullscreenBtn").textContent=lang==="en"?"Full screen":lang==="zh-TW"?"全螢幕":"全屏";
+      $("audience").innerHTML=audienceOrder.map(key=>`<option value="${key}" ${key===audience?"selected":""}>${esc(audiences[lang][key].name)}</option>`).join("");
+      $("kicker").textContent=c.kicker;$("heroTitle").textContent=c.heroTitle;$("heroCopy").textContent=c.heroCopy;
+      $("audienceNote").innerHTML=`<b>${esc(a.name)}</b> · ${esc(a.note)}`;
+      $("uiReviewTitle").textContent=c.uiReview;$("uiWaiting").textContent=c.waiting;$("uiAssistant").textContent=c.assistant;
+      $("uiDraftTitle").textContent=c.draftTitle;$("uiDraftBody").textContent=c.draftBody;$("uiSource").textContent=c.source;
+      $("uiApprove").textContent=c.approve;$("uiEdit").textContent=c.edit;$("uiReject").textContent=c.reject;
+      $("metrics").innerHTML=c.metrics.map(x=>`<div class="metric"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join("");
+      const f=featureContent[lang];
+      $("mapLabel").textContent=f.mapLabel;$("mapTitle").textContent=f.mapTitle;$("mapIntro").textContent=f.mapIntro;
+      $("moduleMap").innerHTML=f.modules.map((x,i)=>`<button type="button" class="module-map-card" data-module-index="${i}"><i>${esc(x[0])}</i><b>${esc(x[1])}</b><span>${esc(x[2])}</span></button>`).join("");
+      $("moduleDetail").innerHTML=`<div class="detail-dock-title"><small>${lang==="en"?"SELECT A MODULE":lang==="zh-TW"?"選擇模組":"选择模块"}</small><b>${esc(f.modules[0][1])}</b></div><div class="detail-cell"><small>${lang==="en"?"PURPOSE":"用途"}</small><b>${esc(f.modules[0][2])}</b></div><div class="detail-cell"><small>${lang==="en"?"DEEP DIVE":"深度讲解"}</small><b>${lang==="en"?"Click any module to open its detailed feature page.":lang==="zh-TW"?"點擊任一模組，進入對應功能詳解頁。":"点击任一模块，进入对应功能详解页。"}</b></div><div class="detail-cell"><small>${lang==="en"?"FLOW":"讲解路径"}</small><b>${lang==="en"?"Govern → prepare → execute → measure":"治理 → 准备 → 执行 → 复盘"}</b></div>`;
+      $("workforceLabel").textContent=f.workforceLabel;$("workforceTitle").textContent=f.workforceTitle;$("workforceIntro").textContent=f.workforceIntro;
+      $("workforceGrid").innerHTML=f.employees.map((x,i)=>`<button type="button" class="employee-card" data-employee-index="${i}"><div class="employee-avatar">${esc(x[0])}</div><h3>${esc(x[1])}</h3><p>${esc(x[2])}</p><div class="employee-tasks">${x[3].map(t=>`<span>${esc(t)}</span>`).join("")}</div><div class="employee-control"><i></i>${lang==="en"?"HUMAN REVIEW READY":lang==="zh-TW"?"人工審批已就緒":"人工审批已就绪"}</div></button>`).join("");
+      const d=deepContent[lang];
+      $("workforceDetail").innerHTML=`<div class="detail-dock-title"><small>${lang==="en"?"SELECT AN EMPLOYEE":lang==="zh-TW"?"選擇 AI 員工":"选择 AI 员工"}</small><b>${esc(f.employees[0][1])}</b></div><div class="detail-cell"><small>${esc(d.input)}</small><b>${esc(d.employeeExtra[0][1])}</b></div><div class="detail-cell"><small>${esc(d.output)}</small><b>${esc(d.employeeExtra[0][2])}</b></div><div class="detail-cell"><small>${esc(d.control)}</small><b>${esc(d.employeeExtra[0][3])}</b></div>`;
+      $("employeeSlides").innerHTML=f.employees.map((x,i)=>{const z=d.employeeExtra[i];return `<section class="slide" data-slide="employee-${i}"><div class="shell"><div class="section-head"><small>${esc(d.employeeLabel)} · 0${i+1}</small><h2>${esc(x[1])}</h2><p>${esc(x[2])}</p></div><div class="deep-layout"><div class="deep-identity"><div class="deep-avatar">${esc(x[0])}</div><h3>${esc(x[1])}</h3><p>${esc(x[2])}</p><div class="deep-status"><i></i>${lang==="en"?"HUMAN REVIEW ENABLED":lang==="zh-TW"?"人工審批已啟用":"人工审批已启用"}</div></div><div class="deep-content"><div class="deep-columns"><div class="deep-block"><small>${esc(d.input)}</small><b>${esc(z[1])}</b></div><div class="deep-block"><small>${esc(d.output)}</small><b>${esc(z[2])}</b></div></div><div class="capability-list">${z[0].map(t=>`<span>${esc(t)}</span>`).join("")}</div><div class="deep-block" style="margin-top:14px"><small>${esc(d.control)}</small><b>${esc(z[3])}</b></div></div></div></div></section>`}).join("");
+      const deepModules=d.groups.flatMap((g,groupIndex)=>g[2].map(m=>({group:g[0],intro:g[1],groupIndex,m})));
+      $("moduleSlides").innerHTML=deepModules.map((item,i)=>{const m=item.m;return `<section class="${i%2?"white-section ":""}slide" data-slide="module-${m[0]}"><div class="shell"><div class="section-head"><small>${esc(d.moduleLabel)} · ${String(i+1).padStart(2,"0")}</small><h2>${esc(m[1])}</h2><p>${esc(m[2])}</p></div><div class="module-screen-layout"><div class="system-capture"><div class="capture-bar"><i></i><i></i><i></i><b>REAL SYSTEM · ${esc(m[1].toUpperCase())}</b></div><div class="capture-viewport"><iframe src="${modulePages[m[0]]}" title="${esc(m[1])} real system page"></iframe></div></div><div class="module-narrative"><span class="module-code">${esc(m[0])}</span><h3>${esc(item.group)}</h3><p>${esc(item.intro)}</p><div class="module-actions">${m[3].map(t=>`<span>${esc(t)}</span>`).join("")}</div><div class="system-proof">${lang==="en"?"LIVE MODULE VIEW · OFFLINE DEMO SNAPSHOT":lang==="zh-TW"?"真實模組畫面 · 離線示範快照":"真实模块画面 · 离线演示快照"}</div></div></div></div></section>`}).join("");
+      $("workflowLabel").textContent=c.workflowLabel;$("workflowTitle").textContent=c.workflowTitle;$("workflowIntro").textContent=c.workflowIntro;
+      $("workflow").innerHTML=workflowData[lang].map((x,i)=>`<button type="button" class="flow-node ${i===currentStep?"active":i<currentStep?"done":""}" data-step="${i}" aria-label="${esc(x[0])}"><i>0${i+1}</i><span>${esc(x[0])}</span></button>`).join("");
+      renderStep();
+      $("focusLabel").textContent=c.focusLabel;$("focusTitle").textContent=a.focusTitle;$("focusIntro").textContent=a.focusIntro;
+      $("focusGrid").innerHTML=a.focus.map((x,i)=>`<article class="focus-card" style="--meter:${[92,78,66,84][i]}%"><b>0${i+1}</b><div class="focus-copy"><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></div><div class="focus-visual">${focusArt(i)}</div></article>`).join("");
+      $("governanceLabel").textContent=f.governanceLabel;$("governanceTitle").textContent=f.governanceTitle;$("governanceIntro").textContent=f.governanceIntro;
+      $("controlPanelLabel").textContent=f.controlLabel;$("controlPanelTitle").textContent=f.controlTitle;
+      $("controlRows").innerHTML=f.controls.map(x=>`<div class="control-row"><i>${esc(x[0])}</i><div><b>${esc(x[1])}</b><small>${esc(x[2])}</small></div><span>${lang==="en"?"ACTIVE":"ON"}</span></div>`).join("");
+      $("valuePanelLabel").textContent=f.valueLabel;$("valuePanelTitle").textContent=f.valueTitle;
+      $("valueMetrics").innerHTML=f.values.map(x=>`<div class="value-tile"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join("");
+      $("auditLine").textContent=f.audit;
+      $("scenarioLabel").textContent=c.scenarioLabel;$("scenarioTitle").textContent=a.scenarioTitle;$("scenarioIntro").textContent=a.scenarioIntro;
+      $("scenarios").innerHTML=a.scenarios.map((x,i)=>`<article class="scenario"><small>${esc(x[1])}</small><h3>${esc(x[0])}</h3><div class="scenario-visual">${scenarioArt(i)}</div><div class="journey"><div class="journey-node"><i>IN</i><b>${esc(x[2])}</b></div><div class="journey-arrow">↓</div><div class="journey-node"><i>AI</i><b>${esc(lang==="en"?"AI employee creates a controlled draft":lang==="zh-TW"?"AI 員工產生受控草稿":"AI 员工生成受控草稿")}</b></div><div class="journey-arrow">↓</div><div class="journey-node"><i>✓</i><b>${esc(lang==="en"?"Human review in My Desk":lang==="zh-TW"?"在 My Desk 進行人工審批":"在 My Desk 进行人工审批")}</b></div></div><div class="journey-outcome"><b>${lang==="en"?"Outcome":lang==="zh-TW"?"預期成果":"预期成果"}</b>${esc(x[3])}</div></article>`).join("");
+      $("talkLabel").textContent=c.talkLabel;$("talkTitle").textContent=a.talkTitle;$("talkIntro").textContent=a.talkIntro;
+      $("talkList").innerHTML=a.talk.map((x,i)=>`<div class="talk-row"><span>0${i+1}</span><div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div><em>${esc(x[2])}</em></div>`).join("");
+      $("closingLabel").textContent=c.closingLabel;$("closingTitle").textContent=c.closingTitle;$("closingCopy").textContent=c.closingCopy;
+      $("pilotTitle").textContent=c.pilotTitle;$("pilotDuration").textContent=c.pilotDuration;
+      $("pilotSteps").innerHTML=c.pilotSteps.map(x=>`<div class="pilot-step"><i>${esc(x[0])}</i><div><b>${esc(x[1])}</b><small>${esc(x[2])}</small></div><span>→</span></div>`).join("");
+      $("pilotResult").textContent=c.pilotResult;$("footerText").textContent=c.footer;
+      document.title=`EMPLIX · ${a.name}`;
+      updateSlides();
+      localStorage.setItem("emplix-lang",lang);localStorage.setItem("emplix-audience",audience);
+    }
+    function slideNames(){
+      const f=featureContent[lang],d=deepContent[lang];
+      const base=lang==="en"?["Opening","System map","AI workforce"]:lang==="zh-TW"?["開場定位","系統地圖","AI 員工"]:["开场定位","系统地图","AI 员工"];
+      return [...base,...f.employees.map(x=>x[1]),...d.groups.flatMap(x=>x[2].map(m=>m[1])),...(lang==="en"?["Standard workflow","Audience priorities","Governance & value","Scenario journeys","Pilot decision"]:lang==="zh-TW"?["標準流程","對象重點","治理與價值","場景旅程","試點決策"]:["标准流程","对象重点","治理与价值","场景旅程","试点决策"])];
+    }
+    let moduleScrollSession=0;
+    function startModuleAutoScroll(activeSlide){
+      ++moduleScrollSession;
+      const frame=activeSlide?.querySelector(".capture-viewport"),iframe=frame?.querySelector("iframe");
+      if(!iframe)return;
+      const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+      iframe.contentWindow?.postMessage(reduced?"emplix-scroll-pause":"emplix-scroll-resume","*");
+      if(!frame.dataset.scrollEvents){
+        frame.dataset.scrollEvents="true";
+        frame.addEventListener("pointerenter",()=>iframe.contentWindow?.postMessage("emplix-scroll-pause","*"));
+        frame.addEventListener("pointerleave",()=>iframe.contentWindow?.postMessage("emplix-scroll-resume","*"));
+      }
+    }
+    function updateSlides(){
+      const slides=[...document.querySelectorAll(".slide")];
+      slides.forEach((slide,i)=>{slide.classList.toggle("active",i===currentSlide);slide.classList.remove("is-entering")});
+      const active=slides[currentSlide];if(active){void active.offsetWidth;active.classList.add("is-entering")}
+      startModuleAutoScroll(active);
+      $("slideTitle").textContent=slideNames()[currentSlide];
+      $("slideCounter").textContent=`${String(currentSlide+1).padStart(2,"0")} / ${String(slides.length).padStart(2,"0")}`;
+      $("deckProgress").style.width=`${((currentSlide+1)/slides.length)*100}%`;
+      $("prevSlide").disabled=currentSlide===0;$("nextSlide").disabled=currentSlide===slides.length-1;
+    }
+    function goSlide(delta){
+      const total=document.querySelectorAll(".slide").length;
+      currentSlide=Math.max(0,Math.min(total-1,currentSlide+delta));
+      updateSlides();
+    }
+    function renderStep(){
+      const labels=workflowVisual[lang].labels, step=workflowVisual[lang].steps[currentStep], summary=workflowData[lang][currentStep];
+      $("visualStage").textContent=`${String(currentStep+1).padStart(2,"0")} / 08`;
+      $("moduleIcon").textContent=step[0];$("moduleName").textContent=step[1];$("moduleHint").textContent=labels.hint;
+      $("inputLabel").textContent=labels.input;$("outputLabel").textContent=labels.output;
+      $("visualInput").textContent=step[3];$("visualOutput").textContent=step[4];
+      const page=realPages[currentStep];
+      $("realPageLabel").textContent=lang==="en"?"REAL SYSTEM":lang==="zh-TW"?"真實系統頁面":"真实系统页面";
+      if($("realScreen").getAttribute("src")!==page.path)$("realScreen").setAttribute("src",page.path);
+      $("stepCounter").textContent=`STEP ${String(currentStep+1).padStart(2,"0")} / 08`;$("stepModule").textContent=step[1];
+      $("stepTitle").textContent=summary[0];$("stepDescription").textContent=summary[1];
+      $("actionLabel").textContent=labels.action;$("guardLabel").textContent=labels.guard;
+      $("stepAction").textContent=step[5];$("stepGuard").textContent=step[6];
+      $("prevStep").textContent=labels.prev;$("nextStep").textContent=labels.next;
+      $("prevStep").disabled=currentStep===0;$("nextStep").disabled=currentStep===7;
+      document.querySelectorAll(".flow-node").forEach((node,i)=>{
+        node.classList.toggle("active",i===currentStep);node.classList.toggle("done",i<currentStep);
+      });
+    }
+    lang=localStorage.getItem("emplix-lang")||lang;
+    audience=localStorage.getItem("emplix-audience")||audience;
+    $("language").value=lang;
+    $("language").addEventListener("change",e=>{lang=e.target.value;render()});
+    $("audience").addEventListener("change",e=>{audience=e.target.value;currentSlide=0;currentStep=0;render()});
+    $("moduleMap").addEventListener("click",e=>{const card=e.target.closest("[data-module-index]");if(card){const deepOrder=[7,6,4,1,2,3,8,5,0,9];currentSlide=8+deepOrder[Number(card.dataset.moduleIndex)];updateSlides()}});
+    $("workforceGrid").addEventListener("click",e=>{const card=e.target.closest("[data-employee-index]");if(card){currentSlide=3+Number(card.dataset.employeeIndex);updateSlides()}});
+    $("workflow").addEventListener("click",e=>{const button=e.target.closest("[data-step]");if(button){currentStep=Number(button.dataset.step);renderStep()}});
+    $("prevStep").addEventListener("click",()=>{if(currentStep>0){currentStep--;renderStep()}});
+    $("nextStep").addEventListener("click",()=>{if(currentStep<7){currentStep++;renderStep()}});
+    $("prevSlide").addEventListener("click",()=>goSlide(-1));
+    $("nextSlide").addEventListener("click",()=>goSlide(1));
+    $("fullscreenBtn").addEventListener("click",async()=>{if(!document.fullscreenElement){await document.documentElement.requestFullscreen?.()}else{await document.exitFullscreen?.()}});
+    document.addEventListener("pointermove",e=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;const x=(e.clientX/innerWidth-.5)*8,y=(e.clientY/innerHeight-.5)*8;document.documentElement.style.setProperty("--px",`${x}px`);document.documentElement.style.setProperty("--py",`${y}px`)});
+    document.addEventListener("pointerleave",()=>{document.documentElement.style.setProperty("--px","0px");document.documentElement.style.setProperty("--py","0px")});
+    document.addEventListener("keydown",e=>{
+      if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();goSlide(1)}
+      if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();goSlide(-1)}
+      if(e.key==="Home"){currentSlide=0;updateSlides()}
+      if(e.key==="End"){currentSlide=document.querySelectorAll(".slide").length-1;updateSlides()}
+    });
+    $("printBtn").addEventListener("click",()=>window.print());
+    render();
+  </script>
+</body>
+</html>
