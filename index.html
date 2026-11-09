@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> emplix-deck · 设计稿索引</title>
+<style>
+:root{
+  --ink:#1B1533; --ink2:#3D3760; --muted:#6B6485; --line:#E7E4F0; --line2:#D6D2E4;
+  --bg:#FFFFFF; --bg2:#FAF9FD; --bg3:#F4F2FA;
+  --purple:#534AB7; --purple-d:#3C3489; --purple-s:#EEEDFE; --purple-l:#CECBF6;
+  --navy:#232C5C; --warm:#FBF6EE; --wood:#D9B98C; --wood2:#C09A6B;
+  --r:14px; --r-s:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg2);color:var(--ink);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+header{padding:72px 0 40px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--purple);background:var(--purple-s);padding:6px 13px;border-radius:999px;border:1px solid var(--purple-l);margin-bottom:20px}
+h1{font-size:42px;line-height:1.2;letter-spacing:-.03em;color:var(--navy);margin-bottom:14px}
+.lede{font-size:17.5px;color:var(--muted);max-width:660px}
+h2{font-size:22px;margin:56px 0 18px;color:var(--navy);letter-spacing:-.02em}
+h2 small{font-size:13px;font-weight:500;color:var(--muted);margin-left:10px;letter-spacing:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
+.card{
+  display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--r);
+  overflow:hidden;text-decoration:none;color:inherit;transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(27,21,51,.09);border-color:var(--purple-l)}
+.thumb{height:132px;display:grid;place-items:center;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.thumb .chip{
+  position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;
+  background:var(--purple);color:#fff;
+}
+.thumb .chip.gray{background:rgba(35,44,92,.6)}
+.cbody{padding:19px 20px 22px;display:flex;flex-direction:column;flex:1}
+.cbody h3{font-size:17px;margin-bottom:7px;color:var(--ink)}
+.cbody p{font-size:13.5px;color:var(--muted);line-height:1.65;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.tag{font-size:11.5px;padding:3px 9px;border-radius:6px;background:var(--bg3);color:var(--ink2);border:1px solid var(--line)}
+.go{margin-top:16px;font-size:13.5px;font-weight:600;color:var(--purple);display:flex;align-items:center;gap:6px}
+.go::after{content:"→";transition:transform .2s}
+.card:hover .go::after{transform:translateX(4px)}
+.note{
+  margin-top:44px;background:var(--warm);border:1px solid #E4D9C6;border-radius:var(--r);padding:24px 26px;
+}
+.note b{font-size:14.5px;color:var(--navy);display:block;margin-bottom:6px}
+.note p{font-size:13.5px;color:#7A6F5E;line-height:1.7}
+footer{margin-top:64px;padding:26px 0 44px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">设计稿索引</span>
+    <h1>emplix-deck</h1>
+    <p class="lede">各产品线的网页与原型稿集合。每个卡片点开即为可交互的完整页面。</p>
+  </header>
+
+  <h2>WorkPier <small>官网首页改版 · 2026-11-09</small></h2>
+  <div class="grid">
+    <a class="card" href="deck-WorkPier.html">
+      <div class="thumb" style="background:linear-gradient(135deg,#EEEDFE,#FAF9FD)">
+        <span class="chip">重点</span>
+        <svg width="132" height="86" viewBox="0 0 132 86" aria-hidden="true">
+          <rect x="6" y="10" width="120" height="66" rx="6" fill="#fff" stroke="#CECBF6"/>
+          <rect x="16" y="22" width="42" height="6" rx="3" fill="#232C5C"/>
+          <rect x="16" y="34" width="26" height="4" rx="2" fill="#CECBF6"/>
+          <rect x="16" y="44" width="34" height="4" rx="2" fill="#CECBF6"/>
+          <rect x="16" y="54" width="22" height="8" rx="4" fill="#534AB7"/>
+          <rect x="70" y="18" width="48" height="52" rx="5" fill="#F1EFE8"/>
+          <rect x="76" y="26" width="36" height="14" rx="3" fill="#534AB7"/>
+          <rect x="76" y="44" width="16" height="10" rx="2" fill="#CECBF6"/>
+          <rect x="96" y="44" width="16" height="10" rx="2" fill="#CECBF6"/>
+          <rect x="76" y="58" width="36" height="7" rx="3" fill="#CECBF6"/>
+        </svg>
+      </div>
+      <div class="cbody">
+        <h3>WorkPier 官网首页改版</h3>
+        <p>像素风格的完整首页设计稿。突出「团队主管」作为默认对接人的叙事，含组织结构图、分派可见、连接器与对比表。</p>
+        <div class="tags">
+          <span class="tag">官网首页</span><span class="tag">像素视觉</span><span class="tag">AI 员工团队</span><span class="tag">响应式</span>
+        </div>
+        <span class="go">查看设计稿</span>
+      </div>
+    </a>
+  </div>
+
+  <h2>其他 <small>仓库内既有内容</small></h2>
+  <div class="grid">
+    <a class="card" href="EMPLIX.html">
+      <div class="thumb" style="background:linear-gradient(135deg,#E6F1FB,#FAF9FD)">
+        <span class="chip gray">EMPLIX</span>
+        <svg width="120" height="70" viewBox="0 0 120 70" aria-hidden="true">
+          <rect x="8" y="8" width="104" height="54" rx="6" fill="#fff" stroke="#B5D4F4"/>
+          <rect x="20" y="20" width="46" height="7" rx="3.5" fill="#185FA5"/>
+          <rect x="20" y="34" width="70" height="4" rx="2" fill="#B5D4F4"/>
+          <rect x="20" y="44" width="52" height="4" rx="2" fill="#B5D4F4"/>
+        </svg>
+      </div>
+      <div class="cbody">
+        <h3>EMPLIX</h3>
+        <p>EMPLIX 产品主页面。</p>
+        <div class="tags"><span class="tag">产品页</span></div>
+        <span class="go">查看</span>
+      </div>
+    </a>
+    <a class="card" href="deck-Emplix.html">
+      <div class="thumb" style="background:linear-gradient(135deg,#E1F5EE,#FAF9FD)">
+        <span class="chip gray">Emplix</span>
+        <svg width="120" height="70" viewBox="0 0 120 70" aria-hidden="true">
+          <rect x="8" y="8" width="104" height="54" rx="6" fill="#fff" stroke="#9FE1CB"/>
+          <rect x="20" y="20" width="40" height="7" rx="3.5" fill="#0F6E56"/>
+          <rect x="20" y="34" width="70" height="4" rx="2" fill="#9FE1CB"/>
+          <rect x="20" y="44" width="56" height="4" rx="2" fill="#9FE1CB"/>
+        </svg>
+      </div>
+      <div class="cbody">
+        <h3>Emplix Deck</h3>
+        <p>Emplix 演示文稿版本。</p>
+        <div class="tags"><span class="tag">Deck</span></div>
+        <span class="go">查看</span>
+      </div>
+    </a>
+    <a class="card" href="deck-Emplix-en.html">
+      <div class="thumb" style="background:linear-gradient(135deg,#FAEEDA,#FAF9FD)">
+        <span class="chip gray">EN</span>
+        <svg width="120" height="70" viewBox="0 0 120 70" aria-hidden="true">
+          <rect x="8" y="8" width="104" height="54" rx="6" fill="#fff" stroke="#FAC775"/>
+          <rect x="20" y="20" width="44" height="7" rx="3.5" fill="#854F0B"/>
+          <rect x="20" y="34" width="70" height="4" rx="2" fill="#FAC775"/>
+          <rect x="20" y="44" width="48" height="4" rx="2" fill="#FAC775"/>
+        </svg>
+      </div>
+      <div class="cbody">
+        <h3>Emplix Deck · EN</h3>
+        <p>Emplix 演示文稿英文版本。</p>
+        <div class="tags"><span class="tag">Deck</span><span class="tag">English</span></div>
+        <span class="go">查看</span>
+      </div>
+    </a>
+    <a class="card" href="deck-OPC.html">
+      <div class="thumb" style="background:linear-gradient(135deg,#FBEAF0,#FAF9FD)">
+        <span class="chip gray">OPC</span>
+        <svg width="120" height="70" viewBox="0 0 120 70" aria-hidden="true">
+          <rect x="8" y="8" width="104" height="54" rx="6" fill="#fff" stroke="#F4C0D1"/>
+          <rect x="20" y="20" width="42" height="7" rx="3.5" fill="#993556"/>
+          <rect x="20" y="34" width="70" height="4" rx="2" fill="#F4C0D1"/>
+          <rect x="20" y="44" width="60" height="4" rx="2" fill="#F4C0D1"/>
+        </svg>
+      </div>
+      <div class="cbody">
+        <h3>OPC Deck</h3>
+        <p>OPC 演示文稿版本。</p>
+        <div class="tags"><span class="tag">Deck</span></div>
+        <span class="go">查看</span>
+      </div>
+    </a>
+    <a class="card" href="deck-new.html">
+      <div class="thumb" style="background:linear-gradient(135deg,#F1EFE8,#FAF9FD)">
+        <span class="chip gray">New</span>
+        <svg width="120" height="70" viewBox="0 0 120 70" aria-hidden="true">
+          <rect x="8" y="8" width="104" height="54" rx="6" fill="#fff" stroke="#D3D1C7"/>
+          <rect x="20" y="20" width="46" height="7" rx="3.5" fill="#444441"/>
+          <rect x="20" y="34" width="70" height="4" rx="2" fill="#D3D1C7"/>
+          <rect x="20" y="44" width="54" height="4" rx="2" fill="#D3D1C7"/>
+        </svg>
+      </div>
+      <div class="cbody">
+        <h3>Deck New</h3>
+        <p>新版演示文稿草稿。</p>
+        <div class="tags"><span class="tag">Deck</span></div>
+        <span class="go">查看</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="note">
+    <b>关于设计稿中的占位内容</b>
+    <p>WorkPier 稿件中所有标注 <strong>【待确认】</strong> 或 <strong>N</strong> 的位置为业务数据占位（积分换算比例、客户案例、团队版定价等），发布前需替换为真实数据。</p>
+  </div>
+
+  <footer>
+    <span>© 2026 emplix-deck</span>
+    <span>GitHub Pages</span>
+  </footer>
+</div>
+</body>
+</html>

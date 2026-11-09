@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkPier — 一位 AI 主管，带着一支专长团队</title>
+<script>document.documentElement.className+=' js';</script>
+<style>
+:root{
+  --ink:#1B1533; --ink2:#3D3760; --muted:#6B6485; --line:#E7E4F0; --line2:#D6D2E4;
+  --navy:#232C5C; --navy2:#3A4374;
+  --bg:#FFFFFF; --bg2:#FAF9FD; --bg3:#F4F2FA;
+  --purple:#534AB7; --purple-d:#3C3489; --purple-s:#EEEDFE; --purple-l:#CECBF6;
+  --teal:#0F6E56; --teal-s:#E1F5EE; --teal-l:#9FE1CB;
+  --amber:#854F0B; --amber-s:#FAEEDA; --amber-l:#FAC775;
+  --red:#A32D2D; --red-s:#FCEBEB;
+  --warm:#FBF6EE; --wall:#F4EDE1; --wall2:#EDE4D4; --floor:#E7DCC9; --floor2:#DCCFB8;
+  --wood:#D9B98C; --wood2:#C09A6B; --wood3:#A8834F;
+  --r:14px; --r-s:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg); color:var(--ink); font-size:16px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.pixel{
+  image-rendering:pixelated;
+}
+h1,h2,h3,h4{font-weight:600;line-height:1.25;letter-spacing:-.01em}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:100;background:rgba(255,255,255,.86);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line);
+}
+.nav-in{display:flex;align-items:center;gap:34px;height:66px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:19px;letter-spacing:-.02em}
+.logo-mark{width:26px;height:26px;display:block}
+.nav-links{display:flex;gap:26px;font-size:14.5px;color:var(--ink2);margin-left:auto}
+.nav-links a{transition:color .18s}
+.nav-links a:hover{color:var(--purple)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 22px;border-radius:var(--r-s);font-size:15px;font-weight:600;
+  transition:transform .18s, box-shadow .18s, background .18s;
+}
+.btn-p{background:var(--purple);color:#fff;box-shadow:0 2px 8px rgba(83,74,183,.24)}
+.btn-p:hover{background:var(--purple-d);transform:translateY(-1px);box-shadow:0 6px 18px rgba(83,74,183,.28)}
+.btn-s{border:1px solid var(--line2);color:var(--ink);background:#fff}
+.btn-s:hover{border-color:var(--purple-l);color:var(--purple);background:var(--purple-s)}
+.btn-lg{padding:14px 28px;font-size:16px}
+.btn-full{width:100%}
+
+/* ---------- section ---------- */
+section{padding:88px 0}
+.sec-alt{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+  color:var(--purple);background:var(--purple-s);padding:6px 13px;border-radius:999px;
+  border:1px solid var(--purple-l);margin-bottom:20px;
+}
+h2.sec{font-size:40px;margin-bottom:16px;letter-spacing:-.025em}
+.lede{font-size:18px;color:var(--muted);max-width:660px;line-height:1.7}
+.sec-head{margin-bottom:52px}
+.sec-head.center{text-align:center}
+.sec-head.center .lede{margin:0 auto}
+
+/* ---------- hero ---------- */
+.hero{padding:78px 0 86px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hero-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;position:relative;z-index:1;
+}
+.hero h1{font-size:52px;line-height:1.18;letter-spacing:-.03em;margin-bottom:22px;color:var(--navy)}
+.hero h1 em{font-style:normal;color:var(--purple);white-space:nowrap;position:relative}
+.hero h1 em::after{
+  content:"";position:absolute;left:0;right:12px;bottom:.1em;height:.14em;z-index:0;
+  background:linear-gradient(90deg,var(--purple-l),rgba(206,203,246,0));opacity:.75;
+}
+.hero h1 em > span{position:relative;z-index:1}
+.hero p.lead{font-size:18.5px;color:var(--ink2);max-width:520px;margin-bottom:32px;line-height:1.7}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.hero-note{font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--line2)}
+
+/* ---------- pixel office scene ---------- */
+.px-scene{width:100%;height:auto;display:block}
+.px-scene text{font-family:inherit}
+
+/* ---------- feature ribbon (原版四标签) ---------- */
+.feat-ribbon{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;
+  background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  position:relative;z-index:1;
+}
+.fr{
+  display:flex;align-items:center;justify-content:center;gap:11px;padding:19px 16px;
+  font-size:14.5px;font-weight:600;color:var(--ink2);
+}
+.fr+.fr{border-left:1px solid var(--line)}
+.fr svg{width:21px;height:21px;flex:none;color:var(--purple)}
+.fr:hover{background:var(--purple-s);color:var(--purple-d)}
+
+/* ---------- skill grid (原版 skill 技能库) ---------- */
+.skill-tabs{display:flex;gap:9px;margin-bottom:22px;flex-wrap:wrap}
+.sk-tab{
+  font-size:13px;font-weight:600;padding:7px 16px;border-radius:999px;
+  background:var(--purple);color:#fff;
+}
+.sk-tab.ghost{background:#fff;color:var(--muted);border:1px solid var(--line)}
+.skill-grid{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+}
+.sg{
+  background:#fff;padding:16px 12px;display:flex;flex-direction:column;gap:9px;
+  transition:background .2s;
+}
+.sg:hover{background:var(--purple-s)}
+.sg svg{width:19px;height:19px;color:var(--purple)}
+.sg span{font-size:12.5px;color:var(--ink2);line-height:1.4}
+.sg.cat{background:var(--bg2)}
+.sg.cat span{font-weight:700;color:var(--purple-d)}
+.sg.cat:hover{background:var(--purple-s)}
+.sg-empty{background:var(--bg2)}
+
+/* ---------- org diagram ---------- */
+.org{
+  background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 24px;
+  box-shadow:0 18px 50px rgba(27,21,51,.07);
+}
+.org-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.org-title{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.org-stats{display:flex;gap:8px}
+.pill{
+  font-size:11.5px;padding:4px 10px;border-radius:999px;font-weight:600;
+  background:var(--bg3);color:var(--ink2);border:1px solid var(--line);
+}
+.pill.run{background:var(--amber-s);color:var(--amber);border-color:var(--amber-l)}
+.org-you{
+  display:flex;align-items:center;gap:11px;padding:12px 14px;
+  background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-s);margin-bottom:12px;
+}
+.org-you .lbl{font-size:14px;font-weight:600}
+.org-you .sub{font-size:12.5px;color:var(--muted)}
+.org-lead{
+  border:2px solid var(--purple);border-radius:var(--r);padding:16px;
+  background:linear-gradient(180deg,var(--purple-s),#fff 62%);position:relative;margin-bottom:12px;
+}
+.org-lead::before{
+  content:"默认对接人";position:absolute;top:-11px;left:18px;
+  font-size:11px;font-weight:700;color:#fff;background:var(--purple);
+  padding:3px 10px;border-radius:999px;letter-spacing:.02em;
+}
+.lead-row{display:flex;align-items:center;gap:12px;margin-bottom:13px;flex-wrap:wrap}
+.lead-name{font-size:19px;font-weight:700;white-space:nowrap}
+.lead-tag{font-size:12px;color:var(--purple-d);background:#fff;border:1px solid var(--purple-l);padding:2px 9px;border-radius:999px;white-space:nowrap}
+.lead-cap{flex-basis:100%;font-size:13px;color:var(--muted);line-height:1.5}
+.lead-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ls{background:#fff;border:1px solid var(--purple-l);border-radius:8px;padding:9px 10px;font-size:12.5px}
+.ls b{display:block;font-size:13px;color:var(--purple-d);margin-bottom:1px}
+.ls span{color:var(--muted);font-size:11.5px}
+.org-arrow{text-align:center;margin:2px 0 10px;color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.04em}
+.staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.staff{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-s);padding:11px 10px;text-align:center;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.staff:hover{transform:translateY(-3px);border-color:var(--purple-l);box-shadow:0 6px 16px rgba(83,74,183,.1)}
+.staff-px{width:34px;height:34px;margin:0 auto 7px;display:block}
+.staff b{display:block;font-size:12.5px;margin-bottom:2px}
+.staff span{font-size:11px;color:var(--muted);line-height:1.4;display:block}
+.org-back{
+  margin-top:12px;border:1px dashed var(--purple-l);background:var(--purple-s);
+  border-radius:var(--r-s);padding:11px 14px;font-size:12.5px;color:var(--purple-d);
+  display:flex;align-items:center;gap:9px;
+}
+.org-back b{font-weight:700}
+.org-out{
+  margin-top:12px;background:var(--ink);color:#fff;border-radius:var(--r-s);padding:13px 15px;
+  display:flex;align-items:center;gap:11px;
+}
+.org-out .txt{flex:1}
+.org-out b{font-size:13.5px;display:block}
+.org-out span{font-size:11.5px;color:#B9B3D0}
+.badge-ver{font-size:11px;background:rgba(255,255,255,.16);padding:3px 9px;border-radius:999px;white-space:nowrap}
+
+/* ---------- trust strip ---------- */
+.trust{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:var(--bg2);padding:26px 0;
+}
+.trust-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink2);font-weight:500}
+.tick{
+  width:19px;height:19px;border-radius:50%;background:var(--teal-s);color:var(--teal);
+  display:grid;place-items:center;font-size:11px;font-weight:700;flex:none;border:1px solid var(--teal-l);
+}
+
+/* ---------- capability cards ---------- */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cap{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px 22px;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.cap:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(27,21,51,.08);border-color:var(--purple-l)}
+.cap-no{
+  font-size:12px;font-weight:700;color:var(--purple);background:var(--purple-s);
+  width:30px;height:30px;border-radius:8px;display:grid;place-items:center;margin-bottom:15px;
+  border:1px solid var(--purple-l);
+}
+.cap h3{font-size:17px;margin-bottom:9px}
+.cap p{font-size:14.5px;color:var(--muted);line-height:1.7}
+.cap-teal .cap-no{color:var(--teal);background:var(--teal-s);border-color:var(--teal-l)}
+.cap-amber .cap-no{color:var(--amber);background:var(--amber-s);border-color:var(--amber-l)}
+
+/* ---------- timeline ---------- */
+.tl{position:relative;padding-left:0}
+.tl-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;position:relative}
+.tl-grid::before{
+  content:"";position:absolute;left:5%;right:5%;top:26px;height:2px;background:var(--line);
+}
+.tl-step{text-align:center;position:relative}
+.tl-dot{
+  width:52px;height:52px;border-radius:14px;margin:0 auto 22px;display:grid;place-items:center;
+  background:#fff;border:2px solid var(--line);font-weight:700;font-size:15px;color:var(--muted);
+  position:relative;z-index:1;
+}
+.tl-step.is-lead .tl-dot{border-color:var(--purple);background:var(--purple);color:#fff;box-shadow:0 0 0 5px var(--purple-s)}
+.tl-step.is-lead .tl-dot::after{
+  content:"主管";position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
+  font-size:10px;font-weight:700;color:var(--purple);white-space:nowrap;
+}
+.tl-step h4{font-size:15px;margin-bottom:6px}
+.tl-step p{font-size:13px;color:var(--muted);line-height:1.6;min-height:42px}
+.tl-who{
+  display:inline-block;margin-top:10px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;
+  background:var(--bg3);color:var(--muted);border:1px solid var(--line);white-space:nowrap;
+}
+.tl-step.is-lead .tl-who{background:var(--purple-s);color:var(--purple-d);border-color:var(--purple-l)}
+
+/* ---------- team block ---------- */
+.lead-hero{
+  background:linear-gradient(140deg,var(--purple-s),#fff 58%);border:2px solid var(--purple);
+  border-radius:20px;padding:32px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;
+  margin-bottom:26px;position:relative;overflow:hidden;
+}
+.lead-hero .px-big{width:96px;height:96px;flex:none}
+.lead-hero .px-big.pc{width:110px;height:138px}
+.px-scene-wrap{border-radius:18px;overflow:hidden;box-shadow:0 20px 48px rgba(80,60,30,.10)}
+.lead-hero h3{font-size:26px;margin-bottom:8px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.chip{
+  font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:999px;
+  background:var(--purple);color:#fff;letter-spacing:.02em;
+}
+.lead-hero p{font-size:15.5px;color:var(--ink2);max-width:640px;margin-bottom:16px;line-height:1.7}
+.lead-feat{display:flex;gap:20px;flex-wrap:wrap}
+.lf{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink2);font-weight:500}
+.lf i{width:6px;height:6px;background:var(--purple);border-radius:2px;flex:none}
+.team-cap{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.team-cap h3{font-size:20px}
+.team-cap span{font-size:14px;color:var(--muted)}
+.staff-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sc{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px 18px;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.sc:hover{transform:translateY(-4px);border-color:var(--purple-l);box-shadow:0 12px 28px rgba(27,21,51,.07)}
+.sc-top{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.sc-top .px{width:38px;height:38px;flex:none}
+.sc-top .px.pc{width:44px;height:55px}
+.sc-top b{font-size:15px}
+.skill-block{margin-top:34px}
+.skill-grid{grid-template-columns:repeat(6,1fr)}
+.sc-row{font-size:13.5px;color:var(--muted);display:flex;gap:8px;padding:7px 0;border-top:1px dashed var(--line)}
+.sc-row:first-of-type{border-top:none;padding-top:0}
+.sc-row k{color:var(--ink2);font-weight:600;flex:none;width:52px;font-size:12.5px}
+.sc-out{
+  margin-top:11px;background:var(--bg2);border:1px solid var(--line);border-radius:7px;
+  padding:7px 10px;font-size:12px;color:var(--purple-d);font-weight:600;
+}
+
+/* ---------- manage cards ---------- */
+.mc{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;
+  border-top:3px solid var(--teal);
+}
+.mc-ico{
+  width:44px;height:44px;border-radius:12px;background:var(--teal-s);border:1px solid var(--teal-l);
+  display:grid;place-items:center;margin-bottom:16px;
+}
+.mc h3{font-size:18px;margin-bottom:10px}
+.mc p{font-size:14.5px;color:var(--muted);margin-bottom:14px;line-height:1.7}
+.mc-q{
+  background:var(--teal-s);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;
+  padding:10px 13px;font-size:13px;color:var(--teal);font-style:italic;
+}
+.gate{
+  margin-top:28px;background:var(--ink);color:#fff;border-radius:var(--r);padding:26px 30px;
+  display:flex;align-items:center;gap:26px;flex-wrap:wrap;
+}
+.gate b{font-size:20px;white-space:nowrap}
+.gate p{font-size:14.5px;color:#B9B3D0;flex:1;min-width:280px;line-height:1.65}
+
+/* ---------- scenes ---------- */
+.scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.scene{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  transition:transform .22s,box-shadow .22s;
+}
+.scene:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(27,21,51,.08)}
+.scene-img{
+  height:120px;position:relative;display:grid;place-items:center;border-bottom:1px solid var(--line);
+}
+.scene-body{padding:19px 20px}
+.scene-body h4{font-size:16px;margin-bottom:8px}
+.scene-body p{font-size:13.5px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+.scene-out{
+  display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--purple-d);
+  background:var(--purple-s);border:1px solid var(--purple-l);padding:5px 11px;border-radius:999px;
+}
+.scene-px{width:56px;height:56px}
+
+/* ---------- compliance ---------- */
+.comp{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.comp-i{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px 18px}
+.comp-i h4{font-size:15px;margin-bottom:8px;color:var(--teal)}
+.comp-i p{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ---------- pricing ---------- */
+.price{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px 24px;
+  display:flex;flex-direction:column;position:relative;
+}
+.price.hot{border-color:var(--purple);box-shadow:0 14px 36px rgba(83,74,183,.13)}
+.price-tag{
+  position:absolute;top:-11px;left:24px;font-size:11px;font-weight:700;padding:4px 11px;
+  border-radius:999px;background:var(--purple);color:#fff;
+}
+.price h3{font-size:17px;margin-bottom:6px}
+.price .amt{font-size:32px;font-weight:700;letter-spacing:-.02em;margin:12px 0 3px}
+.price .amt small{font-size:14px;font-weight:500;color:var(--muted)}
+.price .cr{font-size:13.5px;color:var(--ink2);margin-bottom:16px;font-weight:500}
+.price .eq{
+  background:var(--bg2);border:1px dashed var(--line2);border-radius:8px;padding:10px 12px;
+  font-size:12.5px;color:var(--muted);margin-bottom:18px;line-height:1.55;
+}
+.price ul{list-style:none;margin-bottom:22px;flex:1}
+.price li{font-size:13.5px;color:var(--ink2);padding:5px 0 5px 20px;position:relative}
+.price li::before{
+  content:"";position:absolute;left:2px;top:12px;width:7px;height:7px;border-radius:2px;
+  background:var(--purple-l);
+}
+.price.hot li::before{background:var(--purple)}
+
+/* ---------- connectors ---------- */
+.conn-wrap{display:grid;grid-template-columns:1fr 268px 1fr;gap:0;align-items:stretch}
+.conn-side{display:flex;flex-direction:column;gap:12px}
+.conn-head{
+  font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:.04em;
+  margin-bottom:4px;display:flex;align-items:center;gap:8px;
+}
+.conn-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.conn-item{
+  display:flex;align-items:center;gap:13px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r-s);padding:14px 16px;transition:border-color .2s,transform .2s;
+}
+.conn-item:hover{border-color:var(--purple-l);transform:translateX(2px)}
+.conn-ico{
+  width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;
+  background:var(--bg3);border:1px solid var(--line);
+}
+.conn-ico svg{width:19px;height:19px}
+.conn-tx b{display:block;font-size:14.5px;margin-bottom:2px}
+.conn-tx span{font-size:12.5px;color:var(--muted);line-height:1.45;display:block}
+.conn-mid{
+  width:268px;display:flex;flex-direction:column;align-items:stretch;justify-content:center;
+  gap:12px;padding:0 12px;position:relative;
+}
+.conn-mid-arrow{
+  position:absolute;top:44%;left:-16px;width:16px;height:1px;background:var(--purple-l);
+}
+.conn-mid-arrow::after{
+  content:"";position:absolute;right:-1px;top:-3px;width:7px;height:7px;
+  border-top:1px solid var(--purple-l);border-right:1px solid var(--purple-l);
+  transform:rotate(45deg);
+}
+.conn-mid-arrow.left{left:auto;right:-16px}
+.conn-mid-arrow.left::after{
+  right:auto;left:-1px;transform:rotate(-135deg);
+}
+.conn-core{
+  position:relative;z-index:1;width:100%;background:linear-gradient(160deg,var(--purple),var(--purple-d));
+  color:#fff;border-radius:var(--r);padding:20px 16px;text-align:center;
+  box-shadow:0 12px 30px rgba(83,74,183,.28);
+}
+.conn-core .px{width:44px;height:44px;margin:0 auto 9px;display:block}
+.conn-core b{display:block;font-size:16.5px;margin-bottom:5px}
+.conn-core span{font-size:12.5px;color:#CFC9EC;line-height:1.65;display:block}
+.conn-core .mini{
+  margin-top:13px;border-top:1px solid rgba(255,255,255,.22);padding-top:12px;
+  display:flex;justify-content:center;gap:7px;flex-wrap:wrap;
+}
+.conn-core .mini em{
+  font-style:normal;font-size:10.5px;background:rgba(255,255,255,.16);
+  padding:3px 9px;border-radius:999px;white-space:nowrap;
+}
+/* @ 调用提示 */
+.at-call{
+  margin-top:12px;background:#fff;border:1px solid var(--purple-l);border-radius:var(--r-s);
+  padding:13px 15px;text-align:left;
+}
+.at-call .lbl{font-size:11px;font-weight:700;color:var(--purple-d);letter-spacing:.04em;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.at-call .lbl code{
+  font-family:var(--font-mono);background:var(--purple);color:#fff;font-size:11px;
+  padding:1px 6px;border-radius:4px;
+}
+.at-input{
+  display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--line);
+  border-radius:7px;padding:8px 10px;font-size:12.5px;color:var(--muted);
+}
+.at-input .at{
+  font-family:var(--font-mono);font-weight:700;color:var(--purple);font-size:13px;
+}
+.at-input .pick{
+  background:var(--purple-s);color:var(--purple-d);border:1px solid var(--purple-l);
+  padding:1px 7px;border-radius:5px;font-size:11.5px;font-weight:600;
+}
+.at-call .note{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+.conn-out{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+}
+.conn-out-card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-s);
+  padding:14px 12px;text-align:center;
+}
+.conn-out-card svg{width:22px;height:22px;margin-bottom:8px}
+.conn-out-card b{display:block;font-size:13.5px}
+.conn-out-card span{font-size:11px;color:var(--muted)}
+.conn-note{
+  margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.cn{
+  background:var(--bg2);border:1px solid var(--line);border-radius:var(--r-s);padding:16px 18px;
+}
+.cn b{font-size:13.5px;display:block;margin-bottom:5px;color:var(--teal)}
+.cn p{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ---------- table ---------- */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th,td{padding:14px 16px;text-align:left;font-size:14px;border-bottom:1px solid var(--line)}
+th{background:var(--bg2);font-weight:600;font-size:13.5px;color:var(--ink2);white-space:nowrap}
+th.self{background:var(--purple-s);color:var(--purple-d)}
+th.wb{background:#F1F3F9;color:#3D3760}
+th.wb small{font-weight:400;font-size:11px;color:var(--muted);display:block;margin-top:1px}
+td.wb{background:#FBFBFD}
+tbody tr:last-child td{border-bottom:none}
+td.feat{font-weight:500;color:var(--ink)}
+td.c{text-align:center;width:132px}
+tr.hl td.wb{background:#F7F8FC}
+.yes{color:var(--teal);font-weight:700;font-size:16px}
+.no{color:#C9C5D6;font-size:16px}
+tr.hl td{background:#FBFAFE}
+tr.hl td.feat{color:var(--purple-d);font-weight:700}
+.tbl-note{
+  margin-top:18px;font-size:14px;color:var(--ink2);background:var(--purple-s);
+  border:1px solid var(--purple-l);border-radius:var(--r-s);padding:14px 18px;
+}
+
+/* ---------- faq ---------- */
+.faq{max-width:840px;margin:0 auto}
+.fq{border-bottom:1px solid var(--line)}
+.fq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:18px;
+  padding:19px 4px;font-size:15.5px;font-weight:600;text-align:left;color:var(--ink);
+}
+.fq-q:hover{color:var(--purple)}
+.fq-i{
+  width:22px;height:22px;border-radius:6px;border:1px solid var(--line2);flex:none;
+  display:grid;place-items:center;font-size:14px;color:var(--muted);transition:.22s;
+}
+.fq.on .fq-i{background:var(--purple);border-color:var(--purple);color:#fff;transform:rotate(45deg)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.fq.on .fq-a{max-height:280px}
+.fq-a-in{padding:0 44px 20px 4px;font-size:14.5px;color:var(--muted);line-height:1.75}
+.fq-group{
+  font-size:12.5px;font-weight:700;color:var(--purple);letter-spacing:.06em;
+  margin:34px 0 4px;text-transform:uppercase;
+}
+.fq-group:first-child{margin-top:0}
+
+/* ---------- cta ---------- */
+.cta{
+  background:var(--ink);color:#fff;border-radius:22px;padding:56px 48px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta h2{font-size:38px;margin-bottom:14px;letter-spacing:-.025em}
+.cta p{font-size:17px;color:#B9B3D0;margin-bottom:28px}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-w{background:#fff;color:var(--ink);font-weight:600}
+.btn-w:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.2)}
+.btn-o{border:1px solid rgba(255,255,255,.28);color:#fff}
+.btn-o:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);background:var(--bg2);padding:56px 0 32px}
+.f-grid{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:36px;margin-bottom:40px}
+.f-brand p{font-size:13.5px;color:var(--muted);margin-top:12px;max-width:250px;line-height:1.7}
+.f-col h5{font-size:13px;font-weight:700;margin-bottom:13px;color:var(--ink)}
+.f-col a{display:block;font-size:13.5px;color:var(--muted);padding:4px 0;transition:color .18s}
+.f-col a:hover{color:var(--purple)}
+.f-bot{
+  border-top:1px solid var(--line);padding-top:22px;display:flex;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);
+}
+
+/* ---------- reveal ---------- */
+.rv{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+.js .rv{opacity:0;transform:translateY(22px)}
+.js .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv,.js .rv{opacity:1;transform:none;transition:none}}
+
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .hero h1{font-size:40px}
+  h2.sec{font-size:32px}
+  .grid-4,.scenes,.grid-3,.comp,.conn-note{grid-template-columns:repeat(2,1fr)}
+  .conn-wrap{grid-template-columns:1fr;gap:20px}
+  .conn-mid{width:100%;padding:8px 0}
+  .conn-mid-arrow{display:none}
+  .conn-mid::before{content:"↓";color:var(--purple);font-size:20px;font-weight:700;line-height:1}
+  .conn-core{display:flex;align-items:center;gap:14px;text-align:left;padding:18px}
+  .conn-core .px{margin:0;width:38px;height:38px;flex:none}
+  .conn-core .mini{margin-top:0;border-top:none;padding-top:0;justify-content:flex-start}
+  .tl-grid{grid-template-columns:repeat(3,1fr);row-gap:32px}
+  .tl-grid::before{display:none}
+  .tl-step.is-lead .tl-dot::after{bottom:-17px}
+  .staff-cards,.staff-grid{grid-template-columns:repeat(2,1fr)}
+  .skill-grid{grid-template-columns:repeat(4,1fr)}
+  .feat-ribbon{grid-template-columns:repeat(2,1fr)}
+  .fr:nth-child(3){border-left:none;border-top:1px solid var(--line)}
+  .fr:nth-child(4){border-top:1px solid var(--line)}
+  .f-grid{grid-template-columns:1fr 1fr}
+  .lead-hero{grid-template-columns:1fr}
+  section{padding:66px 0}
+}
+@media(max-width:620px){
+  .wrap{padding:0 20px}
+  .hero h1{font-size:32px}
+  h2.sec{font-size:27px}
+  .grid-4,.scenes,.grid-3,.comp,.tl-grid,.staff-cards,.staff-grid,.f-grid,.conn-note,.conn-out,.skill-grid,.feat-ribbon{grid-template-columns:1fr}
+  .fr+.fr{border-left:none;border-top:1px solid var(--line)}
+  .fr:first-child{border-top:none}
+  .hero h1{font-size:31px}
+  .nav-links{display:none}
+  .cta{padding:38px 24px}
+  .cta h2{font-size:27px}
+}
+</style>
+</head>
+<body>
+
+<!-- 像素小人 symbol -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <symbol id="px-a" viewBox="0 0 8 8">
+    <rect x="1" y="0" width="6" height="1" fill="var(--h,#2C2C2A)"/>
+    <rect x="0" y="1" width="8" height="1" fill="var(--h,#2C2C2A)"/>
+    <rect x="1" y="2" width="6" height="1" fill="var(--h,#2C2C2A)"/>
+    <rect x="0" y="3" width="1" height="1" fill="var(--h,#2C2C2A)"/><rect x="7" y="3" width="1" height="1" fill="var(--h,#2C2C2A)"/>
+    <rect x="1" y="3" width="6" height="2" fill="var(--s,#F1EFE8)"/>
+    <rect x="2" y="4" width="1" height="1" fill="var(--e,#2C2C2A)"/><rect x="5" y="4" width="1" height="1" fill="var(--e,#2C2C2A)"/>
+    <rect x="1" y="5" width="6" height="2" fill="var(--c,#534AB7)"/>
+    <rect x="0" y="5" width="1" height="2" fill="var(--c,#534AB7)"/><rect x="7" y="5" width="1" height="2" fill="var(--c,#534AB7)"/>
+    <rect x="1" y="7" width="2" height="1" fill="var(--p,#3C3489)"/><rect x="5" y="7" width="2" height="1" fill="var(--p,#3C3489)"/>
+  </symbol>
+  <symbol id="px-b" viewBox="0 0 8 8">
+    <rect x="1" y="0" width="6" height="1" fill="var(--h,#3D3760)"/>
+    <rect x="0" y="1" width="8" height="1" fill="var(--h,#3D3760)"/>
+    <rect x="1" y="2" width="6" height="1" fill="var(--h,#3D3760)"/>
+    <rect x="0" y="3" width="1" height="1" fill="var(--h,#3D3760)"/><rect x="7" y="3" width="1" height="1" fill="var(--h,#3D3760)"/>
+    <rect x="1" y="3" width="6" height="2" fill="var(--s,#FAEEDA)"/>
+    <rect x="2" y="4" width="1" height="1" fill="var(--e,#3D3760)"/><rect x="5" y="4" width="1" height="1" fill="var(--e,#3D3760)"/>
+    <rect x="1" y="5" width="6" height="2" fill="var(--c,#BA7517)"/>
+    <rect x="0" y="5" width="1" height="2" fill="var(--c,#BA7517)"/><rect x="7" y="5" width="1" height="2" fill="var(--c,#BA7517)"/>
+    <rect x="1" y="7" width="2" height="1" fill="var(--p,#854F0B)"/><rect x="5" y="7" width="2" height="1" fill="var(--p,#854F0B)"/>
+  </symbol>
+  <symbol id="px-c" viewBox="0 0 8 8">
+    <rect x="1" y="0" width="6" height="1" fill="var(--h,#1D9E75)"/>
+    <rect x="0" y="1" width="8" height="1" fill="var(--h,#1D9E75)"/>
+    <rect x="1" y="2" width="6" height="1" fill="var(--h,#1D9E75)"/>
+    <rect x="0" y="3" width="1" height="1" fill="var(--h,#1D9E75)"/><rect x="7" y="3" width="1" height="1" fill="var(--h,#1D9E75)"/>
+    <rect x="1" y="3" width="6" height="2" fill="var(--s,#E1F5EE)"/>
+    <rect x="2" y="4" width="1" height="1" fill="var(--e,#0F6E56)"/><rect x="5" y="4" width="1" height="1" fill="var(--e,#0F6E56)"/>
+    <rect x="1" y="5" width="6" height="2" fill="var(--c,#1D9E75)"/>
+    <rect x="0" y="5" width="1" height="2" fill="var(--c,#1D9E75)"/><rect x="7" y="5" width="1" height="2" fill="var(--c,#1D9E75)"/>
+    <rect x="1" y="7" width="2" height="1" fill="var(--p,#0F6E56)"/><rect x="5" y="7" width="2" height="1" fill="var(--p,#0F6E56)"/>
+  </symbol>
+  <symbol id="px-d" viewBox="0 0 8 8">
+    <rect x="2" y="0" width="4" height="1" fill="var(--h,#993C1D)"/>
+    <rect x="1" y="1" width="6" height="1" fill="var(--h,#993C1D)"/>
+    <rect x="1" y="2" width="6" height="1" fill="var(--h,#993C1D)"/>
+    <rect x="0" y="3" width="1" height="1" fill="var(--h,#993C1D)"/><rect x="7" y="3" width="1" height="1" fill="var(--h,#993C1D)"/>
+    <rect x="1" y="3" width="6" height="2" fill="var(--s,#FAECE7)"/>
+    <rect x="2" y="4" width="1" height="1" fill="var(--e,#993C1D)"/><rect x="5" y="4" width="1" height="1" fill="var(--e,#993C1D)"/>
+    <rect x="1" y="5" width="6" height="2" fill="var(--c,#D85A30)"/>
+    <rect x="0" y="5" width="1" height="2" fill="var(--c,#D85A30)"/><rect x="7" y="5" width="1" height="2" fill="var(--c,#D85A30)"/>
+    <rect x="1" y="7" width="2" height="1" fill="var(--p,#993C1D)"/><rect x="5" y="7" width="2" height="1" fill="var(--p,#993C1D)"/>
+  </symbol>
+  <symbol id="px-e" viewBox="0 0 8 8">
+    <rect x="1" y="0" width="6" height="1" fill="var(--h,#D4537E)"/>
+    <rect x="0" y="1" width="8" height="1" fill="var(--h,#D4537E)"/>
+    <rect x="1" y="2" width="6" height="1" fill="var(--h,#D4537E)"/>
+    <rect x="0" y="3" width="1" height="1" fill="var(--h,#D4537E)"/><rect x="7" y="3" width="1" height="1" fill="var(--h,#D4537E)"/>
+    <rect x="1" y="3" width="6" height="2" fill="var(--s,#FBEAF0)"/>
+    <rect x="2" y="4" width="1" height="1" fill="var(--e,#993556)"/><rect x="5" y="4" width="1" height="1" fill="var(--e,#993556)"/>
+    <rect x="1" y="5" width="6" height="2" fill="var(--c,#D4537E)"/>
+    <rect x="0" y="5" width="1" height="2" fill="var(--c,#D4537E)"/><rect x="7" y="5" width="1" height="2" fill="var(--c,#D4537E)"/>
+    <rect x="1" y="7" width="2" height="1" fill="var(--p,#993556)"/><rect x="5" y="7" width="2" height="1" fill="var(--p,#993556)"/>
+  </symbol>
+  <symbol id="px-f" viewBox="0 0 8 8">
+    <rect x="1" y="0" width="6" height="1" fill="var(--h,#185FA5)"/>
+    <rect x="0" y="1" width="8" height="1" fill="var(--h,#185FA5)"/>
+    <rect x="1" y="2" width="6" height="1" fill="var(--h,#185FA5)"/>
+    <rect x="0" y="3" width="1" height="1" fill="var(--h,#185FA5)"/><rect x="7" y="3" width="1" height="1" fill="var(--h,#185FA5)"/>
+    <rect x="1" y="3" width="6" height="2" fill="var(--s,#E6F1FB)"/>
+    <rect x="2" y="4" width="1" height="1" fill="var(--e,#0C447C)"/><rect x="5" y="4" width="1" height="1" fill="var(--e,#0C447C)"/>
+    <rect x="1" y="5" width="6" height="2" fill="var(--c,#378ADD)"/>
+    <rect x="0" y="5" width="1" height="2" fill="var(--c,#378ADD)"/><rect x="7" y="5" width="1" height="2" fill="var(--c,#378ADD)"/>
+    <rect x="1" y="7" width="2" height="1" fill="var(--p,#0C447C)"/><rect x="5" y="7" width="2" height="1" fill="var(--p,#0C447C)"/>
+  </symbol>
+  <symbol id="px-lead" viewBox="0 0 8 8">
+    <rect x="1" y="0" width="6" height="1" fill="#26215C"/>
+    <rect x="0" y="1" width="8" height="1" fill="#26215C"/>
+    <rect x="1" y="2" width="6" height="1" fill="#26215C"/>
+    <rect x="0" y="3" width="1" height="1" fill="#26215C"/><rect x="7" y="3" width="1" height="1" fill="#26215C"/>
+    <rect x="1" y="3" width="6" height="2" fill="#F5F4FE"/>
+    <rect x="2" y="4" width="1" height="1" fill="#26215C"/><rect x="5" y="4" width="1" height="1" fill="#26215C"/>
+    <rect x="1" y="5" width="6" height="2" fill="#7F77DD"/>
+    <rect x="0" y="5" width="1" height="2" fill="#7F77DD"/><rect x="7" y="5" width="1" height="2" fill="#7F77DD"/>
+    <rect x="1" y="7" width="2" height="1" fill="#3C3489"/><rect x="5" y="7" width="2" height="1" fill="#3C3489"/>
+    <rect x="3" y="5" width="1" height="1" fill="#FAC775"/><rect x="4" y="5" width="1" height="1" fill="#FAC775"/>
+  </symbol>
+
+  <!-- 办公室场景用的高精度像素角色 -->
+  <g id="pc-a">
+    <rect x="6" y="1" width="4" height="1" fill="#2C2C2A"/><rect x="5" y="2" width="6" height="1" fill="#2C2C2A"/>
+    <rect x="4" y="3" width="8" height="1" fill="#3D3760"/><rect x="5" y="4" width="6" height="4" fill="#F1D9BE"/>
+    <rect x="6" y="5" width="1" height="1" fill="#2C2C2A"/><rect x="9" y="5" width="1" height="1" fill="#2C2C2A"/>
+    <rect x="4" y="3" width="1" height="2" fill="#3D3760"/><rect x="11" y="3" width="1" height="2" fill="#3D3760"/>
+    <rect x="5" y="8" width="6" height="1" fill="#E8C8A8"/>
+    <rect x="4" y="9" width="8" height="5" fill="#534AB7"/><rect x="4" y="9" width="2" height="5" fill="#3C3489"/>
+    <rect x="3" y="9" width="1" height="4" fill="#534AB7"/><rect x="12" y="9" width="1" height="4" fill="#534AB7"/>
+    <rect x="2" y="13" width="2" height="1" fill="#E8C8A8"/><rect x="12" y="13" width="2" height="1" fill="#E8C8A8"/>
+    <rect x="5" y="14" width="6" height="1" fill="#3C3489"/><rect x="4" y="15" width="3" height="1" fill="#2C2C2A"/>
+    <rect x="9" y="15" width="3" height="1" fill="#2C2C2A"/>
+  </g>
+  <g id="pc-b">
+    <rect x="5" y="1" width="6" height="1" fill="#3D3760"/><rect x="4" y="2" width="8" height="2" fill="#3D3760"/>
+    <rect x="5" y="4" width="6" height="4" fill="#F1D9BE"/>
+    <rect x="4" y="2" width="1" height="4" fill="#3D3760"/><rect x="11" y="2" width="1" height="4" fill="#3D3760"/>
+    <rect x="6" y="5" width="1" height="1" fill="#2C2C2A"/><rect x="9" y="5" width="1" height="1" fill="#2C2C2A"/>
+    <rect x="5" y="8" width="6" height="1" fill="#E8C8A8"/>
+    <rect x="4" y="9" width="8" height="5" fill="#D4537E"/><rect x="4" y="9" width="2" height="5" fill="#993556"/>
+    <rect x="3" y="9" width="1" height="4" fill="#D4537E"/><rect x="12" y="9" width="1" height="4" fill="#D4537E"/>
+    <rect x="2" y="13" width="2" height="1" fill="#F1D9BE"/><rect x="12" y="13" width="2" height="1" fill="#F1D9BE"/>
+    <rect x="5" y="14" width="6" height="1" fill="#72243E"/><rect x="4" y="15" width="3" height="1" fill="#4B1528"/>
+    <rect x="9" y="15" width="3" height="1" fill="#4B1528"/>
+  </g>
+  <g id="pc-c">
+    <rect x="4" y="1" width="8" height="1" fill="#8B5A2B"/><rect x="5" y="2" width="6" height="1" fill="#8B5A2B"/>
+    <rect x="4" y="3" width="1" height="3" fill="#8B5A2B"/><rect x="11" y="3" width="1" height="3" fill="#8B5A2B"/>
+    <rect x="5" y="3" width="6" height="4" fill="#E8C49C"/>
+    <rect x="6" y="5" width="1" height="1" fill="#2C2C2A"/><rect x="9" y="5" width="1" height="1" fill="#2C2C2A"/>
+    <rect x="5" y="8" width="6" height="1" fill="#D9B08A"/>
+    <rect x="4" y="9" width="8" height="5" fill="#1D9E75"/><rect x="4" y="9" width="2" height="5" fill="#0F6E56"/>
+    <rect x="3" y="9" width="1" height="4" fill="#1D9E75"/><rect x="12" y="9" width="1" height="4" fill="#1D9E75"/>
+    <rect x="2" y="13" width="2" height="1" fill="#D9B08A"/><rect x="12" y="13" width="2" height="1" fill="#D9B08A"/>
+    <rect x="5" y="14" width="6" height="1" fill="#0F6E56"/><rect x="4" y="15" width="3" height="1" fill="#085041"/>
+    <rect x="9" y="15" width="3" height="1" fill="#085041"/>
+  </g>
+  <g id="pc-d">
+    <rect x="5" y="1" width="6" height="1" fill="#4B2E1E"/><rect x="4" y="2" width="8" height="2" fill="#4B2E1E"/>
+    <rect x="5" y="4" width="6" height="4" fill="#F1D9BE"/>
+    <rect x="4" y="2" width="1" height="2" fill="#4B2E1E"/><rect x="11" y="2" width="1" height="2" fill="#4B2E1E"/>
+    <rect x="6" y="5" width="1" height="1" fill="#2C2C2A"/><rect x="9" y="5" width="1" height="1" fill="#2C2C2A"/>
+    <rect x="5" y="8" width="6" height="1" fill="#E8C8A8"/>
+    <rect x="4" y="9" width="8" height="5" fill="#378ADD"/><rect x="4" y="9" width="2" height="5" fill="#185FA5"/>
+    <rect x="3" y="9" width="1" height="4" fill="#378ADD"/><rect x="12" y="9" width="1" height="4" fill="#378ADD"/>
+    <rect x="2" y="13" width="2" height="1" fill="#E8C8A8"/><rect x="12" y="13" width="2" height="1" fill="#E8C8A8"/>
+    <rect x="5" y="14" width="6" height="1" fill="#185FA5"/><rect x="4" y="15" width="3" height="1" fill="#0C447C"/>
+    <rect x="9" y="15" width="3" height="1" fill="#0C447C"/>
+  </g>
+  <g id="pc-lead">
+    <rect x="5" y="1" width="6" height="1" fill="#1B1533"/><rect x="4" y="2" width="8" height="2" fill="#1B1533"/>
+    <rect x="5" y="4" width="6" height="4" fill="#F5E6D2"/>
+    <rect x="4" y="2" width="1" height="2" fill="#1B1533"/><rect x="11" y="2" width="1" height="2" fill="#1B1533"/>
+    <rect x="6" y="5" width="1" height="1" fill="#1B1533"/><rect x="9" y="5" width="1" height="1" fill="#1B1533"/>
+    <rect x="5" y="8" width="6" height="1" fill="#F5E6D2"/>
+    <rect x="4" y="9" width="8" height="5" fill="#7F77DD"/><rect x="4" y="9" width="2" height="5" fill="#534AB7"/>
+    <rect x="3" y="9" width="1" height="4" fill="#7F77DD"/><rect x="12" y="9" width="1" height="4" fill="#7F77DD"/>
+    <rect x="2" y="13" width="2" height="1" fill="#F5E6D2"/><rect x="12" y="13" width="2" height="1" fill="#F5E6D2"/>
+    <rect x="5" y="14" width="6" height="1" fill="#3C3489"/><rect x="4" y="15" width="3" height="1" fill="#26215C"/>
+    <rect x="9" y="15" width="3" height="1" fill="#26215C"/>
+    <rect x="6" y="9" width="4" height="1" fill="#FAC775"/>
+  </g>
+</defs>
+</svg>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap nav-in">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 8 8" aria-hidden="true">
+        <rect x="0" y="0" width="4" height="4" fill="#534AB7"/><rect x="4" y="0" width="4" height="4" fill="#7F77DD"/>
+        <rect x="0" y="4" width="4" height="4" fill="#7F77DD"/><rect x="4" y="4" width="4" height="4" fill="#AFA9EC"/>
+      </svg>
+      WorkPier
+    </div>
+    <div class="nav-links">
+      <a href="#cap">能力</a><a href="#conn">连接器</a><a href="#team">工作场景</a><a href="#cmp">对比</a><a href="#price">价格方案</a>
+    </div>
+    <a href="#cta" class="btn btn-p">开始使用</a>
+  </div>
+</nav>
+
+<!-- 像素办公室场景 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="gWarm" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FDF9F2"/><stop offset="1" stop-color="#F2E9D9"/>
+  </linearGradient>
+  <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#EFE5D4"/><stop offset="1" stop-color="#DFD0B8"/>
+  </linearGradient>
+  <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#CFE6F5"/><stop offset="1" stop-color="#EAF4FA"/>
+  </linearGradient>
+  <linearGradient id="gShade" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+</defs>
+</svg>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">企业 AI 员工平台</span>
+      <h1>你只需要一位主管，<br>剩下的交给<em><span>他的团队</span></em></h1>
+      <p class="lead">交代一件事，团队主管判断该谁来做、怎么分工，再把成果交回给你。所有人的问题，也由他统一答复。</p>
+      <div class="hero-cta">
+        <a href="#cta" class="btn btn-p btn-lg">免费开始 · 1,000 积分</a>
+        <a href="#cap" class="btn btn-s btn-lg">看 2 分钟演示</a>
+      </div>
+      <div class="hero-note">
+        <span>无需配置，团队主管每家企业自带</span><i class="dot"></i>
+        <span>成果可编辑可追溯</span><i class="dot"></i>
+        <span>数据不用于训练模型</span>
+      </div>
+    </div>
+
+    <!-- 像素办公室场景 -->
+    <div class="px-scene-wrap">
+      <svg class="px-scene" viewBox="0 0 640 460" role="img" aria-label="像素风格的办公室场景：团队主管在工位上带领几位专长员工一起工作">
+        <!-- 背景墙 -->
+        <rect width="640" height="460" fill="url(#gWarm)"/>
+        <!-- 窗户 -->
+        <g>
+          <rect x="42" y="52" width="150" height="128" rx="4" fill="url(#gSky)" stroke="#C9BBA4" stroke-width="5"/>
+          <path d="M117 52v128M42 116h150" stroke="#C9BBA4" stroke-width="5"/>
+          <rect x="36" y="178" width="162" height="9" rx="3" fill="#BCAC93"/>
+          <!-- 窗外树影 -->
+          <g opacity=".3" fill="#8FBF7F">
+            <rect x="52" y="140" width="22" height="18"/><rect x="70" y="128" width="18" height="14"/>
+            <rect x="140" y="134" width="20" height="16"/><rect x="156" y="146" width="16" height="12"/>
+          </g>
+        </g>
+        <!-- 墙上白板 -->
+        <g>
+          <rect x="232" y="66" width="122" height="82" rx="4" fill="#FFFDF8" stroke="#C9BBA4" stroke-width="4"/>
+          <rect x="248" y="84" width="56" height="6" rx="3" fill="#534AB7" opacity=".75"/>
+          <rect x="248" y="99" width="88" height="5" rx="2.5" fill="#D8D2E4"/>
+          <rect x="248" y="112" width="72" height="5" rx="2.5" fill="#D8D2E4"/>
+          <rect x="248" y="125" width="80" height="5" rx="2.5" fill="#D8D2E4"/>
+          <rect x="318" y="84" width="22" height="46" rx="3" fill="#EEEDFE"/>
+        </g>
+        <!-- 书架 -->
+        <g>
+          <rect x="492" y="86" width="104" height="118" rx="4" fill="#C89B6A"/>
+          <rect x="500" y="94" width="88" height="102" fill="#EADBC4"/>
+          <g>
+            <rect x="504" y="98" width="9" height="26" fill="#D4537E"/><rect x="515" y="102" width="8" height="22" fill="#378ADD"/>
+            <rect x="525" y="96" width="10" height="28" fill="#1D9E75"/><rect x="537" y="104" width="7" height="20" fill="#EF9F27"/>
+            <rect x="546" y="99" width="9" height="25" fill="#7F77DD"/><rect x="557" y="106" width="8" height="18" fill="#D4537E"/>
+            <rect x="567" y="100" width="10" height="24" fill="#378ADD"/><rect x="579" y="108" width="7" height="16" fill="#BA7517"/>
+          </g>
+          <rect x="500" y="126" width="88" height="6" fill="#C89B6A"/>
+          <g>
+            <rect x="505" y="134" width="8" height="22" fill="#BA7517"/><rect x="515" y="130" width="10" height="26" fill="#378ADD"/>
+            <rect x="527" y="136" width="7" height="20" fill="#D4537E"/><rect x="536" y="132" width="9" height="24" fill="#1D9E75"/>
+            <rect x="547" y="138" width="8" height="18" fill="#7F77DD"/><rect x="557" y="134" width="10" height="22" fill="#EF9F27"/>
+            <rect x="569" y="140" width="7" height="16" fill="#378ADD"/><rect x="578" y="135" width="9" height="21" fill="#D4537E"/>
+          </g>
+          <rect x="500" y="160" width="88" height="6" fill="#C89B6A"/>
+          <rect x="508" y="168" width="34" height="20" fill="#E8DCC8"/>
+          <rect x="546" y="168" width="38" height="20" fill="#F0E6D6"/>
+        </g>
+        <!-- 地板 -->
+        <rect x="0" y="300" width="640" height="160" fill="url(#gFloor)"/>
+        <g opacity=".5" stroke="#D2C3A6" stroke-width="1.5">
+          <path d="M0 336h640M0 376h640M0 420h640"/>
+        </g>
+        <!-- 绿植 -->
+        <g>
+          <path d="M72 268c0-16 8-28 20-32-2 14-8 24-16 32z" fill="#5FA96F"/>
+          <path d="M92 268c2-18 12-30 24-34-4 16-12 26-20 34z" fill="#4E9660"/>
+          <path d="M82 270c-6-14-4-26 4-34 6 12 8 24 4 34z" fill="#71B87F"/>
+          <rect x="74" y="268" width="28" height="34" rx="3" fill="#D08A63"/>
+          <rect x="74" y="268" width="28" height="7" rx="3" fill="#BC7550"/>
+          <rect x="80" y="300" width="16" height="2" fill="#B06B48" opacity=".5"/>
+        </g>
+        <g transform="translate(520,196)">
+          <path d="M30 60c0-16 8-28 20-32-2 14-8 24-16 32z" fill="#5FA96F"/>
+          <path d="M50 60c2-18 12-30 24-34-4 16-12 26-20 34z" fill="#4E9660"/>
+          <path d="M40 62c-6-14-4-26 4-34 6 12 8 24 4 34z" fill="#71B87F"/>
+          <rect x="32" y="60" width="28" height="34" rx="3" fill="#D08A63"/>
+          <rect x="32" y="60" width="28" height="7" rx="3" fill="#BC7550"/>
+        </g>
+        <!-- 后排工位：两名员工坐在桌后 -->
+        <g>
+          <g transform="translate(150,224) scale(2.2)"><use href="#pc-b"/></g>
+          <g transform="translate(216,224) scale(2.2)"><use href="#pc-c"/></g>
+          <rect x="140" y="272" width="140" height="9" rx="2" fill="#D9B98C"/>
+          <rect x="140" y="281" width="140" height="6" rx="2" fill="#C09A6B"/>
+          <rect x="150" y="287" width="7" height="26" fill="#A8834F"/>
+          <rect x="263" y="287" width="7" height="26" fill="#A8834F"/>
+          <rect x="182" y="242" width="46" height="28" rx="3" fill="#4A5568"/>
+          <rect x="185" y="245" width="40" height="22" rx="2" fill="#BBD9EF"/>
+          <rect x="199" y="270" width="13" height="4" fill="#4A5568"/>
+        </g>
+        <!-- 前排工位：主管 + 员工坐在桌后 -->
+        <g>
+          <g transform="translate(258,266) scale(2.9)"><use href="#pc-lead"/></g>
+          <g transform="translate(366,272) scale(2.7)"><use href="#pc-d"/></g>
+          <rect x="248" y="330" width="152" height="10" rx="2" fill="#D9B98C"/>
+          <rect x="248" y="340" width="152" height="7" rx="2" fill="#C09A6B"/>
+          <rect x="259" y="347" width="8" height="30" fill="#A8834F"/>
+          <rect x="381" y="347" width="8" height="30" fill="#A8834F"/>
+          <rect x="308" y="286" width="52" height="40" rx="3" fill="#3C3489"/>
+          <rect x="311" y="289" width="46" height="34" rx="2" fill="#C9E0F5"/>
+          <rect x="317" y="295" width="34" height="4" rx="2" fill="#7FA9D4"/>
+          <rect x="317" y="304" width="24" height="4" rx="2" fill="#7FA9D4"/>
+          <rect x="317" y="313" width="30" height="4" rx="2" fill="#7FA9D4"/>
+          <rect x="325" y="326" width="18" height="5" fill="#3C3489"/>
+          <!-- 主管名牌 -->
+          <g transform="translate(244,226)">
+            <rect x="0" y="0" width="86" height="26" rx="6" fill="#534AB7"/>
+            <rect x="0" y="0" width="86" height="26" rx="6" fill="url(#gShade)"/>
+            <text x="43" y="17" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">团队主管</text>
+          </g>
+          <path d="M287 252v14" stroke="#534AB7" stroke-width="2" stroke-dasharray="3 3"/>
+        </g>
+        <!-- 落地窗光斑 -->
+        <g opacity=".16" fill="#FFF6DC">
+          <path d="M42 180h150l-40 120H6z"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 四标签横条（原版结构） -->
+<div class="wrap">
+  <div class="feat-ribbon rv">
+    <div class="fr">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/>
+      </svg>
+      主管带头
+    </div>
+    <div class="fr">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="M3 12.5 12 17l9-4.5"/><path d="M3 17 12 21.5 21 17"/>
+      </svg>
+      专长分工
+    </div>
+    <div class="fr">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 3H7a2 2 0 0 0-2 2v4l6 6 6-6V5a2 2 0 0 0-2-2h-2"/><path d="M9 3v4"/><circle cx="12" cy="15" r="3"/>
+      </svg>
+      工具连接
+    </div>
+    <div class="fr">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/>
+      </svg>
+      成果可编辑
+    </div>
+  </div>
+</div>
+
+<!-- 主视觉：组织结构图 -->
+<section>
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">工作空间</span>
+      <h2 class="sec">一个任务，在你的团队里怎么流转</h2>
+      <p class="lede">你交代一件事，主管判断该谁做、怎么分工，再把成果汇总交回。所有人的问题也由他统一答复。</p>
+    </div>
+    <div class="org rv">
+      <div class="org-head">
+        <span class="org-title">澄远制造（演示企业） / 经营管理</span>
+        <div class="org-stats">
+          <span class="pill">完成 3</span><span class="pill run">待你处理 1</span><span class="pill">执行中 2</span>
+        </div>
+      </div>
+
+      <div class="org-you">
+        <svg class="px" viewBox="0 0 8 8" style="width:26px;height:26px;--h:#5F5E5A;--c:#888780;--p:#444441;--s:#F1EFE8;--e:#2C2C2A"><use href="#px-a"/></svg>
+        <div><div class="lbl">你</div><div class="sub">交代一件事，只需跟主管一条线对话</div></div>
+      </div>
+
+      <div class="org-lead">
+        <div class="lead-row">
+          <svg class="px" viewBox="0 0 8 8" style="width:42px;height:42px;flex:none"><use href="#px-lead"/></svg>
+          <div>
+            <div class="lead-name">团队主管</div>
+            <span class="lead-tag">默认对接人</span>
+          </div>
+          <div class="lead-cap">读懂要求 → 拆解分工 → 派出专长员工 → 汇总交回</div>
+        </div>
+        <div class="lead-steps">
+          <div class="ls"><b>拆解任务</b><span>判断哪几项自己做</span></div>
+          <div class="ls"><b>派最合适的人</b><span>按专长匹配，不平均分</span></div>
+          <div class="ls"><b>汇总成果</b><span>结果与文件一并交回</span></div>
+        </div>
+      </div>
+
+      <div class="org-arrow">↓ 分派给专长员工，各自独立推进</div>
+
+      <div class="staff-grid">
+        <div class="staff"><svg class="staff-px" viewBox="0 0 8 8"><use href="#px-a"/></svg><b>经营分析师</b><span>分析报告</span></div>
+        <div class="staff"><svg class="staff-px" viewBox="0 0 8 8"><use href="#px-e"/></svg><b>内容创作</b><span>图文与文案</span></div>
+        <div class="staff"><svg class="staff-px" viewBox="0 0 8 8"><use href="#px-c"/></svg><b>视频制作</b><span>视频与字幕</span></div>
+        <div class="staff"><svg class="staff-px" viewBox="0 0 8 8"><use href="#px-f"/></svg><b>项目协作</b><span>会议材料包</span></div>
+      </div>
+
+      <div class="org-back">
+        <svg viewBox="0 0 8 8" style="width:16px;height:16px;flex:none;--h:#534AB7;--c:#534AB7;--p:#3C3489;--s:#EEEDFE;--e:#3C3489"><use href="#px-a"/></svg>
+        <span><b>员工的问题不直接问你</b>，先回到主管，由主管统一答复</span>
+      </div>
+
+      <div class="org-out">
+        <div class="txt">
+          <b>交回你：一份可编辑的成果</b>
+          <span>v3 当前版本 · 引用 4 处 · 待你确认 1 项</span>
+        </div>
+        <span class="badge-ver">可追溯</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="wrap trust-in">
+    <div class="trust-item"><span class="tick">✓</span>员工只用获授权的资料</div>
+    <div class="trust-item"><span class="tick">✓</span>按工作空间隔离，企业之间互不可见</div>
+    <div class="trust-item"><span class="tick">✓</span>过程、来源与版本全程留痕</div>
+    <div class="trust-item"><span class="tick">✓</span>资料存储与模型推理位于新加坡</div>
+  </div>
+</div>
+
+<!-- CAP: 主管做什么 -->
+<section id="cap">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">团队主管</span>
+      <h2 class="sec">主管是怎么把一件事做完的</h2>
+      <p class="lede">你不用研究每位员工擅长什么。主管自己知道——它负责听懂、拆解、派人、收尾。</p>
+    </div>
+    <div class="grid-4">
+      <div class="cap rv">
+        <div class="cap-no">01</div>
+        <h3>先读懂你的要求</h3>
+        <p>先判断要什么成果、用来做什么、什么算做完，再决定动不动手。</p>
+      </div>
+      <div class="cap rv">
+        <div class="cap-no">02</div>
+        <h3>拆成可执行的分工</h3>
+        <p>把一件事拆成几项，决定哪几项自己完成、哪几项交给专长员工。</p>
+      </div>
+      <div class="cap rv">
+        <div class="cap-no">03</div>
+        <h3>派出最合适的人</h3>
+        <p>按专长匹配到具体员工，而不是平均分配。缺人就提出建议。</p>
+      </div>
+      <div class="cap rv">
+        <div class="cap-no">04</div>
+        <h3>汇总成一份交回</h3>
+        <p>各人的成果与答复汇总成一份，回到你面前。途中所有问题也由他统一答复。</p>
+      </div>
+    </div>
+
+    <div class="gate rv">
+      <b>你不用挑员工，主管自己知道谁擅长什么。</b>
+      <p>这也是 WorkPier 与单点 AI 助手的分界：一个助手只能整件事硬扛，一个主管可以把复杂的事拆开、分给对的人，再收成一份完整成果。</p>
+      <a href="#team" class="btn btn-w">看看团队怎么配</a>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="sec-alt">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">一项工作，如何完成</span>
+      <h2 class="sec">从交代到交付，每一步都看得见</h2>
+      <p class="lede">在同一个工作空间里，主管带着团队推进工作，把复杂任务变成可追踪的过程。</p>
+    </div>
+    <div class="tl">
+      <div class="tl-grid">
+        <div class="tl-step rv"><div class="tl-dot">01</div><h4>交代任务</h4><p>说清目标、要求，附上资料</p><span class="tl-who">你</span></div>
+        <div class="tl-step is-lead rv"><div class="tl-dot">02</div><h4>主管拆解</h4><p>判断要什么成果、怎么分工</p><span class="tl-who">团队主管</span></div>
+        <div class="tl-step is-lead rv"><div class="tl-dot">03</div><h4>分派执行</h4><p>派出专长员工，各自独立推进</p><span class="tl-who">团队主管</span></div>
+        <div class="tl-step is-lead rv"><div class="tl-dot">04</div><h4>中途反问</h4><p>资料不够先问主管，主管统一答复</p><span class="tl-who">团队主管</span></div>
+        <div class="tl-step rv"><div class="tl-dot">05</div><h4>汇总定稿</h4><p>预览、提修改、逐版本定稿</p><span class="tl-who">你 + 主管</span></div>
+        <div class="tl-step rv"><div class="tl-dot">06</div><h4>沉淀复用</h4><p>定稿成果存入知识库，下次直接调用</p><span class="tl-who">知识库</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">你的团队</span>
+      <h2 class="sec">一位主管，带着一群专长员工</h2>
+      <p class="lede">主管内置于每家企业、默认对接、永不停用。下面的员工由主管按任务需要调度，你也可以随时增补。</p>
+    </div>
+
+    <div class="lead-hero rv">
+      <svg class="px-big pc" viewBox="0 0 16 20"><use href="#pc-lead"/></svg>
+      <div>
+        <h3>团队主管 <span class="chip">默认对接人</span></h3>
+        <p>任何任务都可以直接交给它。它负责拆解任务、派工、汇总答复，并把每一次分派的状态与消耗逐条交给你看。</p>
+        <div class="lead-feat">
+          <span class="lf"><i></i>每家企业自带</span>
+          <span class="lf"><i></i>不可停用</span>
+          <span class="lf"><i></i>可用 @ 指定员工</span>
+          <span class="lf"><i></i>分派情况逐项可见</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-cap">
+      <h3>主管手下的专长员工</h3>
+      <span>主管会按任务需要调度，你也能自己添人</span>
+    </div>
+
+    <div class="staff-cards">
+      <div class="sc rv">
+        <div class="sc-top"><svg class="px pc" viewBox="0 0 16 20"><use href="#pc-a"/></svg><b>经营分析师</b></div>
+        <div class="sc-row"><k>典型任务</k><span>汇总收入毛利、标出异常</span></div>
+        <div class="sc-out">交付：分析报告 + 预算表</div>
+      </div>
+      <div class="sc rv">
+        <div class="sc-top"><svg class="px pc" viewBox="0 0 16 20"><use href="#pc-b"/></svg><b>内容创作</b></div>
+        <div class="sc-row"><k>典型任务</k><span>从资料到成稿，含选题</span></div>
+        <div class="sc-out">交付：文案 / 图文包</div>
+      </div>
+      <div class="sc rv">
+        <div class="sc-top"><svg class="px pc" viewBox="0 0 16 20"><use href="#pc-c"/></svg><b>视频制作</b></div>
+        <div class="sc-row"><k>典型任务</k><span>分镜、素材、剪辑与字幕</span></div>
+        <div class="sc-out">交付：视频 + 字幕文件</div>
+      </div>
+      <div class="sc rv">
+        <div class="sc-top"><svg class="px pc" viewBox="0 0 16 20"><use href="#pc-d"/></svg><b>视觉设计</b></div>
+        <div class="sc-row"><k>典型任务</k><span>品牌配色、海报与社媒封面</span></div>
+        <div class="sc-out">交付：主视觉 + 多尺寸素材</div>
+      </div>
+      <div class="sc rv">
+        <div class="sc-top"><svg class="px pc" viewBox="0 0 16 20"><use href="#pc-b"/></svg><b>营销策划</b></div>
+        <div class="sc-row"><k>典型任务</k><span>活动策划、推广与投放分析</span></div>
+        <div class="sc-out">交付：营销方案 + 推广素材</div>
+      </div>
+      <div class="sc rv">
+        <div class="sc-top"><svg class="px pc" viewBox="0 0 16 20"><use href="#pc-c"/></svg><b>项目协作</b></div>
+        <div class="sc-row"><k>典型任务</k><span>目标拆解、会议与行动跟进</span></div>
+        <div class="sc-out">交付：会议材料 + 行动计划包</div>
+      </div>
+      <div class="sc rv">
+        <div class="sc-top"><svg class="px pc" viewBox="0 0 16 20"><use href="#pc-a"/></svg><b>知识管理</b></div>
+        <div class="sc-row"><k>典型任务</k><span>查制度、找依据</span></div>
+        <div class="sc-out">交付：带引用的答复 + 知识摘要</div>
+      </div>
+      <div class="sc rv" style="border-style:dashed;background:var(--bg2);display:grid;place-items:center;text-align:center;min-height:150px">
+        <div>
+          <svg class="px pc" viewBox="0 0 16 20" style="--h:#B4B2A9;--c:#D3D1C7;--p:#B4B2A9;--s:#F1EFE8;--e:#888780"><use href="#pc-a"/></svg>
+          <div style="font-size:14px;font-weight:600;margin-top:9px">再添一位专长员工</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5">在「AI 员工」里新增<br>主管立刻能用上</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- skill 技能库（原版结构，按工作类型归组） -->
+    <div class="skill-block rv">
+      <div class="skill-tabs">
+        <span class="sk-tab">AI 员工</span>
+        <span class="sk-tab ghost">skill 技能库</span>
+      </div>
+      <div class="skill-grid">
+        <div class="sg cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg><span>视频制作</span></div>
+        <div class="sg cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7-4-4-7 7v4h4z"/><path d="m15 5 4 4"/><circle cx="6.5" cy="17.5" r="1.5"/></svg><span>视觉设计</span></div>
+        <div class="sg cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v3a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 8.5a5 5 0 0 1 0 7"/></svg><span>新媒体</span></div>
+        <div class="sg cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v3a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M17 9v6M14 12h6"/></svg><span>营销</span></div>
+        <div class="sg cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12h18"/></svg><span>办公</span></div>
+        <div class="sg cat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>数据</span></div>
+
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg><span>视频生成</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/></svg><span>剧情合成</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M9 6H6a2 2 0 0 0 0 4h3v5H6a2 2 0 0 0 0 4h3"/><path d="M16 9a4 4 0 0 1 0 6"/></svg><span>字幕配音</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m3 15 5-5 4 4 3-3 6 6"/></svg><span>海报设计</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 8h18M8 3v5"/></svg><span>社交封面</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg><span>品牌配图</span></div>
+
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5V16h8v-2.5A6 6 0 0 0 12 3z"/></svg><span>选题策划</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span>内容日历</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg><span>账号盘点</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg><span>活动策划</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v3a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M17 9v6M14 12h6"/></svg><span>营销素材</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>数据分析</span></div>
+
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span>Word 文档</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18v12H3z"/><path d="M8 20h8M12 16v4"/></svg><span>演示文稿</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16M15 4v16"/></svg><span>模板排版</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 3-4 3 3 4-6"/></svg><span>图表分析</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16M15 4v16"/></svg><span>Excel 表格</span></div>
+        <div class="sg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 14h4M6 17h7"/></svg><span>预算表格</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANAGE -->
+<section class="sec-alt">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">分派可见</span>
+      <h2 class="sec">他派出去了什么，你都看得见</h2>
+      <p class="lede">主管分出去的每一部分，都是一位员工独立的一次运行。哪一位、做到哪一步、花了多少，逐条列出。</p>
+    </div>
+    <div class="grid-3">
+      <div class="mc rv">
+        <div class="mc-ico">
+          <svg viewBox="0 0 16 16" style="width:22px;height:22px"><g fill="none" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"><path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h6"/><circle cx="12" cy="11.5" r="2.2"/><path d="M13.3 12.8 14.3 13.8"/></g></svg>
+        </div>
+        <h3>每次分派都列出来</h3>
+        <p>「分派的工作」里逐条显示：哪位员工、负责哪一块、什么状态——进行中、待补资料、已完成或已停止。</p>
+        <div class="mc-q">经营分析师 · 汇总收入毛利 · 已完成</div>
+      </div>
+      <div class="mc rv">
+        <div class="mc-ico">
+          <svg viewBox="0 0 16 16" style="width:22px;height:22px"><g fill="none" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></g></svg>
+        </div>
+        <h3>可以单独叫停</h3>
+        <p>想中止哪一次运行，就停哪一次。已经完成的部分会保留，不必从头再来。</p>
+        <div class="mc-q">停止这一次 · 其余保留</div>
+      </div>
+      <div class="mc rv">
+        <div class="mc-ico">
+          <svg viewBox="0 0 16 16" style="width:22px;height:22px"><g fill="none" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"><path d="M2.5 13.5h11"/><path d="M4.5 11V8.5M7 11V5.5M9.5 11V7M12 11V4"/></g></svg>
+        </div>
+        <h3>花了多少，逐项可查</h3>
+        <p>每一次运行消耗的积分单独结算，结束后的运行会显示它用掉多少，不用猜一笔总账。</p>
+        <div class="mc-q">本次运行消耗 · 【N】积分</div>
+      </div>
+    </div>
+
+    <div class="gate rv">
+      <b>你也可以指定谁来做。</b>
+      <p>在主管的任务里输入 @，从「AI 员工」中选定某位员工，主管就会把你交代的那部分工作分别交给他们。不指定，也由主管自己判断。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECTORS -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">连接器</span>
+      <h2 class="sec">接上你已在用的工具</h2>
+      <p class="lede">资料不用搬家。连接后，在交代任务时 @ 一下要用的服务，员工就能取到上下文、把成果直接写回去。</p>
+    </div>
+
+    <div class="conn-wrap rv">
+      <!-- 左：输入 -->
+      <div class="conn-side">
+        <div class="conn-head">你授权的工具</div>
+
+        <div class="conn-item">
+          <div class="conn-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8.5 3.5 12 9.5M12 9.5 4 9.5a4 4 0 0 1 3.5-6h.5M12 9.5 8 16.5M12 9.5h8a4 4 0 0 0-3.5-6h-1M12 9.5l-3.5 7a4 4 0 0 0 3.5 6h6a4 4 0 0 0 3.5-6"/>
+            </svg>
+          </div>
+          <div class="conn-tx"><b>Google Drive</b><span>云盘与文档 · 只取你选定的文件</span></div>
+        </div>
+
+        <div class="conn-item">
+          <div class="conn-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 8h18M8 8v12"/>
+            </svg>
+          </div>
+          <div class="conn-tx"><b>Gmail / Outlook</b><span>沟通与协作 · 读邮件、发草稿</span></div>
+        </div>
+
+        <div class="conn-item">
+          <div class="conn-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#993556" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5h16M4 12h16M4 19h10"/>
+            </svg>
+          </div>
+          <div class="conn-tx"><b>Slack / Notion</b><span>沟通与协作 · 读频道、查知识库</span></div>
+        </div>
+
+        <div class="conn-item">
+          <div class="conn-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 3v3M16 3v3M7.5 13.5h3v3h-3zM13.5 13.5h3M13.5 16.5h3"/>
+            </svg>
+          </div>
+          <div class="conn-tx"><b>Calendar / Dropbox</b><span>日程与项目 · 排期、归档</span></div>
+        </div>
+      </div>
+
+      <!-- 中：主管 -->
+      <div class="conn-mid">
+        <div class="conn-mid-arrow"></div>
+        <div class="conn-mid-arrow left"></div>
+        <div class="conn-core">
+          <svg class="px" viewBox="0 0 8 8"><use href="#px-lead"/></svg>
+          <b>团队主管</b>
+          <span>读取授权内容<br>拆解任务 → 调度员工</span>
+          <div class="mini"><em>授权范围内</em><em>逐项可控</em><em>全程留痕</em></div>
+        </div>
+        <div class="at-call">
+          <div class="lbl">在任务里 <code>@</code> 一下</div>
+          <div class="at-input">
+            <span class="at">@</span><span class="pick">Google Drive</span><span>…</span>
+          </div>
+          <div class="note">从「服务」里选中它，员工就在这次任务中读取该连接器的内容。</div>
+        </div>
+      </div>
+
+      <!-- 右：输出 -->
+      <div class="conn-side">
+        <div class="conn-head">交回的成果</div>
+        <div class="conn-out">
+          <div class="conn-out-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#534AB7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>
+            </svg>
+            <b>文档</b><span>Word / PDF</span>
+          </div>
+          <div class="conn-out-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16M15 4v16"/>
+            </svg>
+            <b>表格</b><span>Excel</span>
+          </div>
+          <div class="conn-out-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 4h18v12H3z"/><path d="M8 20h8M12 16v4"/>
+            </svg>
+            <b>演示</b><span>PowerPoint</span>
+          </div>
+          <div class="conn-out-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D4537E" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9.5 5 2.5-5 2.5z"/>
+            </svg>
+            <b>视频 / 图片</b><span>成片与素材</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="conn-note">
+      <div class="cn rv"><b>按权限取用</b><p>员工只使用你明确授权的内容。连接 Drive 不会看到你的整个云盘，未选中的文件不会被读取。</p></div>
+      <div class="cn rv"><b>改动先问过你</b><p>发送、编辑、删除、分享都会以卡片形式送到你面前，确认后才执行。开启自动模式后，符合要求的低风险变更才会直接执行。</p></div>
+      <div class="cn rv"><b>随时可以断开</b><p>断开后立即停止使用该账户，不会把你登出 WorkPier。也可以在服务方那边自行撤销授权。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENES -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">工作场景</span>
+      <h2 class="sec">不同的活，交给不同的员工</h2>
+      <p class="lede">把资料、沟通记录和工作问题交给主管，他会判断该谁接手，交付可审阅、可继续修改的成果。</p>
+    </div>
+    <div class="scenes">
+      <div class="scene rv">
+        <div class="scene-img" style="background:linear-gradient(135deg,#EEEDFE,#fff)">
+          <svg class="scene-px" viewBox="0 0 8 8" style="--h:#3C3489;--c:#534AB7;--p:#26215C;--s:#F5F4FE;--e:#26215C"><use href="#px-lead"/></svg>
+        </div>
+        <div class="scene-body">
+          <h4>开董事会前，资料先理清</h4>
+          <p>把议程、经营简报和附件整理成开好会就能用的资料包。</p>
+          <span class="scene-out">交付：会议资料包 · 议题摘要 · 缺件清单</span>
+        </div>
+      </div>
+      <div class="scene rv">
+        <div class="scene-img" style="background:linear-gradient(135deg,#E6F1FB,#fff)">
+          <svg class="scene-px" viewBox="0 0 8 8" style="--h:#0C447C;--c:#378ADD;--p:#0C447C;--s:#E6F1FB;--e:#0C447C"><use href="#px-f"/></svg>
+        </div>
+        <div class="scene-body">
+          <h4>客户会后，跟进有清单</h4>
+          <p>从会议记录里提取承诺和待确认问题，接好下一次沟通。</p>
+          <span class="scene-out">交付：跟进摘要 · 行动清单 · 邮件草稿</span>
+        </div>
+      </div>
+      <div class="scene rv">
+        <div class="scene-img" style="background:linear-gradient(135deg,#E1F5EE,#fff)">
+          <svg class="scene-px" viewBox="0 0 8 8" style="--h:#0F6E56;--c:#1D9E75;--p:#0F6E56;--s:#E1F5EE;--e:#0F6E56"><use href="#px-c"/></svg>
+        </div>
+        <div class="scene-body">
+          <h4>查企业制度，答复有出处</h4>
+          <p>在授权资料中查找规定，给出能核对的答案与引用。</p>
+          <span class="scene-out">交付：带引用的答复 · 可复用知识摘要</span>
+        </div>
+      </div>
+      <div class="scene rv">
+        <div class="scene-img" style="background:linear-gradient(135deg,#FCEBEB,#fff)">
+          <svg class="scene-px" viewBox="0 0 8 8" style="--h:#993556;--c:#D4537E;--p:#993556;--s:#FBEAF0;--e:#993556"><use href="#px-e"/></svg>
+        </div>
+        <div class="scene-body">
+          <h4>会后跟进，直接写进邮箱</h4>
+          <p>从会议记录提取承诺，主管起草跟进邮件，你确认后发出。</p>
+          <span class="scene-out">交付：跟进摘要 · 邮件草稿 · 写回 Gmail</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section class="sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">数据与合规</span>
+      <h2 class="sec">你的资料，我们怎么处理</h2>
+      <p class="lede">工作可以交出去，边界依然清楚。这五条是每一份资料进入 WorkPier 之前的约定。</p>
+    </div>
+    <div class="comp">
+      <div class="comp-i rv"><h4>资料范围</h4><p>员工只使用获得授权的工作资料，按工作空间隔离。</p></div>
+      <div class="comp-i rv"><h4>数据不训练</h4><p>不使用你的内容训练 AI 模型。</p></div>
+      <div class="comp-i rv"><h4>全程留痕</h4><p>过程、来源与成果版本可追溯，审计日志长期保留。</p></div>
+      <div class="comp-i rv"><h4>随时可删</h4><p>永久删除任务、文件与生成成果，连接可断开。</p></div>
+      <div class="comp-i rv"><h4>数据落地</h4><p>资料存储与模型推理位于新加坡区域。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="price">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">价格方案</span>
+      <h2 class="sec">先用起来，再决定用多少</h2>
+      <p class="lede">按你的工作需要选择。积分按预估 AI 成本折算，不同任务消耗不同。</p>
+    </div>
+    <div class="grid-4">
+      <div class="price rv">
+        <h3>免费体验</h3>
+        <div class="amt">免费<small> · 1,000 积分</small></div>
+        <div class="cr">从一项工作开始</div>
+        <div class="eq">约等于 N 次经营分析，或 N 份文档产出</div>
+        <ul><li>团队主管与全部专长员工</li><li>免费积分不过期</li><li>单人或小团队试用</li></ul>
+        <a href="#cta" class="btn btn-s btn-full">免费体验</a>
+      </div>
+      <div class="price hot rv">
+        <span class="price-tag">最常选</span>
+        <h3>基础积分包</h3>
+        <div class="amt">HK$49<small> · 3,000 积分</small></div>
+        <div class="cr">满足日常工作需要</div>
+        <div class="eq">约覆盖 N 人一个月的分析类工作</div>
+        <ul><li>所有内置员工与技能</li><li>成果可编辑、可追溯</li><li>积分不过期</li></ul>
+        <a href="#cta" class="btn btn-p btn-full">选择基础包</a>
+      </div>
+      <div class="price rv">
+        <h3>进阶积分包</h3>
+        <div class="amt">HK$200<small> · 18,000 积分</small></div>
+        <div class="cr">适合更高频的工作</div>
+        <div class="eq">约覆盖 N 人一个月的创作与协作类工作</div>
+        <ul><li>含全部角色与连接器</li><li>定时任务与项目</li><li>支持团队共享积分池</li></ul>
+        <a href="#cta" class="btn btn-s btn-full">选择进阶包</a>
+      </div>
+      <div class="price rv">
+        <h3>定制服务</h3>
+        <div class="amt">联系我们</div>
+        <div class="cr">按团队规模与使用场景定制</div>
+        <div class="eq">沟通团队需求与使用方案</div>
+        <ul><li>专属角色与职责配置</li><li>部门 / 工作空间隔离方案</li><li>接入与培训支持</li></ul>
+        <a href="#cta" class="btn btn-s btn-full">联系我们</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="sec-alt" id="cmp">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">产品对比</span>
+      <h2 class="sec">WorkPier 与其他工具的区别</h2>
+      <p class="lede">按企业采购时真正会看的维度来比：谁来判断、谁来做、结果能不能改、边界清不清楚。</p>
+    </div>
+    <div class="tbl-wrap rv">
+      <table>
+        <thead>
+          <tr>
+            <th>具体功能</th>
+            <th class="c">豆包</th>
+            <th class="c wb">WorkBuddy<br><small>企业版</small></th>
+            <th class="c self">WorkPier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hl"><td class="feat">默认 AI 主管自动拆解与派工</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="no">—</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr class="hl"><td class="feat">分派过程与消耗逐条可见</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="no">—</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">图片生成</td><td class="c"><span class="yes">✓</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">视频生成</td><td class="c"><span class="yes">✓</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">可复用的专业技能库</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">专业角色与职责配置</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">多 AI 角色分工协作</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">项目资料与知识共享</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">多人参与同一工作任务</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">项目成员与访问权限</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">定时执行重复工作</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">连接外部工具读写</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">成果可编辑、多版本可追溯</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">答复带引用出处</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr class="hl"><td class="feat">组织架构与部门管理</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="no">—</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr class="hl"><td class="feat">像素员工档案办公室</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="no">—</span></td><td class="c"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">本地客户隔离支持该电脑目录</td><td class="c"><span class="no">—</span></td><td class="c wb"><span class="yes">✓</span></td><td class="c"><span class="no">—</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-note">
+      <b>WorkPier 的默认对接人是团队主管。</b> 你交代一件事，主管决定谁来做——这是它与其他工具最根本的区别。<br>
+      <span style="display:inline-block;margin-top:8px;font-size:13px;color:var(--muted)">「本地客户隔离支持该电脑目录」指资料仅存放在客户指定的本机目录，由 WorkBuddy 企业版直接读写；WorkPier 采用云端工作空间隔离，按企业与工作空间划分权限。</span>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">常见问题</span>
+      <h2 class="sec">你可能想问的</h2>
+    </div>
+    <div class="faq">
+
+      <div class="fq-group">团队与主管</div>
+      <div class="fq rv">
+        <button class="fq-q"><span>我要自己挑员工吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">不用。默认对接人是团队主管，它会判断每件事该由谁做。需要指定时，可以在任务中用 @ 提到某位员工。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>主管和其他 AI 员工有什么区别？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">主管是内置角色，每家企业自带、不能停用。它负责拆解任务、派工、汇总答复，并把每次分派的状态与消耗逐条列出。其他员工只负责自己被分到的那部分。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>多个 AI 一起干活，我会被问烦吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">不会。被分派的员工不会直接找你，问题会先回到主管，由主管统一答复。你始终只跟一条线对话。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>可以先自己用，再邀请同事吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">可以。从一项工作开始，需要补充资料或确认事项时，再邀请同事参与。</div></div>
+      </div>
+
+      <div class="fq-group">数据与安全</div>
+      <div class="fq rv">
+        <button class="fq-q"><span>我的资料会被用来训练模型吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">不会。WorkPier 不使用客户内容训练 AI 模型。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>资料存在哪里？会出境吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">资料存储在新加坡区域，模型推理部署在新加坡。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>AI 员工会看到我所有的文件吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">不会。每一份任务要用哪些资料由你在输入框里选择。连接 Google Drive 时，WorkPier 也只能看到你明确选取的文件。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>AI 员工会不经询问就改我的账号吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">删除、分享、发给别人的消息始终需要你确认。开启自动模式后，与你的要求相符的低风险变更会直接执行，其余仍然逐项等你拍板。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>连接 Google Drive 后，它会看到我所有文件吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">不会。WorkPier 只申请选定文件的访问权限，看不到 Drive 里的其他内容。每一项连接都可以在侧栏单独断开。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>怎么让员工用到我连接的工具？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">在任务输入框中输入 @，从「服务」下选中要用的连接器即可。读取与搜索会直接进行；发送、编辑、删除、分享等改动仍会先问过你。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>连接器可以关掉吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">可以。侧栏「连接器」里每个服务单独一行，断开后立即停止使用该账户，你仍然保持登录。也可以在服务方那边自行撤销授权。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>同事能看到我的任务和资料吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">按任务与资料的授权范围查看，不会自动获得其他资料的访问权限。拥有者和管理员可以查看其可访问工作空间内的任务。</div></div>
+      </div>
+
+      <div class="fq-group">成果与流程</div>
+      <div class="fq rv">
+        <button class="fq-q"><span>AI 员工会产出什么文件？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">除了对话回复，还会生成 Word、Excel、PowerPoint、PDF 以及视频、图片等文件，可以直接打开和下载。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>成果不满意怎么办？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">在任务中回复说明要改什么，员工会制作新版本并保留旧版本。你可以逐版预览，最后选定团队正式下载的版本。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>任务进行中可以停止吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">可以。在任务中按「停止」，执行会在安全的位置停下，已完成的部分保留。想继续时，发送一条消息即可。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>重复的工作需要每次重新交代吗？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">不用。可以复用已有资料、工作要求与安排，只补充本次变化；也可以让主管把它建议成定时任务，按固定节奏自动执行。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>可以附加哪些文件？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">任何类型的文件都可以。每份最大 25 MB，一个任务最多 10 份、合计 50 MB。</div></div>
+      </div>
+
+      <div class="fq-group">计费与支持</div>
+      <div class="fq rv">
+        <button class="fq-q"><span>积分如何计算？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">1 点按 0.01 美元折算预估 AI 费用，不同任务消耗不同。每次执行都会显示消耗了多少积分。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>积分用完了会怎样？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">无法开始新任务或发送回复，进行中的工作会完成。企业拥有者和管理员可以申请更多积分。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>支持哪些语言？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">简体中文、繁体中文（香港）和 English，在账户菜单中切换，选择会保存到你的账户。</div></div>
+      </div>
+      <div class="fq rv">
+        <button class="fq-q"><span>一个账号可以属于几家企业？</span><i class="fq-i">+</i></button>
+        <div class="fq-a"><div class="fq-a-in">一个账户同一时间只能属于一家企业。要接受另一家企业的邀请，需要先退出目前企业或由目前企业把你移除。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="cta rv">
+      <h2>从一件工作开始，让主管带他的团队上手</h2>
+      <p>交代一件你今天就要做的事，看它怎么拆、怎么派、怎么交回来。</p>
+      <div class="cta-btns">
+        <a href="#" class="btn btn-w btn-lg">免费体验 · 1,000 积分</a>
+        <a href="#" class="btn btn-o btn-lg">预约团队演示</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="f-brand">
+        <div class="logo">
+          <svg class="logo-mark" viewBox="0 0 8 8" aria-hidden="true">
+            <rect x="0" y="0" width="4" height="4" fill="#534AB7"/><rect x="4" y="0" width="4" height="4" fill="#7F77DD"/>
+            <rect x="0" y="4" width="4" height="4" fill="#7F77DD"/><rect x="4" y="4" width="4" height="4" fill="#AFA9EC"/>
+          </svg>
+          WorkPier
+        </div>
+        <p>把工作交给 AI 员工团队，从交代任务到获得可编辑、可追溯的成果。</p>
+      </div>
+      <div class="f-col"><h5>产品</h5><a href="#cap">能力</a><a href="#team">工作场景</a><a href="#price">价格方案</a><a href="#cmp">产品对比</a></div>
+      <div class="f-col"><h5>资源</h5><a href="#">帮助中心</a><a href="#">使用文档</a><a href="#">模板库</a><a href="#">客户案例</a></div>
+      <div class="f-col"><h5>公司</h5><a href="#">关于我们</a><a href="#">联系我们</a><a href="#">加入我们</a><a href="#">更新日志</a></div>
+      <div class="f-col"><h5>合规</h5><a href="#">隐私政策</a><a href="#">服务条款</a><a href="#">第三方声明</a><a href="#">安全白皮书</a></div>
+    </div>
+    <div class="f-bot">
+      <span>© 2026 WorkPier</span>
+      <span>简体中文 · 繁體中文（香港） · English</span>
+      <span>support@workpier.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // FAQ accordion
+  document.querySelectorAll('.fq-q').forEach(function(b){
+    b.addEventListener('click', function(){
+      var item = b.parentElement;
+      var open = item.classList.contains('on');
+      document.querySelectorAll('.fq').forEach(function(f){ f.classList.remove('on'); });
+      if(!open){ item.classList.add('on'); }
+    });
+  });
+
+  // reveal on scroll
+  var els = document.querySelectorAll('.rv');
+  function showAll(){ els.forEach(function(el){ el.classList.add('in'); }); }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    els.forEach(function(el,i){
+      el.style.transitionDelay = (Math.min(i,6) * 60) + 'ms';
+      io.observe(el);
+    });
+    // 兜底：无论观察器是否回调，内容都必须可见
+    setTimeout(showAll, 2500);
+    window.addEventListener('beforeprint', showAll);
+  } else {
+    showAll();
+  }
+})();
+</script>
+</body>
+</html>
