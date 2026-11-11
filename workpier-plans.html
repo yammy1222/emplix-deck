@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkPier 套餐</title>
+<style>
+:root{
+  --ink:#16183A; --ink2:#3A3F6B; --muted:#6E7396; --line:#E6E7F2; --line2:#D4D6E6;
+  --bg:#FFFFFF; --bg2:#F7F8FD; --bg3:#F1F2FA;
+  --indigo:#4B5CE8; --indigo-d:#3A48C4; --indigo-s:#EEEFFE; --indigo-l:#C9CDF7;
+  --purple:#7A5AF8; --purple-s:#F3EEFE; --purple-l:#D6C9FB;
+  --teal:#0E8A6E; --teal-s:#E4F6F0; --teal-l:#9CDCC6;
+  --amber:#B4720C; --amber-s:#FDF3E0; --amber-l:#F6D9A0;
+  --navy:#232C5C;
+  --r:16px; --r-s:11px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg2);color:var(--ink);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+/* header */
+.ph{padding:24px 0 0}
+.ph-in{display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;letter-spacing:-.02em}
+.logo svg{width:24px;height:24px}
+.ph-cur{font-size:13px;color:var(--muted)}
+.badge-cur{font-size:11px;font-weight:700;padding:2px 9px;border-radius:5px;background:var(--teal-s);color:var(--teal);border:1px solid var(--teal-l)}
+.promo{
+  margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;
+  color:var(--amber);background:var(--amber-s);border:1px solid var(--amber-l);
+  padding:8px 14px;border-radius:999px;cursor:pointer;
+}
+.promo:hover{background:#FBEED2}
+
+/* tabs */
+.tabs{display:flex;gap:4px;background:var(--bg3);border-radius:999px;padding:5px;margin:24px 0 20px;width:max-content;border:1px solid var(--line)}
+.tab{padding:9px 28px;border-radius:999px;font-size:14.5px;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;transition:.2s;font-family:inherit}
+.tab.on{background:#fff;color:var(--ink);box-shadow:0 1px 5px rgba(22,24,58,.09)}
+.tab:hover:not(.on){color:var(--ink2)}
+
+/* tiers */
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+.tier{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 20px;position:relative;transition:.22s;cursor:pointer;display:flex;flex-direction:column}
+.tier:hover{border-color:var(--indigo-l)}
+.tier.on{border-color:var(--indigo);box-shadow:0 10px 30px rgba(75,92,232,.13)}
+.tier.ent{background:linear-gradient(165deg,#FFFDF7,#fff 52%);border-color:var(--amber-l)}
+.tier.ent.on{border-color:var(--amber);box-shadow:0 10px 30px rgba(180,114,12,.14)}
+.tier-tag{position:absolute;top:-10px;right:16px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--amber);color:#fff}
+.tier h3{font-size:18px;margin-bottom:4px}
+.tier .one{font-size:12.5px;color:var(--muted);margin-bottom:16px}
+
+/* 员工编制 —— 特色主轴 */
+.roster{background:var(--bg3);border-radius:var(--r-s);padding:14px 13px;margin-bottom:18px;border:1px solid var(--line)}
+.roster-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:11px}
+.roster-h b{font-size:12.5px;color:var(--ink)}
+.roster-h span{font-size:11.5px;color:var(--muted)}
+.px-row{display:flex;gap:4px;flex-wrap:wrap;align-items:flex-end}
+.px{width:32px;height:40px;display:block;flex:none;image-rendering:pixelated}
+.px.dim{opacity:.2;filter:grayscale(1)}
+.px-more{
+  width:32px;height:40px;border-radius:6px;background:#fff;border:1px dashed var(--line2);
+  display:grid;place-items:center;font-size:10px;color:var(--muted);font-weight:600;flex:none;
+}
+.roster-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+/* 权益分组 */
+.grp{margin-bottom:15px}
+.grp-t{
+  font-size:10.5px;font-weight:700;color:var(--indigo);letter-spacing:.06em;
+  margin-bottom:8px;display:flex;align-items:center;gap:7px;
+}
+.grp-t::after{content:"";flex:1;height:1px;background:var(--indigo-l)}
+.flist{list-style:none;display:flex;flex-direction:column;gap:7px}
+.flist li{font-size:13px;color:var(--ink2);display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.flist li::before{
+  content:"";width:13px;height:13px;border-radius:4px;flex:none;margin-top:3px;
+  background:var(--indigo-s);border:1px solid var(--indigo-l);position:relative;
+}
+.flist li::after{
+  content:"";position:absolute;width:5px;height:2px;margin:5px 0 0 3.5px;
+  border-left:1.4px solid var(--indigo);border-bottom:1.4px solid var(--indigo);
+  transform:rotate(-45deg);
+}
+.flist li i{font-style:normal;position:absolute;width:13px;height:13px;margin-top:3px;border-radius:4px;background:var(--indigo-s);border:1px solid var(--indigo-l)}
+.flist li b{font-weight:600;color:var(--ink)}
+.flist li span{color:var(--muted)}
+/* 独有能力标记 */
+.uni{
+  background:linear-gradient(135deg,var(--purple-s),#fff);border:1px solid var(--purple-l);
+  border-radius:var(--r-s);padding:14px;margin-bottom:15px;
+}
+.uni-t{font-size:11px;font-weight:700;color:var(--purple-d);margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.uni-t::before{content:"";width:5px;height:5px;background:var(--purple);border-radius:1px}
+.uni .flist li::before{background:var(--purple-s);border-color:var(--purple-l)}
+.uni .flist li::after{border-color:var(--purple)}
+.uni .flist li b{color:var(--purple-d)}
+
+/* buy */
+.buys{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:24px}
+.buy{background:#fff;border:1px solid var(--line);border-radius:var(--r-s);padding:17px 15px;position:relative;cursor:pointer;transition:.2s}
+.buy:hover{border-color:var(--indigo-l)}
+.buy.on{border-color:var(--indigo);background:var(--indigo-s);box-shadow:0 4px 14px rgba(75,92,232,.1)}
+.buy .disc{position:absolute;top:0;right:0;font-size:10.5px;font-weight:700;color:#fff;background:var(--teal);padding:2px 9px;border-radius:0 var(--r-s) 0 8px}
+.buy .bn{font-size:13px;color:var(--muted);margin-bottom:6px}
+.buy .bp{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.buy .bp small{font-size:12.5px;font-weight:500;color:var(--muted)}
+.buy .bm{font-size:11.5px;color:var(--muted);margin-top:4px}
+.buys-note{text-align:center;font-size:13px;color:var(--muted);margin-top:15px}
+.buys-note a{color:var(--indigo);text-decoration:underline;text-underline-offset:2px}
+
+/* 特色区 */
+.special{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sp{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px 24px 22px;position:relative;overflow:hidden}
+.sp-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sp-h .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none;background:var(--purple-s);border:1px solid var(--purple-l);color:var(--purple)}
+.sp-h b{font-size:15.5px}
+.sp p{font-size:13.5px;color:var(--muted);line-height:1.7}
+.sp .px-strip{display:flex;gap:5px;margin-top:14px;align-items:flex-end}
+.sp .px-strip .px{width:28px;height:35px}
+.sp-2 .ic{background:var(--indigo-s);border-color:var(--indigo-l);color:var(--indigo)}
+.sp-2 .tree{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.tr{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink2)}
+.tr .dots{display:flex;gap:3px}
+.tr .dots i{width:7px;height:7px;border-radius:2px;background:var(--indigo-l);display:block}
+.tr .dots i.on{background:var(--indigo)}
+.tr .dots i.lead{background:var(--purple)}
+
+/* 充值包 */
+.topup{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 24px}
+.topup-h{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.topup-h b{font-size:15.5px}
+.topup-h span{font-size:12.5px;color:var(--muted)}
+.tp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.tp{border:1px solid var(--line);border-radius:var(--r-s);padding:16px 16px 15px;position:relative;background:var(--bg)}
+.tp .tp-p{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.tp .tp-p small{font-size:12px;font-weight:500;color:var(--muted)}
+.tp .tp-n{font-size:12.5px;color:var(--muted);margin-top:5px}
+.tp .tp-v{font-size:11.5px;color:var(--teal);margin-top:9px;font-weight:600;display:flex;align-items:center;gap:5px}
+.tp .tp-v i{width:5px;height:5px;border-radius:50%;background:var(--teal);display:block;flex:none}
+.tp .tp-v i.warn{background:var(--amber)}
+.tp .tp-v i.warn{color:var(--amber)}
+
+/* pay */
+.pay{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:25px 27px;margin-top:26px;display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:start}
+.pay-qr{width:126px;height:126px;border-radius:var(--r-s);background:var(--bg3);border:1px solid var(--line);display:grid;place-items:center;text-align:center;padding:12px;font-size:11.5px;color:var(--muted);line-height:1.5}
+.pay-main .pl{font-size:13px;color:var(--muted);margin-bottom:7px}
+.pay-main .pp{font-size:29px;font-weight:700;letter-spacing:-.02em;margin-bottom:9px}
+.pay-main .pd{font-size:13px;color:var(--ink2);margin-bottom:13px}
+.pay-main .pd b{font-weight:600}
+.agree{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.agree .box{width:15px;height:15px;border:1px solid var(--line2);border-radius:4px;flex:none}
+.agree a{color:var(--indigo);text-decoration:underline;text-underline-offset:2px}
+.pay-act{margin-top:16px;display:flex;gap:11px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 23px;border-radius:var(--r-s);font-size:15px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:.2s}
+.btn-p{background:var(--indigo);color:#fff;box-shadow:0 2px 8px rgba(75,92,232,.26)}
+.btn-p:hover{background:var(--indigo-d)}
+.btn-s{border:1px solid var(--line2);background:#fff;color:var(--ink)}
+.btn-s:hover{border-color:var(--indigo-l);color:var(--indigo);background:var(--indigo-s)}
+
+/* notes */
+.notes{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 25px}
+.notes h4{font-size:15px;margin-bottom:13px}
+.nrow{display:flex;gap:12px;padding:10px 0;border-top:1px dashed var(--line);font-size:13.5px;color:var(--muted);line-height:1.65}
+.nrow:first-of-type{border-top:none;padding-top:0}
+.nrow b{color:var(--ink);font-weight:600;flex:none;width:88px}
+.nrow span{flex:1}
+
+.hint{margin-top:16px;font-size:12.5px;color:var(--muted);background:var(--indigo-s);border:1px solid var(--indigo-l);border-radius:var(--r-s);padding:11px 15px}
+@media(max-width:1080px){
+  .tiers{grid-template-columns:repeat(2,1fr)}
+  .special{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .tiers{grid-template-columns:1fr}
+  .buys{grid-template-columns:repeat(2,1fr)}
+  .pay{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .wrap{padding:0 18px}
+  .buys{grid-template-columns:1fr}
+  .tabs{width:100%;overflow-x:auto}
+}
+</style>
+
+<!-- 像素员工（等距 3D 风格，含工位与投影） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <symbol id="px-lead" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="13" y="8" width="7" height="8" rx="2" fill="#F0D3B4"/>
+    <rect x="12" y="4" width="9" height="5" rx="2" fill="#23204A"/>
+    <rect x="10" y="6" width="13" height="3" rx="1.5" fill="#23204A"/>
+    <rect x="14" y="9" width="1.6" height="1.6" fill="#23204A"/>
+    <rect x="18" y="9" width="1.6" height="1.6" fill="#23204A"/>
+    <rect x="11" y="16" width="11" height="13" rx="2.5" fill="#7F77DD"/>
+    <rect x="11" y="16" width="3.5" height="13" fill="#534AB7"/>
+    <rect x="14" y="17" width="5" height="1.6" fill="#FAC775"/>
+    <rect x="8" y="17" width="3.4" height="9" rx="1.6" fill="#7F77DD"/>
+    <rect x="22" y="17" width="3.4" height="9" rx="1.6" fill="#6C64D8"/>
+    <rect x="8" y="25" width="3.4" height="2.6" rx="1.2" fill="#F0D3B4"/>
+    <rect x="22" y="25" width="3.4" height="2.6" rx="1.2" fill="#F0D3B4"/>
+    <rect x="12" y="29" width="4" height="7" rx="1.4" fill="#3C3489"/>
+    <rect x="18" y="29" width="4" height="7" rx="1.4" fill="#3C3489"/>
+    <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#26215C"/>
+    <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#26215C"/>
+  </symbol>
+  <symbol id="px-a" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="13" y="8" width="7" height="8" rx="2" fill="#E8C8A4"/>
+    <rect x="12" y="4" width="9" height="5" rx="2" fill="#2C2318"/>
+    <rect x="10" y="6" width="13" height="3" rx="1.5" fill="#2C2318"/>
+    <rect x="14" y="9" width="1.6" height="1.6" fill="#2C2318"/>
+    <rect x="18" y="9" width="1.6" height="1.6" fill="#2C2318"/>
+    <rect x="11" y="16" width="11" height="13" rx="2.5" fill="#2F5FA8"/>
+    <rect x="11" y="16" width="3.5" height="13" fill="#25497F"/>
+    <rect x="8" y="17" width="3.4" height="9" rx="1.6" fill="#2F5FA8"/>
+    <rect x="22" y="17" width="3.4" height="9" rx="1.6" fill="#2F5FA8"/>
+    <rect x="8" y="25" width="3.4" height="2.6" rx="1.2" fill="#E8C8A4"/>
+    <rect x="22" y="25" width="3.4" height="2.6" rx="1.2" fill="#E8C8A4"/>
+    <rect x="12" y="29" width="4" height="7" rx="1.4" fill="#26324E"/>
+    <rect x="18" y="29" width="4" height="7" rx="1.4" fill="#26324E"/>
+    <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#1A2238"/>
+    <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#1A2238"/>
+  </symbol>
+  <symbol id="px-b" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="13" y="8" width="7" height="8" rx="2" fill="#F2D8BC"/>
+    <rect x="11" y="3" width="11" height="6" rx="2.5" fill="#4A2E1E"/>
+    <rect x="9" y="6" width="15" height="4" rx="2" fill="#4A2E1E"/>
+    <rect x="9" y="9" width="2.5" height="5" rx="1.2" fill="#4A2E1E"/>
+    <rect x="14" y="9" width="1.6" height="1.6" fill="#3A2317"/>
+    <rect x="18" y="9" width="1.6" height="1.6" fill="#3A2317"/>
+    <rect x="11" y="16" width="11" height="13" rx="2.5" fill="#D4537E"/>
+    <rect x="11" y="16" width="3.5" height="13" fill="#B03C64"/>
+    <rect x="8" y="17" width="3.4" height="9" rx="1.6" fill="#D4537E"/>
+    <rect x="22" y="17" width="3.4" height="9" rx="1.6" fill="#D4537E"/>
+    <rect x="8" y="25" width="3.4" height="2.6" rx="1.2" fill="#F2D8BC"/>
+    <rect x="22" y="25" width="3.4" height="2.6" rx="1.2" fill="#F2D8BC"/>
+    <rect x="12" y="29" width="4" height="7" rx="1.4" fill="#72243E"/>
+    <rect x="18" y="29" width="4" height="7" rx="1.4" fill="#72243E"/>
+    <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#4B1528"/>
+    <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#4B1528"/>
+  </symbol>
+  <symbol id="px-c" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="13" y="8" width="7" height="8" rx="2" fill="#D9B08A"/>
+    <rect x="12" y="4" width="9" height="5" rx="2" fill="#8B5A2B"/>
+    <rect x="10" y="6" width="13" height="3" rx="1.5" fill="#8B5A2B"/>
+    <rect x="14" y="9" width="1.6" height="1.6" fill="#4A2E1E"/>
+    <rect x="18" y="9" width="1.6" height="1.6" fill="#4A2E1E"/>
+    <rect x="11" y="16" width="11" height="13" rx="2.5" fill="#1D9E75"/>
+    <rect x="11" y="16" width="3.5" height="13" fill="#0F6E56"/>
+    <rect x="8" y="17" width="3.4" height="9" rx="1.6" fill="#1D9E75"/>
+    <rect x="22" y="17" width="3.4" height="9" rx="1.6" fill="#1D9E75"/>
+    <rect x="8" y="25" width="3.4" height="2.6" rx="1.2" fill="#D9B08A"/>
+    <rect x="22" y="25" width="3.4" height="2.6" rx="1.2" fill="#D9B08A"/>
+    <rect x="12" y="29" width="4" height="7" rx="1.4" fill="#0F6E56"/>
+    <rect x="18" y="29" width="4" height="7" rx="1.4" fill="#0F6E56"/>
+    <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#085041"/>
+    <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#085041"/>
+  </symbol>
+  <symbol id="px-d" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="13" y="8" width="7" height="8" rx="2" fill="#F0D3B4"/>
+    <rect x="12" y="4" width="9" height="5" rx="2" fill="#2C2318"/>
+    <rect x="10" y="6" width="13" height="3" rx="1.5" fill="#2C2318"/>
+    <rect x="14" y="9" width="1.6" height="1.6" fill="#2C2318"/>
+    <rect x="18" y="9" width="1.6" height="1.6" fill="#2C2318"/>
+    <rect x="11" y="16" width="11" height="13" rx="2.5" fill="#185FA5"/>
+    <rect x="11" y="16" width="3.5" height="13" fill="#12456F"/>
+    <rect x="8" y="17" width="3.4" height="9" rx="1.6" fill="#185FA5"/>
+    <rect x="22" y="17" width="3.4" height="9" rx="1.6" fill="#185FA5"/>
+    <rect x="8" y="25" width="3.4" height="2.6" rx="1.2" fill="#F0D3B4"/>
+    <rect x="22" y="25" width="3.4" height="2.6" rx="1.2" fill="#F0D3B4"/>
+    <rect x="12" y="29" width="4" height="7" rx="1.4" fill="#0C447C"/>
+    <rect x="18" y="29" width="4" height="7" rx="1.4" fill="#0C447C"/>
+    <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#06294A"/>
+    <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#06294A"/>
+  </symbol>
+  <symbol id="px-e" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="13" y="8" width="7" height="8" rx="2" fill="#E8C8A4"/>
+    <rect x="12" y="4" width="9" height="5" rx="2" fill="#3A2317"/>
+    <rect x="10" y="6" width="13" height="3" rx="1.5" fill="#3A2317"/>
+    <rect x="14" y="9" width="1.6" height="1.6" fill="#3A2317"/>
+    <rect x="18" y="9" width="1.6" height="1.6" fill="#3A2317"/>
+    <rect x="11" y="16" width="11" height="13" rx="2.5" fill="#D85A30"/>
+    <rect x="11" y="16" width="3.5" height="13" fill="#B34A25"/>
+    <rect x="8" y="17" width="3.4" height="9" rx="1.6" fill="#D85A30"/>
+    <rect x="22" y="17" width="3.4" height="9" rx="1.6" fill="#D85A30"/>
+    <rect x="8" y="25" width="3.4" height="2.6" rx="1.2" fill="#E8C8A4"/>
+    <rect x="22" y="25" width="3.4" height="2.6" rx="1.2" fill="#E8C8A4"/>
+    <rect x="12" y="29" width="4" height="7" rx="1.4" fill="#993C1D"/>
+    <rect x="18" y="29" width="4" height="7" rx="1.4" fill="#993C1D"/>
+    <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#712B13"/>
+    <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#712B13"/>
+  </symbol>
+  <symbol id="px-f" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="13" y="8" width="7" height="8" rx="2" fill="#D9B08A"/>
+    <rect x="11" y="3" width="11" height="6" rx="2.5" fill="#1B1533"/>
+    <rect x="9" y="6" width="15" height="4" rx="2" fill="#1B1533"/>
+    <rect x="14" y="9" width="1.6" height="1.6" fill="#1B1533"/>
+    <rect x="18" y="9" width="1.6" height="1.6" fill="#1B1533"/>
+    <rect x="11" y="16" width="11" height="13" rx="2.5" fill="#3C3489"/>
+    <rect x="11" y="16" width="3.5" height="13" fill="#2C2568"/>
+    <rect x="8" y="17" width="3.4" height="9" rx="1.6" fill="#3C3489"/>
+    <rect x="22" y="17" width="3.4" height="9" rx="1.6" fill="#3C3489"/>
+    <rect x="8" y="25" width="3.4" height="2.6" rx="1.2" fill="#D9B08A"/>
+    <rect x="22" y="25" width="3.4" height="2.6" rx="1.2" fill="#D9B08A"/>
+    <rect x="12" y="29" width="4" height="7" rx="1.4" fill="#26215C"/>
+    <rect x="18" y="29" width="4" height="7" rx="1.4" fill="#26215C"/>
+    <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#161238"/>
+    <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#161238"/>
+  </symbol>
+  <symbol id="px-g" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="13" y="8" width="7" height="8" rx="2" fill="#F2D8BC"/>
+    <rect x="12" y="4" width="9" height="5" rx="2" fill="#6B4423"/>
+    <rect x="10" y="6" width="13" height="3" rx="1.5" fill="#6B4423"/>
+    <rect x="10" y="8" width="2" height="4" rx="1" fill="#6B4423"/>
+    <rect x="14" y="9" width="1.6" height="1.6" fill="#4A2E1E"/>
+    <rect x="18" y="9" width="1.6" height="1.6" fill="#4A2E1E"/>
+    <rect x="11" y="16" width="11" height="13" rx="2.5" fill="#BA7517"/>
+    <rect x="11" y="16" width="3.5" height="13" fill="#9A6111"/>
+    <rect x="8" y="17" width="3.4" height="9" rx="1.6" fill="#BA7517"/>
+    <rect x="22" y="17" width="3.4" height="9" rx="1.6" fill="#BA7517"/>
+    <rect x="8" y="25" width="3.4" height="2.6" rx="1.2" fill="#F2D8BC"/>
+    <rect x="22" y="25" width="3.4" height="2.6" rx="1.2" fill="#F2D8BC"/>
+    <rect x="12" y="29" width="4" height="7" rx="1.4" fill="#854F0B"/>
+    <rect x="18" y="29" width="4" height="7" rx="1.4" fill="#854F0B"/>
+    <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#633806"/>
+    <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#633806"/>
+  </symbol>
+</defs>
+</svg>
+
+</head>
+<body>
+<div class="wrap">
+
+  <!-- header -->
+  <div class="ph">
+    <div class="ph-in">
+      <div class="logo">
+        <svg viewBox="0 0 8 8" aria-hidden="true">
+          <rect x="0" y="0" width="4" height="4" fill="#4B5CE8"/><rect x="4" y="0" width="4" height="4" fill="#7A5AF8"/>
+          <rect x="0" y="4" width="4" height="4" fill="#7A5AF8"/><rect x="4" y="4" width="4" height="4" fill="#B9BEF9"/>
+        </svg>
+        WorkPier
+      </div>
+      <span style="font-size:16px;font-weight:600">套餐</span>
+      <span class="ph-cur">当前套餐：</span>
+      <span class="badge-cur">体验版</span>
+      <div class="promo">双 11 限时加送最高 1,111 点</div>
+    </div>
+  </div>
+
+  <!-- tabs -->
+  <div class="tabs">
+    <button class="tab on" data-t="0">体验版</button>
+    <button class="tab" data-t="1">标准版</button>
+    <button class="tab" data-t="2">团队版</button>
+    <button class="tab" data-t="3">企业版</button>
+  </div>
+
+  <div class="tiers">
+    <!-- 体验版 -->
+    <div class="tier on" data-tier="0">
+      <h3>体验版</h3>
+      <div class="one">先完成一项真实工作</div>
+      <div class="roster">
+        <div class="roster-h"><b>AI 员工编制</b><span>3 位</span></div>
+        <div class="px-row">
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-g"/></svg>
+          <svg class="px dim" viewBox="0 0 32 40"><use href="#px-b"/></svg>
+          <svg class="px dim" viewBox="0 0 32 40"><use href="#px-c"/></svg>
+        </div>
+        <div class="roster-note">团队主管 + 经营分析师 + 知识管理专家</div>
+      </div>
+      <div class="grp">
+        <div class="grp-t">交付成果</div>
+        <ul class="flist">
+          <li><i></i><span>Word / Excel / PDF</span></li>
+          <li><i></i><span>主管与 2 位专长员工协作</span></li>
+        </ul>
+      </div>
+      <div class="grp">
+        <div class="grp-t">组织与工具</div>
+        <ul class="flist">
+          <li><i></i><span>1 个成员席位 · 1 个工作空间</span></li>
+          <li><i></i><span>定时任务 1 个</span></li>
+          <li><i></i><span>2 个连接器（Drive / Gmail）</span></li>
+        </ul>
+      </div>
+      <div class="grp">
+        <div class="grp-t">额度</div>
+        <ul class="flist">
+          <li><i></i><span>开户赠送 <b>1,000 点</b>（不过期）</span></li>
+          <li><i></i><span>体验期 30 天内每周再赠 <b>200 点</b></span></li>
+          <li><i></i><span>之后每周 <b>50 点</b>，最多再给 12 周</span></li>
+          <li><i></i><span><b>累计免费额度封顶 2,400 点</b></span></li>
+          <li><i></i><span>每日上限 500 点</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 标准版 -->
+    <div class="tier" data-tier="1">
+      <h3>标准版</h3>
+      <div class="one">一个人的稳定产出</div>
+      <div class="roster">
+        <div class="roster-h"><b>AI 员工编制</b><span>5 位</span></div>
+        <div class="px-row">
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-g"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
+        </div>
+        <div class="roster-note">主管 + 经营分析师 + 客户协作专员<br>内容创作 + 知识管理</div>
+      </div>
+      <div class="grp">
+        <div class="grp-t">交付成果</div>
+        <ul class="flist">
+          <li><i></i><span>Word / Excel / PPT / PDF</span></li>
+          <li><i></i><span>5 位专长员工按专长分工</span></li>
+          <li><i></i><span>成果版本可追溯、逐版定稿</span></li>
+        </ul>
+      </div>
+      <div class="grp">
+        <div class="grp-t">组织与工具</div>
+        <ul class="flist">
+          <li><i></i><span><b>3 个成员席位</b> · 3 个工作空间</span></li>
+          <li><i></i><span>定时任务 5 个</span></li>
+          <li><i></i><span>7 个连接器全部可用</span></li>
+          <li><i></i><span>未用点数结转 <b>3 个月</b></span></li>
+        </ul>
+      </div>
+      <div class="grp">
+        <div class="grp-t">额度</div>
+        <ul class="flist">
+          <li><i></i><span>每月 <b>2,000 点</b>，每周发放</span></li>
+          <li><i></i><span>每日上限 1,500 点</span></li>
+          <li><i></i><span>约可交付 2–4 份成果</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 团队版 -->
+    <div class="tier" data-tier="2">
+      <h3>团队版</h3>
+      <div class="one">多成员共用一支 AI 团队</div>
+      <div class="roster">
+        <div class="roster-h"><b>AI 员工编制</b><span>全部 8 位</span></div>
+        <div class="px-row">
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-d"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-f"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-g"/></svg>
+        </div>
+        <div class="roster-note">主管 + 全部 7 位专长员工</div>
+      </div>
+      <div class="grp">
+        <div class="grp-t">交付成果</div>
+        <ul class="flist">
+          <li><i></i><span>加 <b>图片与视频</b>成果</span></li>
+          <li><i></i><span>主管调度全部专长，分工完成</span></li>
+          <li><i></i><span>优先队列，高峰期不排队</span></li>
+        </ul>
+      </div>
+      <div class="grp">
+        <div class="grp-t">组织与工具</div>
+        <ul class="flist">
+          <li><i></i><span><b>8 个成员席位</b> · 10 个工作空间</span></li>
+          <li><i></i><span>定时任务 15 个</span></li>
+          <li><i></i><span>项目与知识库容量提升 5 倍</span></li>
+          <li><i></i><span>未用点数结转 <b>6 个月</b></span></li>
+        </ul>
+      </div>
+      <div class="grp">
+        <div class="grp-t">额度</div>
+        <ul class="flist">
+          <li><i></i><span>每月 <b>4,000 点</b>，每周发放</span></li>
+          <li><i></i><span>每日上限 4,000 点</span></li>
+          <li><i></i><span>约可交付 5–8 份成果</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 企业版 -->
+    <div class="tier ent" data-tier="3">
+      <span class="tier-tag">按需定制</span>
+      <h3>企业版</h3>
+      <div class="one">整间公司的 AI 部门</div>
+      <div class="roster">
+        <div class="roster-h"><b>AI 员工编制</b><span>可扩充</span></div>
+        <div class="px-row">
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-d"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-f"/></svg>
+          <div class="px-more">+</div>
+        </div>
+        <div class="roster-note">可按部门增聘专属岗位，主管负责招聘与调度</div>
+      </div>
+      <div class="grp">
+        <div class="grp-t">交付成果</div>
+        <ul class="flist">
+          <li><i></i><span>全部成果形式，含视频与图片</span></li>
+          <li><i></i><span>专属角色与技能定制</span></li>
+          <li><i></i><span>SLA 99.9%，故障 4 小时响应</span></li>
+        </ul>
+      </div>
+      <div class="grp">
+        <div class="grp-t">组织与工具</div>
+        <ul class="flist">
+          <li><i></i><span><b>20 个成员席位起</b> · 工作空间不限</span></li>
+          <li><i></i><span>定时任务不限数量</span></li>
+          <li><i></i><span>发票、合同与采购材料出具</span></li>
+          <li><i></i><span>未用点数结转 <b>12 个月</b></span></li>
+        </ul>
+      </div>
+      <div class="grp">
+        <div class="grp-t">额度</div>
+        <ul class="flist">
+          <li><i></i><span>每月 <b>12,000 点起</b></span></li>
+          <li><i></i><span>每日上限可调</span></li>
+          <li><i></i><span>按实际用量定制</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 独有能力 -->
+  <div class="special">
+    <div class="sp sp-2">
+      <div class="sp-h">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="5" rx="1.6"/><rect x="3" y="15" width="18" height="5" rx="1.6"/>
+            <path d="M12 9v6"/>
+          </svg>
+        </div>
+        <b>组织架构与部门管理</b>
+      </div>
+      <p>WorkPier 独有。工作空间按部门与项目划分，权限分级到角色，跨部门成果可复用而不串权。跨工作空间数据隔离，统一用量管控与报表导出。</p>
+      <div class="tree">
+        <div class="tr"><span class="dots"><i class="lead"></i><i class="lead"></i><i class="lead"></i></span> 总部</div>
+        <div class="tr"><span class="dots"><i class="lead"></i><i class="lead"></i><i></i></span> 财务部</div>
+        <div class="tr"><span class="dots"><i class="lead"></i><i></i><i></i></span> 市场部</div>
+        <div class="tr"><span class="dots"><i></i><i></i><i></i></span> 项目组</div>
+      </div>
+    </div>
+    <div class="sp">
+      <div class="sp-h">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="7" height="16" rx="1.6"/><rect x="14" y="4" width="7" height="16" rx="1.6"/>
+            <path d="M6.5 8h0M17.5 8h0M6.5 12h0M17.5 12h0"/>
+          </svg>
+        </div>
+        <b>像素员工档案办公室</b>
+      </div>
+      <p>WorkPier 独有。每一位 AI 员工都有可查的档案：擅长什么、做过哪些工作、消耗多少点数、成果被采用了几次。团队编制看得见，也说得清。</p>
+      <div class="px-strip">
+        <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+        <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
+        <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
+        <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
+        <svg class="px" viewBox="0 0 32 40"><use href="#px-d"/></svg>
+        <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint">切换上方档位查看对应价格。「AI 员工编制」是 WorkPier 与其他工具最不同的地方——你买的不是一个额度，而是一支有分工的团队。</div>
+
+  <!-- buy -->
+  <div class="buys" id="buysPaid">
+    <div class="buy on" data-b="0">
+      <span class="disc">省 30%</span>
+      <div class="bn">连续包月</div>
+      <div class="bp">HK$158<small>/月</small></div>
+      <div class="bm">HK$226/月 标价 · 自动续费</div>
+    </div>
+    <div class="buy" data-b="1">
+      <span class="disc" style="display:none"></span>
+      <div class="bn">1 个月</div>
+      <div class="bp">HK$185</div>
+      <div class="bm">一次性，不自动续费</div>
+    </div>
+    <div class="buy" data-b="2">
+      <span class="disc">省 20%</span>
+      <div class="bn">连续包年</div>
+      <div class="bp">HK$1,512<small>/年</small></div>
+      <div class="bm">折合 HK$126/月 · 自动续费</div>
+    </div>
+    <div class="buy" data-b="3">
+      <span class="disc" style="display:none"></span>
+      <div class="bn">1 年</div>
+      <div class="bp">HK$1,800</div>
+      <div class="bm">一次性，不自动续费</div>
+    </div>
+  </div>
+  <div class="buys" id="buysFree" style="display:none">
+    <div class="buy on" style="cursor:default">
+      <span class="disc" style="background:var(--teal)">免费</span>
+      <div class="bn">体验版</div>
+      <div class="bp">免费</div>
+      <div class="bm">开户赠送 1,000 点 · 无需绑卡</div>
+    </div>
+  </div>
+  <div class="buys-note">查看<a href="#">套餐对比</a> ›&nbsp;&nbsp;或&nbsp;&nbsp;<a href="#">购买点数</a> ›</div>
+
+  <!-- 充值包 -->
+  <div class="topup">
+    <div class="topup-h">
+      <b>按需充值点数</b>
+      <span>不订阅也能单独买 · 12 个月有效 · 每点按 US$0.01 的预估 AI 成本计价</span>
+    </div>
+    <div class="tp-grid">
+      <div class="tp">
+        <div class="tp-p">HK$39</div>
+        <div class="tp-n">280 点 · 每点 HK$0.139</div>
+        <div class="tp-v"><i></i>约够 1 份完整调研交付</div>
+      </div>
+      <div class="tp">
+        <div class="tp-p">HK$79</div>
+        <div class="tp-n">650 点 · 每点 HK$0.122</div>
+        <div class="tp-v"><i></i>约够 2 份调研 + 1 次提案分析</div>
+      </div>
+      <div class="tp">
+        <div class="tp-p">HK$199</div>
+        <div class="tp-n">1,900 点 · 每点 HK$0.105</div>
+        <div class="tp-v"><i></i>约够 1 个完整项目周期</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- pay -->
+  <div class="pay">
+    <div class="pay-qr" id="payQr">使用中信银行（国际）<br>FPS 或转账付款<br><br>到账后开通</div>
+    <div class="pay-main">
+      <div class="pl" id="payLabel">使用转账 / FPS 付款</div>
+      <div class="pp" id="payPrice">HK$158/月</div>
+      <div class="pd" id="payDesc"><b>标准版</b> 连续包月，有效期至 2026-12-11，到期日前一天自动续费，随时取消。</div>
+      <div class="agree">
+        <span class="box"></span>
+        我已阅读并同意 <a href="#">《WorkPier 服务协议》</a>、<a href="#">《隐私政策》</a>、<a href="#">《订阅与退款规则》</a>
+      </div>
+      <div class="pay-act">
+        <button class="btn btn-p" id="payBtn">同意协议并支付</button>
+        <button class="btn btn-s">关联应用账号</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- notes -->
+  <div class="notes">
+    <h4>购买前请了解</h4>
+    <div class="nrow"><b>点数如何扣</b><span>按每次任务实际消耗结算，取决于所用模型、输入资料量、对话轮次与修改次数。同一件事，让它查资料再写，比直接写更耗点数。</span></div>
+    <div class="nrow"><b>额度能做什么</b><span>标准版 2,000 点 / 月，约完成 1 次调研 + 1 次提案分析，交付 2–4 份 Word 与预算表。</span></div>
+    <div class="nrow"><b>额度与赠点的关系</b><span>订阅额度已包含每周发放的额度，<b>不与每周赠点叠加</b>。每周赠点仅服务体验版用户，且体验版累计免费额度封顶 2,400 点。</span></div>
+    <div class="nrow"><b>点数有效期</b><span>订阅额度按周发放，每周重置，未用完的部分不结转；标准版可结转 3 个月、团队版 6 个月、企业版 12 个月。充值点数 12 个月有效。</span></div>
+    <div class="nrow"><b>数据处理</b><span>资料存储与模型推理位于新加坡区域。资料不用于训练模型。断开连接后立即停止使用该账户。</span></div>
+    <div class="nrow"><b>退款与取消</b><span>连续包月可随时取消，当前周期结束前仍可正常使用。年度方案退款按《订阅与退款规则》执行。</span></div>
+  </div>
+
+</div>
+
+<script>
+var DATA = {
+  0:{name:'体验版', free:true,
+    label:'免费开户，无需付款',
+    price:'免费',
+    desc:'<b>体验版</b> 开户即赠 1,000 点，无需绑卡。体验期 30 天内每周再赠 200 点，之后每周 50 点、最多再给 12 周，累计免费额度封顶 2,400 点。',
+    btn:'免费开通',
+    qr:'无需付款<br>开户即开通',
+    buys:[]},
+  1:{name:'标准版',
+    label:'使用转账 / FPS 付款',
+    price:'HK$158/月',
+    btn:'同意协议并支付',
+    qr:'使用中信银行（国际）<br>FPS 或转账付款<br><br>到账后开通',
+    buys:[
+      {p:'HK$158',u:'/月',m:'HK$226/月 标价 · 自动续费',d:'省 30%',
+       t:'<b>标准版</b> 连续包月，有效期至 2026-12-11，到期日前一天自动续费，随时取消。'},
+      {p:'HK$185',u:'',m:'一次性，不自动续费',d:'',
+       t:'<b>标准版</b> 单买 1 个月，2,000 点一次发放，不自动续费，到期即止。'},
+      {p:'HK$1,512',u:'/年',m:'折合 HK$126/月 · 自动续费',d:'省 20%',
+       t:'<b>标准版</b> 连续包年，24,000 点分 52 周发放，到期日前一天自动续费，随时取消。'},
+      {p:'HK$1,800',u:'',m:'一次性，不自动续费',d:'',
+       t:'<b>标准版</b> 单买 1 年，24,000 点分 52 周发放，不自动续费。'}]},
+  2:{name:'团队版',
+    label:'使用转账 / FPS 付款',
+    price:'HK$368/月',
+    btn:'同意协议并支付',
+    qr:'使用中信银行（国际）<br>FPS 或转账付款<br><br>到账后开通',
+    buys:[
+      {p:'HK$368',u:'/月',m:'HK$526/月 标价 · 自动续费',d:'省 30%',
+       t:'<b>团队版</b> 连续包月，有效期至 2026-12-11，到期日前一天自动续费，随时取消。'},
+      {p:'HK$432',u:'',m:'一次性，不自动续费',d:'',
+       t:'<b>团队版</b> 单买 1 个月，4,000 点一次发放，不自动续费，到期即止。'},
+      {p:'HK$3,533',u:'/年',m:'折合 HK$294/月 · 自动续费',d:'省 20%',
+       t:'<b>团队版</b> 连续包年，48,000 点分 52 周发放，到期日前一天自动续费，随时取消。'},
+      {p:'HK$4,208',u:'',m:'一次性，不自动续费',d:'',
+       t:'<b>团队版</b> 单买 1 年，48,000 点分 52 周发放，不自动续费。'}]},
+  3:{name:'企业版',
+    label:'联系客户经理报价',
+    price:'HK$1,280/月起',
+    btn:'联系客户经理',
+    qr:'按合同与用量报价<br>可开立发票<br><br>工作日 24 小时内回复',
+    buys:[
+      {p:'HK$1,280',u:'/月起',m:'含 20 席 · 12,000 点起',d:'',
+       t:'<b>企业版</b> 连续包月，12,000 点 / 月起，含 20 个成员席位，SLA 99.9%，可开立发票与合同。'},
+      {p:'HK$1,536',u:'',m:'一次性，不自动续费',d:'',
+       t:'<b>企业版</b> 单买 1 个月，12,000 点一次发放，不自动续费，到期即止。'},
+      {p:'HK$12,288',u:'/年起',m:'折合 HK$1,024/月 · 自动续费',d:'省 20%',
+       t:'<b>企业版</b> 连续包年，144,000 点分 52 周发放，到期日前一天自动续费，随时取消。'},
+      {p:'HK$14,746',u:'',m:'一次性，不自动续费',d:'',
+       t:'<b>企业版</b> 单买 1 年，144,000 点分 52 周发放，不自动续费。'}]}
+};
+var curTier = 1, curBuy = 0;
+
+function payRender(d, b){
+  document.getElementById('payLabel').textContent = d.label;
+  document.getElementById('payPrice').textContent = b ? (b.p + b.u) : d.price;
+  document.getElementById('payDesc').innerHTML = b ? b.t : d.desc;
+  document.getElementById('payBtn').textContent = d.btn;
+  document.getElementById('payQr').innerHTML = d.qr;
+}
+
+function render(t){
+  curTier = t;
+  var d = DATA[t];
+  document.querySelectorAll('.tier').forEach(function(el,i){ el.classList.toggle('on', i==t); });
+
+  var paid = document.getElementById('buysPaid');
+  var free = document.getElementById('buysFree');
+  if(d.free){
+    paid.style.display = 'none';
+    free.style.display = 'grid';
+    payRender(d, null);
+    return;
+  }
+  paid.style.display = 'grid';
+  free.style.display = 'none';
+
+  document.querySelectorAll('#buysPaid .buy').forEach(function(el,i){
+    var b = d.buys[i];
+    el.querySelector('.bp').innerHTML = b.p + (b.u? '<small>'+b.u+'</small>':'');
+    el.querySelector('.bm').textContent = b.m;
+    var tag = el.querySelector('.disc');
+    if(tag){
+      if(b.d){ tag.style.display='block'; tag.textContent=b.d; }
+      else { tag.style.display='none'; }
+    }
+  });
+  curBuy = 0;
+  selectBuy(0);
+}
+
+function selectBuy(i){
+  var d = DATA[curTier];
+  if(!d.buys[i]) return;
+  curBuy = i;
+  document.querySelectorAll('#buysPaid .buy').forEach(function(el,j){ el.classList.toggle('on', j==i); });
+  payRender(d, d.buys[i]);
+}
+
+document.querySelectorAll('.tab').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    render(parseInt(b.dataset.t,10));
+  });
+});
+document.querySelectorAll('.tier').forEach(function(el){
+  el.addEventListener('click', function(){
+    var i = parseInt(el.dataset.tier,10);
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    document.querySelectorAll('.tab')[i].classList.add('on');
+    render(i);
+  });
+});
+document.querySelectorAll('#buysPaid .buy').forEach(function(b){
+  b.addEventListener('click', function(){
+    selectBuy(parseInt(b.dataset.b,10));
+  });
+});
+
+render(1);
+</script>
+</body>
+</html>
