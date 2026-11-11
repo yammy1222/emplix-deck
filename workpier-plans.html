@@ -53,7 +53,7 @@ body{
 .tier h3{font-size:18px;margin-bottom:4px}
 .tier .one{font-size:12.5px;color:var(--muted);margin-bottom:16px}
 
-/* 员工编制 —— 特色主轴 */
+/* 主管调度 —— 定价主轴 */
 .roster{background:var(--bg3);border-radius:var(--r-s);padding:14px 13px;margin-bottom:18px;border:1px solid var(--line)}
 .roster-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:11px}
 .roster-h b{font-size:12.5px;color:var(--ink)}
@@ -66,6 +66,24 @@ body{
   display:grid;place-items:center;font-size:10px;color:var(--muted);font-weight:600;flex:none;
 }
 .roster-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+/* 主管枢纽：主管是调度中心，专长员工在其下受命 */
+.hub{background:var(--bg3);border-radius:var(--r-s);padding:14px 13px 12px;margin-bottom:18px;border:1px solid var(--line)}
+.hub-lead{display:flex;flex-direction:column;align-items:center;gap:5px}
+.hub-lead .px{width:38px;height:48px}
+.hub-lead b{font-size:12.5px;color:var(--ink);font-weight:600}
+.hub-lead span{font-size:10.5px;color:var(--muted)}
+.hub-stem{width:1.5px;height:12px;background:var(--indigo-l);margin:0 auto}
+.hub-bus{position:relative;height:1.5px;background:var(--indigo-l);margin:0 16px}
+.hub-row{display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:flex-end;margin-top:-1px}
+.hub-row .px{width:26px;height:33px}
+.hub-row .px.dim{opacity:.22;filter:grayscale(1)}
+.hub-more{width:26px;height:33px;border-radius:5px;background:#fff;border:1px dashed var(--line2);display:grid;place-items:center;font-size:10px;color:var(--muted);font-weight:600;flex:none}
+.hub-cap{font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.55;text-align:center}
+.hub-cap b{color:var(--ink2);font-weight:600}
+.hub-meter{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;background:#fff;border:1px solid var(--indigo-l);border-radius:999px;padding:5px 13px}
+.hub-meter b{font-size:13px;font-weight:700;color:var(--indigo)}
+.hub-meter span{font-size:11px;color:var(--muted)}
 
 /* 权益分组 */
 .grp{margin-bottom:15px}
@@ -373,22 +391,27 @@ body{
     <div class="tier on" data-tier="0">
       <h3>体验版</h3>
       <div class="one">先完成一项真实工作</div>
-      <div class="roster">
-        <div class="roster-h"><b>AI 员工编制</b><span>3 位</span></div>
-        <div class="px-row">
+      <div class="hub">
+        <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+          <b>团队主管</b>
+          <span>内置 · 每一档都有 · 永不可暂停</span>
+        </div>
+        <div class="hub-stem"></div>
+        <div class="hub-bus"></div>
+        <div class="hub-row">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-g"/></svg>
-          <svg class="px dim" viewBox="0 0 32 40"><use href="#px-b"/></svg>
-          <svg class="px dim" viewBox="0 0 32 40"><use href="#px-c"/></svg>
+          <div class="hub-more">+</div>
         </div>
-        <div class="roster-note">团队主管 + 经营分析师 + 知识管理专家</div>
+        <div class="hub-meter"><b>同时 1 项</b><span>主管可并行调度的任务数</span></div>
+        <div class="hub-cap">主管判断哪部分该自己做、哪部分交给专长员工<br><b>专长角色随时可增聘，不按档位限量</b></div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
         <ul class="flist">
           <li><i></i><span>Word / Excel / PDF</span></li>
-          <li><i></i><span>主管与 2 位专长员工协作</span></li>
+          <li><i></i><span>主管接手一般工作，专业部分交给专长员工</span></li>
         </ul>
       </div>
       <div class="grp">
@@ -396,7 +419,7 @@ body{
         <ul class="flist">
           <li><i></i><span>1 个成员席位 · 1 个工作空间</span></li>
           <li><i></i><span>定时任务 1 个</span></li>
-          <li><i></i><span>2 个连接器（Drive / Gmail）</span></li>
+          <li><i></i><span>2 个连接器（Drive / Notion）</span></li>
         </ul>
       </div>
       <div class="grp">
@@ -415,22 +438,29 @@ body{
     <div class="tier" data-tier="1">
       <h3>标准版</h3>
       <div class="one">一个人的稳定产出</div>
-      <div class="roster">
-        <div class="roster-h"><b>AI 员工编制</b><span>5 位</span></div>
-        <div class="px-row">
+      <div class="hub">
+        <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+          <b>团队主管</b>
+          <span>内置 · 每一档都有 · 永不可暂停</span>
+        </div>
+        <div class="hub-stem"></div>
+        <div class="hub-bus"></div>
+        <div class="hub-row">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-g"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
+          <div class="hub-more">+</div>
         </div>
-        <div class="roster-note">主管 + 经营分析师 + 客户协作专员<br>内容创作 + 知识管理</div>
+        <div class="hub-meter"><b>同时 3 项</b><span>主管可并行调度的任务数</span></div>
+        <div class="hub-cap">主管判断哪部分该自己做、哪部分交给专长员工<br><b>专长角色随时可增聘，不按档位限量</b></div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
         <ul class="flist">
           <li><i></i><span>Word / Excel / PPT / PDF</span></li>
-          <li><i></i><span>5 位专长员工按专长分工</span></li>
+          <li><i></i><span>主管按专长分工，成果统一汇总统合</span></li>
           <li><i></i><span>成果版本可追溯、逐版定稿</span></li>
         </ul>
       </div>
@@ -439,7 +469,7 @@ body{
         <ul class="flist">
           <li><i></i><span><b>3 个成员席位</b> · 3 个工作空间</span></li>
           <li><i></i><span>定时任务 5 个</span></li>
-          <li><i></i><span>7 个连接器全部可用</span></li>
+          <li><i></i><span>4 个连接器全部可用（Drive / Notion / Slack / Dropbox）</span></li>
           <li><i></i><span>未用点数结转 <b>3 个月</b></span></li>
         </ul>
       </div>
@@ -457,19 +487,24 @@ body{
     <div class="tier" data-tier="2">
       <h3>团队版</h3>
       <div class="one">多成员共用一支 AI 团队</div>
-      <div class="roster">
-        <div class="roster-h"><b>AI 员工编制</b><span>全部 8 位</span></div>
-        <div class="px-row">
+      <div class="hub">
+        <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+          <b>团队主管</b>
+          <span>内置 · 每一档都有 · 永不可暂停</span>
+        </div>
+        <div class="hub-stem"></div>
+        <div class="hub-bus"></div>
+        <div class="hub-row">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-d"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-f"/></svg>
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-g"/></svg>
+          <div class="hub-more">+</div>
         </div>
-        <div class="roster-note">主管 + 全部 7 位专长员工</div>
+        <div class="hub-meter"><b>同时 8 项</b><span>主管可并行调度的任务数</span></div>
+        <div class="hub-cap">主管判断哪部分该自己做、哪部分交给专长员工<br><b>专长角色随时可增聘，不按档位限量</b></div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -503,19 +538,25 @@ body{
       <span class="tier-tag">按需定制</span>
       <h3>企业版</h3>
       <div class="one">整间公司的 AI 部门</div>
-      <div class="roster">
-        <div class="roster-h"><b>AI 员工编制</b><span>可扩充</span></div>
-        <div class="px-row">
+      <div class="hub">
+        <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+          <b>团队主管</b>
+          <span>内置 · 每一档都有 · 永不可暂停</span>
+        </div>
+        <div class="hub-stem"></div>
+        <div class="hub-bus"></div>
+        <div class="hub-row">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-d"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-f"/></svg>
-          <div class="px-more">+</div>
+          <div class="hub-more">+</div>
         </div>
-        <div class="roster-note">可按部门增聘专属岗位，主管负责招聘与调度</div>
+        <div class="hub-meter"><b>不设上限</b><span>并行任务数按需定制</span></div>
+        <div class="hub-cap">主管判断哪部分该自己做、哪部分交给专长员工<br><b>专长角色随时可增聘，不按档位限量</b></div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -575,7 +616,7 @@ body{
         </div>
         <b>像素员工档案办公室</b>
       </div>
-      <p>WorkPier 独有。每一位 AI 员工都有可查的档案：擅长什么、做过哪些工作、消耗多少点数、成果被采用了几次。团队编制看得见，也说得清。</p>
+      <p>WorkPier 独有。每一位 AI 员工的桌面都能查：今天完成了什么、哪一件失败了、哪一件正等着你拍板。人机之间发生了什么，不用猜。</p>
       <div class="px-strip">
         <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
         <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
@@ -587,7 +628,7 @@ body{
     </div>
   </div>
 
-  <div class="hint">切换上方档位查看对应价格。「AI 员工编制」是 WorkPier 与其他工具最不同的地方——你买的不是一个额度，而是一支有分工的团队。</div>
+  <div class="hint">切换上方档位查看对应价格。<b>每档都内置同一个团队主管</b>——它自己判断哪部分该自己做、哪部分该交给专长员工，再把结果统合交回。这是 WorkPier 与其他工具最不同的地方：你买的不是一个额度，而是一支会自己分工的团队。</div>
 
   <!-- buy -->
   <div class="buys" id="buysPaid">
