@@ -37,21 +37,28 @@ body{
 .promo:hover{background:#FBEED2}
 
 /* tabs */
-.tabs{display:flex;gap:4px;background:var(--bg3);border-radius:999px;padding:5px;margin:24px 0 20px;width:max-content;border:1px solid var(--line)}
+.tabs{display:flex;gap:4px;background:var(--bg3);border-radius:999px;padding:5px;width:max-content;border:1px solid var(--line);align-items:center}
+.tabs-buy{margin:0 0 16px}
+.tabs-label{font-size:11.5px;color:var(--muted);padding:0 11px 0 9px;white-space:nowrap}
 .tab{padding:9px 28px;border-radius:999px;font-size:14.5px;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;transition:.2s;font-family:inherit}
 .tab.on{background:#fff;color:var(--ink);box-shadow:0 1px 5px rgba(22,24,58,.09)}
 .tab:hover:not(.on){color:var(--ink2)}
 
 /* tiers */
-.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
-.tier{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 20px;position:relative;transition:.22s;cursor:pointer;display:flex;flex-direction:column}
+.tiers-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:26px 0 12px}
+.tiers-h b{font-size:15.5px}
+.tiers-h span{font-size:12.5px;color:var(--muted)}
+.tiers-h span b{color:var(--ink2);font-weight:600}
+.tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
+.tier{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 15px;position:relative;transition:.22s;cursor:pointer;display:flex;flex-direction:column;min-width:0}
+.tier .grp:last-child{margin-bottom:0}
 .tier:hover{border-color:var(--indigo-l)}
 .tier.on{border-color:var(--indigo);box-shadow:0 10px 30px rgba(75,92,232,.13)}
 .tier.ent{background:linear-gradient(165deg,#FFFDF7,#fff 52%);border-color:var(--amber-l)}
 .tier.ent.on{border-color:var(--amber);box-shadow:0 10px 30px rgba(180,114,12,.14)}
 .tier-tag{position:absolute;top:-10px;right:16px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--amber);color:#fff}
-.tier h3{font-size:18px;margin-bottom:4px}
-.tier .one{font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.tier h3{font-size:16px;margin-bottom:3px}
+.tier .one{font-size:11.5px;color:var(--muted);margin-bottom:11px;line-height:1.45}
 
 /* 主管调度 —— 定价主轴 */
 .roster{background:var(--bg3);border-radius:var(--r-s);padding:14px 13px;margin-bottom:18px;border:1px solid var(--line)}
@@ -59,52 +66,52 @@ body{
 .roster-h b{font-size:12.5px;color:var(--ink)}
 .roster-h span{font-size:11.5px;color:var(--muted)}
 .px-row{display:flex;gap:4px;flex-wrap:wrap;align-items:flex-end}
-.px{width:32px;height:40px;display:block;flex:none;image-rendering:pixelated}
+.px{width:24px;height:30px;display:block;flex:none;image-rendering:pixelated}
 .px.dim{opacity:.2;filter:grayscale(1)}
 .px-more{
-  width:32px;height:40px;border-radius:6px;background:#fff;border:1px dashed var(--line2);
-  display:grid;place-items:center;font-size:10px;color:var(--muted);font-weight:600;flex:none;
+  width:24px;height:30px;border-radius:5px;background:#fff;border:1px dashed var(--line2);
+  display:grid;place-items:center;font-size:9px;color:var(--muted);font-weight:600;flex:none;
 }
 .roster-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5}
-.seatbar{margin:0 0 16px;padding:10px 12px;background:var(--indigo-s);border:1px solid var(--indigo-l);border-radius:var(--r-s)}
+.seatbar{margin:0 0 12px;padding:8px 10px;background:var(--indigo-s);border:1px solid var(--indigo-l);border-radius:var(--r-s)}
 .sb-top{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
 .seatbar .sb-n{font-size:11.5px;color:var(--ink2)}
-.seatbar .sb-p{font-size:17px;font-weight:700;color:var(--indigo);letter-spacing:-.01em}
+.seatbar .sb-p{font-size:15px;font-weight:700;color:var(--indigo);letter-spacing:-.01em}
 .seatbar .sb-p small{font-size:11px;font-weight:500;color:var(--muted)}
-.seatbar .sb-c{margin-left:auto;font-size:11px;color:var(--muted)}
+.seatbar .sb-c{margin-left:auto;font-size:10px;color:var(--muted)}
 
 /* 主管枢纽：主管是调度中心，专长员工在其下受命 */
-.hub{background:var(--bg3);border-radius:var(--r-s);padding:14px 13px 12px;margin-bottom:18px;border:1px solid var(--line)}
+.hub{background:var(--bg3);border-radius:var(--r-s);padding:11px 9px 10px;margin-bottom:13px;border:1px solid var(--line)}
 .hub-lead{display:flex;flex-direction:column;align-items:center;gap:5px}
-.hub-lead .px{width:38px;height:48px}
-.hub-lead b{font-size:12.5px;color:var(--ink);font-weight:600}
-.hub-lead span{font-size:10.5px;color:var(--muted)}
-.hub-stem{width:1.5px;height:12px;background:var(--indigo-l);margin:0 auto}
-.hub-stem2{width:1.5px;height:10px;background:var(--teal-l,var(--indigo-l));margin:0 auto;opacity:.55}
-.hub-bus{position:relative;height:1.5px;background:var(--indigo-l);margin:0 16px}
+.hub-lead .px{width:29px;height:36px}
+.hub-lead b{font-size:11.5px;color:var(--ink);font-weight:600}
+.hub-lead span{font-size:9.5px;color:var(--muted)}
+.hub-stem{width:1.5px;height:8px;background:var(--indigo-l);margin:0 auto}
+.hub-stem2{width:1.5px;height:7px;background:var(--teal-l,var(--indigo-l));margin:0 auto;opacity:.55}
+.hub-bus{position:relative;height:1.5px;background:var(--indigo-l);margin:0 10px}
 .hub-row{display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:flex-end;margin-top:-1px}
-.hub-row .px{width:26px;height:33px}
+.hub-row .px{width:21px;height:26px}
 .hub-row .px.dim{opacity:.22;filter:grayscale(1)}
-.hub-more{width:26px;height:33px;border-radius:5px;background:#fff;border:1px dashed var(--line2);display:grid;place-items:center;font-size:10px;color:var(--muted);font-weight:600;flex:none}
-.hub-cap{font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.55;text-align:center}
+.hub-more{width:21px;height:26px;border-radius:4px;background:#fff;border:1px dashed var(--line2);display:grid;place-items:center;font-size:8.5px;color:var(--muted);font-weight:600;flex:none}
+.hub-cap{font-size:10.5px;color:var(--muted);margin-top:8px;line-height:1.5;text-align:center}
 .hub-cap b{color:var(--ink2);font-weight:600}
 .hub-humans{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin-bottom:2px}
-.hub-humans .hpx{width:22px;height:28px;display:block;flex:none;image-rendering:pixelated}
+.hub-humans .hpx{width:17px;height:21px;display:block;flex:none;image-rendering:pixelated}
 .hub-humans .hpx.dim{opacity:.35;filter:grayscale(.7)}
-.hub-humans .hmore{width:22px;height:28px;border-radius:5px;background:#fff;border:1px dashed var(--line2);display:grid;place-items:center;font-size:8.5px;color:var(--muted);font-weight:700;flex:none}
+.hub-humans .hmore{width:17px;height:21px;border-radius:4px;background:#fff;border:1px dashed var(--line2);display:grid;place-items:center;font-size:7.5px;color:var(--muted);font-weight:700;flex:none}
 .hub-who{display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:4px}
-.hub-who span{font-size:10.5px;color:var(--muted);white-space:nowrap}
+.hub-who span{font-size:9.5px;color:var(--muted);white-space:nowrap}
 .hub-who .who-i{width:3px;height:3px;border-radius:50%;background:var(--indigo-l)}
 
 /* 权益分组 */
-.grp{margin-bottom:15px}
+.grp{margin-bottom:12px}
 .grp-t{
-  font-size:10.5px;font-weight:700;color:var(--indigo);letter-spacing:.06em;
-  margin-bottom:8px;display:flex;align-items:center;gap:7px;
+  font-size:10px;font-weight:700;color:var(--indigo);letter-spacing:.06em;
+  margin-bottom:6px;display:flex;align-items:center;gap:6px;
 }
 .grp-t::after{content:"";flex:1;height:1px;background:var(--indigo-l)}
-.flist{list-style:none;display:flex;flex-direction:column;gap:7px}
-.flist li{font-size:13px;color:var(--ink2);display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.flist{list-style:none;display:flex;flex-direction:column;gap:5px}
+.flist li{font-size:12px;color:var(--ink2);display:flex;gap:7px;align-items:flex-start;line-height:1.45}
 .flist li::before{
   content:"";width:13px;height:13px;border-radius:4px;flex:none;margin-top:3px;
   background:var(--indigo-s);border:1px solid var(--indigo-l);position:relative;
@@ -561,14 +568,10 @@ body{
     </div>
   </div>
 
-  <!-- tabs -->
-  <div class="tabs">
-    <button class="tab on" data-t="0">体验版</button>
-    <button class="tab" data-t="1">标准版</button>
-    <button class="tab" data-t="2">团队版</button>
-    <button class="tab" data-t="3">企业版</button>
+  <div class="tiers-h">
+    <b>四个档位，并排看</b>
+    <span>AI 团队、主管调度方式、成果形式完全一致；差别只在<b>用量</b>与<b>组织规模</b></span>
   </div>
-
   <div class="tiers">
     <!-- 体验版 -->
     <div class="tier on" data-tier="0">
@@ -579,7 +582,7 @@ body{
       </div>
       <div class="hub">      <div class="hub">
         <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg></div>
-        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活</span><span class="who-i"></span><span>共用一支团队</span></div>
+        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活 · 共用一支团队</span></div>
         <div class="hub-stem2"></div>
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
@@ -595,7 +598,8 @@ body{
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
           <div class="hub-more">+</div>
         </div>
-        <div class="hub-cap">专长角色<b>随时可增聘，不按档位限量</b><br>主管与专长员工的协作方式，每一档完全一致</div>
+        <div class="hub-cap">专长角色<b>随时可增聘，不限量</b></div>
+      </div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -630,11 +634,11 @@ body{
       <h3>标准版</h3>
       <div class="one">一个人，一支 AI 团队</div>
       <div class="seatbar">
-        <div class="sb-top"><span class="sb-n">3 席 · 含 2,000 点</span><span class="sb-p">HK$52.67<small>/席</small></span><span class="sb-c">比 CantoNotes 低 30%</span></div>
+        <div class="sb-top"><span class="sb-n">3 席</span><span class="sb-p">HK$52.67<small>/席</small></span><span class="sb-c">比 CantoNotes 低 30%</span></div>
       </div>
       <div class="hub">      <div class="hub">
         <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg></div>
-        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活</span><span class="who-i"></span><span>共用一支团队</span></div>
+        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活 · 共用一支团队</span></div>
         <div class="hub-stem2"></div>
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
@@ -650,26 +654,26 @@ body{
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
           <div class="hub-more">+</div>
         </div>
-        <div class="hub-cap">专长角色<b>随时可增聘，不按档位限量</b><br>主管与专长员工的协作方式，每一档完全一致</div>
+        <div class="hub-cap">专长角色<b>随时可增聘，不限量</b></div>
+      </div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
         <ul class="flist">
           <li><i></i><span>成果形式<b>不限档位</b>：Word / Excel / PPT / PDF</span></li>
-          <li><i></i><span>主管按专长分工，成果统一汇总统合</span></li>
+          <li><i></i><span>主管分工，成果<b>统一汇总</b></span></li>
           <li><i></i><span>成果版本可追溯、逐版定稿</span></li>
         </ul>
       </div>
       <div class="grp">
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span>每席是一个真人，<b>各自能独立给主管派活</b></span></li>
-          <li><i></i><span>每席绑定自己的工作空间，<b>分权不串权</b></span></li>
-          <li><i></i><span>成果各自留存，<b>用量可追溯到人</b></span></li>
-          <li><i></i><span>席位可增购，<b>每加 1 席 +HK$75</b>、当月 +800 点</span></li>
+          <li><i></i><span>每席是真人，<b>各自派活</b></span></li>
+          <li><i></i><span>各绑工作空间，<b>分权不串权</b></span></li>
+          <li><i></i><span>成果各留存，<b>用量可追溯到人</b></span></li>
           <li><i></i><span><b>3 个工作空间</b>，按部门划分</span></li>
           <li><i></i><span>定时任务 5 个</span></li>
-          <li><i></i><span>4 个连接器全部可用（Drive / Notion / Slack / Dropbox）</span></li>
+          <li><i></i><span>4 个连接器<b>全可用</b>（Drive / Notion / Slack / Dropbox）</span></li>
           <li><i></i><span>未用点数结转 <b>3 个月</b></span></li>
         </ul>
       </div>
@@ -688,11 +692,11 @@ body{
       <h3>团队版</h3>
       <div class="one">一整个部门共用一支 AI 团队</div>
       <div class="seatbar">
-        <div class="sb-top"><span class="sb-n">5 席 · 含 4,000 点</span><span class="sb-p">HK$73.60<small>/席</small></span><span class="sb-c">与 CantoNotes 同价</span></div>
+        <div class="sb-top"><span class="sb-n">5 席</span><span class="sb-p">HK$73.60<small>/席</small></span><span class="sb-c">与 CantoNotes 同价</span></div>
       </div>
       <div class="hub">      <div class="hub">
         <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><span class="hmore">+1</span></div>
-        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活</span><span class="who-i"></span><span>共用一支团队</span></div>
+        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活 · 共用一支团队</span></div>
         <div class="hub-stem2"></div>
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
@@ -708,7 +712,8 @@ body{
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
           <div class="hub-more">+</div>
         </div>
-        <div class="hub-cap">专长角色<b>随时可增聘，不按档位限量</b><br>主管与专长员工的协作方式，每一档完全一致</div>
+        <div class="hub-cap">专长角色<b>随时可增聘，不限量</b></div>
+      </div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -722,10 +727,9 @@ body{
       <div class="grp">
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span>每席是一个真人，<b>各自能独立给主管派活</b></span></li>
-          <li><i></i><span>每席绑定自己的工作空间，<b>跨部门成果可复用</b></span></li>
-          <li><i></i><span>成果各自留存，<b>用量可追溯到人</b></span></li>
-          <li><i></i><span>席位可增购，<b>每加 1 席 +HK$75</b>、当月 +800 点</span></li>
+          <li><i></i><span>每席是真人，<b>各自派活</b></span></li>
+          <li><i></i><span>各绑工作空间，<b>跨部门可复用</b></span></li>
+          <li><i></i><span>成果各留存，<b>用量可追溯到人</b></span></li>
           <li><i></i><span><b>6 个工作空间</b>，按部门与项目划分</span></li>
           <li><i></i><span>定时任务 15 个</span></li>
           <li><i></i><span>项目与知识库容量提升 5 倍</span></li>
@@ -748,11 +752,11 @@ body{
       <h3>企业版</h3>
       <div class="one">整间公司，一支 AI 部门</div>
       <div class="seatbar">
-        <div class="sb-top"><span class="sb-n">20 席起 · 含 12,000 点起</span><span class="sb-p">HK$64<small>/席</small></span><span class="sb-c">规模再大价格再谈</span></div>
+        <div class="sb-top"><span class="sb-n">20 席起</span><span class="sb-p">HK$64<small>/席</small></span><span class="sb-c">规模再大价格再谈</span></div>
       </div>
       <div class="hub">      <div class="hub">
         <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><span class="hmore">+16</span></div>
-        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活</span><span class="who-i"></span><span>共用一支团队</span></div>
+        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活 · 共用一支团队</span></div>
         <div class="hub-stem2"></div>
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
@@ -768,7 +772,8 @@ body{
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
           <div class="hub-more">+</div>
         </div>
-        <div class="hub-cap">专长角色<b>随时可增聘，不按档位限量</b><br>主管与专长员工的协作方式，每一档完全一致</div>
+        <div class="hub-cap">专长角色<b>随时可增聘，不限量</b></div>
+      </div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -781,9 +786,8 @@ body{
       <div class="grp">
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span>每席是一个真人，<b>各自能独立给主管派活</b></span></li>
-          <li><i></i><span>层级授权：owner / manager / member <b>三级权限</b></span></li>
-          <li><i></i><span>席位可增购，<b>每加 1 席 +HK$75</b>、当月 +800 点</span></li>
+          <li><i></i><span>每席是真人，<b>各自派活</b></span></li>
+          <li><i></i><span>owner / manager / member <b>三级权限</b></span></li>
           <li><i></i><span><b>工作空间不限</b>，按部门与项目自由划分</span></li>
           <li><i></i><span>定时任务不限数量</span></li>
           <li><i></i><span>发票、合同与采购材料出具</span></li>
@@ -846,6 +850,14 @@ body{
   <div class="hint">切换上方档位查看对应价格。<b>四档的 AI 团队完全一样</b>——同一个团队主管、同样主动调动、同样先讨论再总结，一分钱不多收。档位之间差的只是<b>你能用多少</b>（点数与每日上限）和<b>你能组织多大</b>（真人席位与工作空间）。</div>
 
   <!-- buy -->
+  <div id="buysSection" style="scroll-margin-top:16px">
+  <div class="tabs tabs-buy">
+    <span class="tabs-label">为哪一档选买法</span>
+    <button class="tab on" data-t="0">体验版</button>
+    <button class="tab" data-t="1">标准版</button>
+    <button class="tab" data-t="2">团队版</button>
+    <button class="tab" data-t="3">企业版</button>
+  </div>
   <div class="buys" id="buysPaid">
     <div class="buy on" data-b="0">
       <span class="disc">省 30%</span>
@@ -881,6 +893,7 @@ body{
     </div>
   </div>
   <div class="buys-note">查看<a href="#">套餐对比</a> ›&nbsp;&nbsp;或&nbsp;&nbsp;<a href="#">购买点数</a> ›</div>
+  </div>
 
   <!-- 席位增购 -->
   <div class="seatadd">
@@ -1039,6 +1052,7 @@ function render(t){
   curTier = t;
   var d = DATA[t];
   document.querySelectorAll('.tier').forEach(function(el,i){ el.classList.toggle('on', i==t); });
+  document.querySelectorAll('.tab').forEach(function(el,i){ el.classList.toggle('on', i==t); });
 
   var paid = document.getElementById('buysPaid');
   var free = document.getElementById('buysFree');
@@ -1065,6 +1079,14 @@ function render(t){
   selectBuy(0);
 }
 
+/* 滚动到该档位的买法区，并选中它 */
+function jumpTo(t){
+  var d = DATA[t];
+  var target = document.getElementById('buysSection');
+  if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  render(t);
+}
+
 function selectBuy(i){
   var d = DATA[curTier];
   if(!d.buys[i]) return;
@@ -1075,17 +1097,12 @@ function selectBuy(i){
 
 document.querySelectorAll('.tab').forEach(function(b){
   b.addEventListener('click', function(){
-    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
-    b.classList.add('on');
-    render(parseInt(b.dataset.t,10));
+    jumpTo(parseInt(b.dataset.t,10));
   });
 });
 document.querySelectorAll('.tier').forEach(function(el){
   el.addEventListener('click', function(){
-    var i = parseInt(el.dataset.tier,10);
-    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
-    document.querySelectorAll('.tab')[i].classList.add('on');
-    render(i);
+    jumpTo(parseInt(el.dataset.tier,10));
   });
 });
 document.querySelectorAll('#buysPaid .buy').forEach(function(b){
