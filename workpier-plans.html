@@ -82,8 +82,24 @@ body{
 
 /* 主管枢纽：主管是调度中心，专长员工在其下受命 */
 .hub{background:var(--bg3);border-radius:var(--r-s);padding:11px 9px 10px;margin-bottom:13px;border:1px solid var(--line)}
+/* AI 团队虚线框：主管与专长角色同框，与真人席位分区 */
+.hub-team{
+  position:relative;margin-top:9px;padding:12px 8px 9px;
+  border:1px dashed var(--indigo-l);border-radius:10px;background:var(--bg3);
+}
+.hub-team::before{
+  content:"AI 团队";position:absolute;top:-7px;left:9px;
+  background:var(--bg3);padding:0 5px;font-size:9px;font-weight:700;
+  color:var(--indigo);letter-spacing:.04em;
+}
 .hub-lead{display:flex;flex-direction:column;align-items:center;gap:5px}
-.hub-lead .px{width:29px;height:36px}
+.hub-lead .hl-px{position:relative;display:block;width:29px;height:36px;font-size:0;color:inherit}
+.hub-lead .hl-px .px{width:29px;height:36px}
+.ai-badge{
+  position:absolute;top:-4px;right:-10px;font-size:8.5px;font-weight:700;line-height:1;
+  color:#fff;background:var(--purple);padding:2px 4px;border-radius:4px;border:1px solid #fff;
+  font-style:normal;
+}
 .hub-lead b{font-size:11.5px;color:var(--ink);font-weight:600}
 .hub-lead span{font-size:9.5px;color:var(--muted)}
 .hub-stem{width:1.5px;height:8px;background:var(--indigo-l);margin:0 auto}
@@ -174,10 +190,15 @@ body{
 .fd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .fd{border:1px solid var(--line);border-radius:var(--r-s);padding:18px 17px 16px;background:var(--bg2)}
 .fd-n{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(--indigo);margin-bottom:11px}
-.fd-tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--amber-s);color:var(--amber);border:1px solid var(--amber-l);margin-left:8px;vertical-align:2px}
+.fd-tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--amber-s);color:var(--amber);border:1px solid var(--amber-l);margin-left:8px;vertical-align:2px;white-space:nowrap}
 .fd-b{font-size:14.5px;font-weight:600;margin-bottom:7px;letter-spacing:-.01em}
 .fd-d{font-size:12.5px;color:var(--muted);line-height:1.7}
 .fd-d b{color:var(--ink2);font-weight:600}
+.fd-note{
+  margin-top:8px;font-size:11.5px;line-height:1.6;color:var(--muted);
+  border-left:2px solid var(--indigo-l);padding-left:9px;
+}
+.fd-note b{color:var(--ink2);font-weight:600;white-space:nowrap}
 .fd-vis{margin-top:13px;padding-top:13px;border-top:1px dashed var(--line2);min-height:172px;display:flex;flex-direction:column;justify-content:flex-start}
 .fd-vis svg{flex:1}
 .fd-vis svg{display:block;width:100%;height:auto}
@@ -257,6 +278,10 @@ body{
 @media(max-width:1080px){
   .tiers{grid-template-columns:repeat(2,1fr)}
   .special{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .fd-grid{grid-template-columns:1fr}
+  .fd-vis{min-height:0}
 }
 @media(max-width:720px){
   .tiers{grid-template-columns:1fr}
@@ -484,8 +509,9 @@ body{
       <!-- 特色一：主管主动调动，内部讨论后总结 -->
       <div class="fd">
         <div class="fd-n">1</div>
-        <div class="fd-b">主管主动调度，汇总后统一交付</div>
-        <div class="fd-d">主管自主判定分工，完成后逐项核验，缺项<b>退回补充</b>，最终汇总为一份完整交付。</div>
+        <div class="fd-b">AI 主管主动调度，汇总后统一交付</div>
+        <div class="fd-d">AI 主管自主判定分工，完成后逐项核验，缺项<b>退回补充</b>，最终汇总为一份完整交付。</div>
+        <div class="fd-note">「AI 主管」是平台内置的 AI 角色，由平台提供，<b>不占用真人席位</b>。</div>
         <div class="fd-vis">
           <svg viewBox="0 0 260 132" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -494,7 +520,7 @@ body{
               </marker>
             </defs>
             <rect x="88" y="4" width="84" height="26" rx="7" fill="#F3EEFE" stroke="#7A5AF8" stroke-width="0.5"/>
-            <text x="130" y="17" font-family="sans-serif" font-size="10" font-weight="600" fill="#3C3489" text-anchor="middle" dominant-baseline="central">团队主管</text>
+            <text x="130" y="17" font-family="sans-serif" font-size="10" font-weight="600" fill="#3C3489" text-anchor="middle" dominant-baseline="central">AI 主管</text>
             <path d="M130 30 L130 44" stroke="#8B90C4" stroke-width="1" marker-end="url(#fdA)"/>
             <rect x="16" y="48" width="66" height="24" rx="6" fill="#fff" stroke="#D4D6E6" stroke-width="0.5"/>
             <text x="49" y="60" font-family="sans-serif" font-size="9" fill="#3A3F6B" text-anchor="middle" dominant-baseline="central">研究员</text>
@@ -507,7 +533,7 @@ body{
             <path d="M211 72 L211 84 L130 84" stroke="#C4C7DE" stroke-width="1" fill="none"/>
             <path d="M130 84 L130 96" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdA)"/>
             <rect x="52" y="100" width="156" height="26" rx="7" fill="#EEEFFE" stroke="#4B5CE8" stroke-width="0.5"/>
-            <text x="130" y="113" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#26215C" text-anchor="middle" dominant-baseline="central">主管核对 · 署名谁做的</text>
+            <text x="130" y="113" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#26215C" text-anchor="middle" dominant-baseline="central">AI 主管核对 · 署名谁做的</text>
           </svg>
         </div>
       </div>
@@ -539,7 +565,7 @@ body{
       <div class="fd">
         <div class="fd-n">3</div>
         <div class="fd-b">AI 参与讨论，结论转为任务<span class="fd-tag">即将上线</span></div>
-        <div class="fd-d">团队讨论中可<b>引入 AI 员工共同参与</b>，结论<b>一键转为任务</b>并交由主管执行，无需二次转录。</div>
+        <div class="fd-d">团队讨论中可<b>引入 AI 员工共同参与</b>，结论<b>一键转为任务</b>并交由 <b>AI 主管</b> 执行，无需二次转录。</div>
         <div class="fd-vis">
           <svg viewBox="0 0 260 150" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -570,7 +596,7 @@ body{
 
   <div class="tiers-h">
     <b>四档并列对照</b>
-    <span>AI 团队构成、主管调度机制与成果形式完全一致；档位差异仅体现于<b>用量</b>与<b>组织规模</b></span>
+    <span>AI 团队构成、AI 主管调度机制与成果形式完全一致；档位差异仅体现于<b>用量</b>与<b>组织规模</b></span>
   </div>
   <div class="tiers">
     <!-- 体验版 -->
@@ -580,13 +606,17 @@ body{
       <div class="seatbar">
         <div class="sb-top"><span class="sb-n">1 席</span><span class="sb-p">HK$0<small>/席</small></span><span class="sb-c">后续可增购</span></div>
       </div>
-      <div class="hub">      <div class="hub">
+      <div class="hub">
         <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg></div>
         <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>独立发起 · 共用一支 AI 团队</span></div>
         <div class="hub-stem2"></div>
+        <div class="hub-team">
         <div class="hub-lead">
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
-          <b>团队主管</b>
+          <div class="hl-px">
+            <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+            <i class="ai-badge">AI</i>
+          </div>
+          <b>AI 主管</b>
           <span>各档位均内置 · 不可停用</span>
         </div>
         <div class="hub-stem"></div>
@@ -599,19 +629,19 @@ body{
           <div class="hub-more">+</div>
         </div>
         <div class="hub-cap">专长角色<b>随时可增聘，不限名额</b></div>
-      </div>
+        </div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
         <ul class="flist">
           <li><i></i><span>成果形式<b>不限档位</b>：Word / Excel / PDF</span></li>
-          <li><i></i><span>主管自行处理常规工作，专业部分交由专长员工承接</span></li>
+          <li><i></i><span>AI 主管自行处理常规工作，专业部分交由专长员工承接</span></li>
         </ul>
       </div>
       <div class="grp">
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span>1 个真人席位，<b>独立向主管发起任务</b></span></li>
+          <li><i></i><span>1 个真人席位，<b>独立向 AI 主管发起任务</b></span></li>
           <li><i></i><span>1 个工作空间，成果仅本人可见</span></li>
           <li><i></i><span>定时任务 1 个</span></li>
           <li><i></i><span>2 个连接器（Drive / Notion）</span></li>
@@ -643,13 +673,17 @@ body{
       <div class="seatbar">
         <div class="sb-top"><span class="sb-n">3 席</span><span class="sb-p">HK$52.67<small>/席</small></span><span class="sb-c">比 CantoNotes 低 30%</span></div>
       </div>
-      <div class="hub">      <div class="hub">
+      <div class="hub">
         <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg></div>
         <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>独立发起 · 共用一支 AI 团队</span></div>
         <div class="hub-stem2"></div>
+        <div class="hub-team">
         <div class="hub-lead">
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
-          <b>团队主管</b>
+          <div class="hl-px">
+            <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+            <i class="ai-badge">AI</i>
+          </div>
+          <b>AI 主管</b>
           <span>各档位均内置 · 不可停用</span>
         </div>
         <div class="hub-stem"></div>
@@ -662,13 +696,13 @@ body{
           <div class="hub-more">+</div>
         </div>
         <div class="hub-cap">专长角色<b>随时可增聘，不限名额</b></div>
-      </div>
+        </div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
         <ul class="flist">
           <li><i></i><span>成果形式<b>不限档位</b>：Word / Excel / PPT / PDF</span></li>
-          <li><i></i><span>主管按专长分工，成果<b>统一汇总</b>后交付</span></li>
+          <li><i></i><span>AI 主管按专长分工，成果<b>统一汇总</b>后交付</span></li>
           <li><i></i><span>成果版本可追溯，支持逐版定稿</span></li>
         </ul>
       </div>
@@ -700,13 +734,17 @@ body{
       <div class="seatbar">
         <div class="sb-top"><span class="sb-n">5 席</span><span class="sb-p">HK$73.60<small>/席</small></span><span class="sb-c">与 CantoNotes 同价</span></div>
       </div>
-      <div class="hub">      <div class="hub">
+      <div class="hub">
         <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><span class="hmore">+1</span></div>
         <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>独立发起 · 共用一支 AI 团队</span></div>
         <div class="hub-stem2"></div>
+        <div class="hub-team">
         <div class="hub-lead">
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
-          <b>团队主管</b>
+          <div class="hl-px">
+            <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+            <i class="ai-badge">AI</i>
+          </div>
+          <b>AI 主管</b>
           <span>各档位均内置 · 不可停用</span>
         </div>
         <div class="hub-stem"></div>
@@ -719,14 +757,14 @@ body{
           <div class="hub-more">+</div>
         </div>
         <div class="hub-cap">专长角色<b>随时可增聘，不限名额</b></div>
-      </div>
+        </div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
         <ul class="flist">
           <li><i></i><span>成果形式<b>不限档位</b>：Word / Excel / PPT / PDF</span></li>
           <li><i></i><span>图片与视频成果<b>随版本升级提供</b></span></li>
-          <li><i></i><span>主管调度全部专长角色，<b>并行推进</b></span></li>
+          <li><i></i><span>AI 主管调度全部专长角色，<b>并行推进</b></span></li>
           <li><i></i><span>优先队列，高峰期不排队</span></li>
         </ul>
       </div>
@@ -759,13 +797,17 @@ body{
       <div class="seatbar">
         <div class="sb-top"><span class="sb-n">20 席起</span><span class="sb-p">HK$64<small>/席</small></span><span class="sb-c">规模再大价格再谈</span></div>
       </div>
-      <div class="hub">      <div class="hub">
+      <div class="hub">
         <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><span class="hmore">+16</span></div>
         <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>独立发起 · 共用一支 AI 团队</span></div>
         <div class="hub-stem2"></div>
+        <div class="hub-team">
         <div class="hub-lead">
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
-          <b>团队主管</b>
+          <div class="hl-px">
+            <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+            <i class="ai-badge">AI</i>
+          </div>
+          <b>AI 主管</b>
           <span>各档位均内置 · 不可停用</span>
         </div>
         <div class="hub-stem"></div>
@@ -778,7 +820,7 @@ body{
           <div class="hub-more">+</div>
         </div>
         <div class="hub-cap">专长角色<b>随时可增聘，不限名额</b></div>
-      </div>
+        </div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -793,7 +835,7 @@ body{
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
           <li><i></i><span>每席为独立真人，<b>各自发起任务</b></span></li>
-          <li><i></i><span>owner / manager / member <b>三级权限</b></span></li>
+          <li><i></i><span>真人权限 owner / manager / member <b>三级</b></span></li>
           <li><i></i><span><b>工作空间不限</b>，按部门与项目自由划分</span></li>
           <li><i></i><span>定时任务不限数量</span></li>
           <li><i></i><span>发票、合同与采购材料出具</span></li>
@@ -853,7 +895,7 @@ body{
     </div>
   </div>
 
-  <div class="hint">切换上方档位查看对应价格。<b>四档的 AI 团队完全一样</b>——同一个团队主管、同样主动调动、同样先讨论再总结，一分钱不多收。档位之间差的只是<b>你能用多少</b>（点数与每日上限）和<b>你能组织多大</b>（真人席位与工作空间）。</div>
+  <div class="hint">切换上方档位查看对应价格。<b>四档的 AI 团队完全一样</b>——同一个 AI 主管、同样主动调动、同样先讨论再总结，一分钱不多收。档位之间差的只是<b>你能用多少</b>（点数与每日上限）和<b>你能组织多大</b>（真人席位与工作空间）。</div>
 
   <!-- buy -->
   <div id="buysSection" style="scroll-margin-top:16px">
@@ -907,7 +949,7 @@ body{
       <b>席位可以自订，按席位增购</b>
       <span>所有档位同一套规则 · 当月生效</span>
     </div>
-    <p class="seatadd-note">真人席位<b>不锁死在档位里</b>。人多了就加席，AI 团队、主管调度、工作空间结构一样都不少用——多一席只是多一个人能用同一支团队。</p>
+    <p class="seatadd-note">真人席位<b>不锁死在档位里</b>。人多了就加席，AI 团队、AI 主管调度、工作空间结构一样都不少用——多一席只是多一个人能用同一支团队。</p>
     <div class="sa-grid">
       <div class="sa">
         <div class="sa-t">加 1 席</div>
