@@ -72,18 +72,6 @@ body{
 .seatbar .sb-p{font-size:17px;font-weight:700;color:var(--indigo);letter-spacing:-.01em}
 .seatbar .sb-p small{font-size:11px;font-weight:500;color:var(--muted)}
 .seatbar .sb-c{margin-left:auto;font-size:11px;color:var(--muted)}
-.sb-humans{display:flex;align-items:center;gap:0;margin-top:10px;padding-top:10px;border-top:1px solid rgba(75,92,232,.18)}
-.sb-humans .hs{width:19px;height:19px;border-radius:50%;background:var(--teal);border:1.5px solid #fff;display:grid;place-items:center;font-size:9px;color:#fff;font-weight:600;margin-right:-5px;position:relative}
-.sb-humans .hs.s2{background:var(--indigo)}
-.sb-humans .hs.s3{background:var(--purple)}
-.sb-humans .hs.s4{background:var(--amber)}
-.sb-humans .hs.more{background:#fff;color:var(--muted);border:1px dashed var(--line2);font-size:8.5px;margin-right:0}
-.sb-humans .hs.more{position:relative;z-index:0}
-.sb-humans .hs:last-child{z-index:1}
-.sb-arrow{width:22px;height:1px;background:var(--indigo-l);margin:0 9px;position:relative;flex:none}
-.sb-arrow::after{content:"";position:absolute;right:0;top:-2.5px;border-left:4px solid var(--indigo-l);border-top:3px solid transparent;border-bottom:3px solid transparent}
-.sb-cap{font-size:10.5px;color:var(--muted);margin-left:0;line-height:1.4}
-.sb-cap b{color:var(--indigo);font-weight:600}
 
 /* 主管枢纽：主管是调度中心，专长员工在其下受命 */
 .hub{background:var(--bg3);border-radius:var(--r-s);padding:14px 13px 12px;margin-bottom:18px;border:1px solid var(--line)}
@@ -92,6 +80,7 @@ body{
 .hub-lead b{font-size:12.5px;color:var(--ink);font-weight:600}
 .hub-lead span{font-size:10.5px;color:var(--muted)}
 .hub-stem{width:1.5px;height:12px;background:var(--indigo-l);margin:0 auto}
+.hub-stem2{width:1.5px;height:10px;background:var(--teal-l,var(--indigo-l));margin:0 auto;opacity:.55}
 .hub-bus{position:relative;height:1.5px;background:var(--indigo-l);margin:0 16px}
 .hub-row{display:flex;gap:3px;flex-wrap:nowrap;justify-content:center;align-items:flex-end;margin-top:-1px}
 .hub-row .px{width:26px;height:33px}
@@ -99,6 +88,13 @@ body{
 .hub-more{width:26px;height:33px;border-radius:5px;background:#fff;border:1px dashed var(--line2);display:grid;place-items:center;font-size:10px;color:var(--muted);font-weight:600;flex:none}
 .hub-cap{font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.55;text-align:center}
 .hub-cap b{color:var(--ink2);font-weight:600}
+.hub-humans{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin-bottom:2px}
+.hub-humans .hpx{width:22px;height:28px;display:block;flex:none;image-rendering:pixelated}
+.hub-humans .hpx.dim{opacity:.35;filter:grayscale(.7)}
+.hub-humans .hmore{width:22px;height:28px;border-radius:5px;background:#fff;border:1px dashed var(--line2);display:grid;place-items:center;font-size:8.5px;color:var(--muted);font-weight:700;flex:none}
+.hub-who{display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:4px}
+.hub-who span{font-size:10.5px;color:var(--muted);white-space:nowrap}
+.hub-who .who-i{width:3px;height:3px;border-radius:50%;background:var(--indigo-l)}
 
 /* 权益分组 */
 .grp{margin-bottom:15px}
@@ -417,6 +413,36 @@ body{
     <rect x="11" y="35" width="5.5" height="2.4" rx="1.2" fill="#633806"/>
     <rect x="17" y="35" width="5.5" height="2.4" rx="1.2" fill="#633806"/>
   </symbol>
+  <symbol id="px-human-a" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="12" y="10" width="8" height="9" rx="3" fill="#E8C4A0"/>
+    <rect x="11" y="5" width="10" height="6" rx="2.5" fill="#2B2647"/>
+    <rect x="9" y="8" width="14" height="3" rx="1.5" fill="#2B2647"/>
+    <rect x="13" y="13" width="2" height="2" rx="1" fill="#3A2E1E"/>
+    <rect x="17" y="13" width="2" height="2" rx="1" fill="#3A2E1E"/>
+    <rect x="11" y="19" width="10" height="13" rx="2.5" fill="#0F6E56"/>
+    <rect x="8" y="20" width="3.4" height="9" rx="1.6" fill="#0F6E56"/>
+    <rect x="21" y="20" width="3.4" height="9" rx="1.6" fill="#0F6E56"/>
+    <rect x="8" y="27" width="3.4" height="2.6" rx="1.2" fill="#E8C4A0"/>
+    <rect x="21" y="27" width="3.4" height="2.6" rx="1.2" fill="#E8C4A0"/>
+    <rect x="12" y="32" width="3.6" height="7" rx="1.4" fill="#1F2C24"/>
+    <rect x="16.4" y="32" width="3.6" height="7" rx="1.4" fill="#1F2C24"/>
+  </symbol>
+  <symbol id="px-human-b" viewBox="0 0 32 40">
+    <ellipse cx="16" cy="37" rx="9" ry="3" fill="#000" opacity=".1"/>
+    <rect x="12" y="10" width="8" height="9" rx="3" fill="#F0D3B4"/>
+    <rect x="10" y="4" width="12" height="7" rx="3" fill="#4A3560"/>
+    <rect x="10" y="9" width="12" height="3" rx="1.5" fill="#4A3560"/>
+    <rect x="13" y="13" width="2" height="2" rx="1" fill="#3A2E1E"/>
+    <rect x="17" y="13" width="2" height="2" rx="1" fill="#3A2E1E"/>
+    <rect x="11" y="19" width="10" height="13" rx="2.5" fill="#4B5CE8"/>
+    <rect x="8" y="20" width="3.4" height="9" rx="1.6" fill="#4B5CE8"/>
+    <rect x="21" y="20" width="3.4" height="9" rx="1.6" fill="#4B5CE8"/>
+    <rect x="8" y="27" width="3.4" height="2.6" rx="1.2" fill="#F0D3B4"/>
+    <rect x="21" y="27" width="3.4" height="2.6" rx="1.2" fill="#F0D3B4"/>
+    <rect x="12" y="32" width="3.6" height="7" rx="1.4" fill="#2A3570"/>
+    <rect x="16.4" y="32" width="3.6" height="7" rx="1.4" fill="#2A3570"/>
+  </symbol>
 </defs>
 </svg>
 
@@ -550,13 +576,15 @@ body{
       <div class="one">先跑通一件事</div>
       <div class="seatbar">
         <div class="sb-top"><span class="sb-n">1 席</span><span class="sb-p">HK$0<small>/席</small></span><span class="sb-c">后续可增购</span></div>
-<div class="sb-humans"><span class="hs">陈</span><span class="sb-arrow"></span><span class="sb-cap">每人一个身份，<b>共用一支 AI 团队</b></span></div>
       </div>
-      <div class="hub">
+      <div class="hub">      <div class="hub">
+        <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg></div>
+        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活</span><span class="who-i"></span><span>共用一支团队</span></div>
+        <div class="hub-stem2"></div>
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
           <b>团队主管</b>
-          <span>内置 · 永不可暂停</span>
+          <span>每个套餐都有 · 不会消失</span>
         </div>
         <div class="hub-stem"></div>
         <div class="hub-bus"></div>
@@ -603,13 +631,15 @@ body{
       <div class="one">一个人，一支 AI 团队</div>
       <div class="seatbar">
         <div class="sb-top"><span class="sb-n">3 席 · 含 2,000 点</span><span class="sb-p">HK$52.67<small>/席</small></span><span class="sb-c">比 CantoNotes 低 30%</span></div>
-<div class="sb-humans"><span class="hs">陈</span><span class="hs s2">李</span><span class="hs s3">王</span><span class="sb-arrow"></span><span class="sb-cap">每人一个身份，<b>共用一支 AI 团队</b></span></div>
       </div>
-      <div class="hub">
+      <div class="hub">      <div class="hub">
+        <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg></div>
+        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活</span><span class="who-i"></span><span>共用一支团队</span></div>
+        <div class="hub-stem2"></div>
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
           <b>团队主管</b>
-          <span>内置 · 永不可暂停</span>
+          <span>每个套餐都有 · 不会消失</span>
         </div>
         <div class="hub-stem"></div>
         <div class="hub-bus"></div>
@@ -659,13 +689,15 @@ body{
       <div class="one">一整个部门共用一支 AI 团队</div>
       <div class="seatbar">
         <div class="sb-top"><span class="sb-n">5 席 · 含 4,000 点</span><span class="sb-p">HK$73.60<small>/席</small></span><span class="sb-c">与 CantoNotes 同价</span></div>
-<div class="sb-humans"><span class="hs">陈</span><span class="hs s2">李</span><span class="hs s3">王</span><span class="hs s4">周</span><span class="hs more">+1</span><span class="sb-arrow"></span><span class="sb-cap">每人一个身份，<b>共用一支 AI 团队</b></span></div>
       </div>
-      <div class="hub">
+      <div class="hub">      <div class="hub">
+        <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><span class="hmore">+1</span></div>
+        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活</span><span class="who-i"></span><span>共用一支团队</span></div>
+        <div class="hub-stem2"></div>
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
           <b>团队主管</b>
-          <span>内置 · 永不可暂停</span>
+          <span>每个套餐都有 · 不会消失</span>
         </div>
         <div class="hub-stem"></div>
         <div class="hub-bus"></div>
@@ -717,13 +749,15 @@ body{
       <div class="one">整间公司，一支 AI 部门</div>
       <div class="seatbar">
         <div class="sb-top"><span class="sb-n">20 席起 · 含 12,000 点起</span><span class="sb-p">HK$64<small>/席</small></span><span class="sb-c">规模再大价格再谈</span></div>
-<div class="sb-humans"><span class="hs">陈</span><span class="hs s2">李</span><span class="hs s3">王</span><span class="hs s4">周</span><span class="hs more">+16</span><span class="sb-arrow"></span><span class="sb-cap">每人一个身份，<b>共用一支 AI 团队</b></span></div>
       </div>
-      <div class="hub">
+      <div class="hub">      <div class="hub">
+        <div class="hub-humans"><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-a"/></svg><svg class="hpx" viewBox="0 0 32 40"><use href="#px-human-b"/></svg><span class="hmore">+16</span></div>
+        <div class="hub-who"><span>真人席位</span><span class="who-i"></span><span>各自派活</span><span class="who-i"></span><span>共用一支团队</span></div>
+        <div class="hub-stem2"></div>
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
           <b>团队主管</b>
-          <span>内置 · 永不可暂停</span>
+          <span>每个套餐都有 · 不会消失</span>
         </div>
         <div class="hub-stem"></div>
         <div class="hub-bus"></div>
