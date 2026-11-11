@@ -141,6 +141,7 @@ body{
 .sp p{font-size:13.5px;color:var(--muted);line-height:1.7}
 .sp .px-strip{display:flex;gap:5px;margin-top:14px;align-items:flex-end}
 .sp .px-strip .px{width:28px;height:35px}
+.px-cap{font-size:11.5px;color:var(--muted);margin-left:8px;align-self:flex-end;padding-bottom:6px}
 .sp-2 .ic{background:var(--indigo-s);border-color:var(--indigo-l);color:var(--indigo)}
 .sp-2 .tree{margin-top:14px;display:flex;flex-direction:column;gap:7px}
 .tr{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink2)}
@@ -154,7 +155,6 @@ body{
 .fd-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
 .fd-h b{font-size:17px;letter-spacing:-.01em}
 .fd-h span{font-size:12.5px;color:var(--muted)}
-.fd-note{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px;max-width:720px}
 .fd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .fd{border:1px solid var(--line);border-radius:var(--r-s);padding:18px 17px 16px;background:var(--bg2)}
 .fd-n{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(--indigo);margin-bottom:11px}
@@ -162,7 +162,8 @@ body{
 .fd-b{font-size:14.5px;font-weight:600;margin-bottom:7px;letter-spacing:-.01em}
 .fd-d{font-size:12.5px;color:var(--muted);line-height:1.7}
 .fd-d b{color:var(--ink2);font-weight:600}
-.fd-vis{margin-top:13px;padding-top:13px;border-top:1px dashed var(--line2)}
+.fd-vis{margin-top:13px;padding-top:13px;border-top:1px dashed var(--line2);min-height:172px;display:flex;flex-direction:column;justify-content:flex-start}
+.fd-vis svg{flex:1}
 .fd-vis svg{display:block;width:100%;height:auto}
 
 /* 组织层级树 */
@@ -431,16 +432,14 @@ body{
   <div class="foundation">
     <div class="fd-h">
       <b>每一个套餐，都包含这三件事</b>
-      <span>它们不是高档位的特权，是 WorkPier 的地基 · 所有档位完全一致</span>
+      <span>所有档位完全一致，不做拆分</span>
     </div>
-    <p class="fd-note">下面三件事在任何一档里都完整可用，不做拆分、不按档位限量。你付费买的是<b>用量</b>和<b>组织规模</b>，不是把产品拆开卖。</p>
-
     <div class="fd-grid">
       <!-- 特色一：主管主动调动，内部讨论后总结 -->
       <div class="fd">
         <div class="fd-n">1</div>
         <div class="fd-b">主管主动调动，先讨论再总结</div>
-        <div class="fd-d">你交代一件事，<b>团队主管自己判断</b>哪部分该自己做、哪部分该交给谁。它把活派给专长 AI 员工，等他们做完<b>回过头来逐一对照你的要求检查</b>，缺什么就退回让谁补上，最后<b>由主管自己写出一份完整答复</b>，并说明哪部分是谁做的。</div>
+        <div class="fd-d">主管自己判断分工，做完逐项核对，缺什么<b>退回让谁补上</b>，最后给你一份完整答复。</div>
         <div class="fd-vis">
           <svg viewBox="0 0 260 132" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -461,8 +460,8 @@ body{
             <path d="M130 72 L130 84" stroke="#C4C7DE" stroke-width="1" fill="none"/>
             <path d="M211 72 L211 84 L130 84" stroke="#C4C7DE" stroke-width="1" fill="none"/>
             <path d="M130 84 L130 96" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdA)"/>
-            <rect x="60" y="100" width="140" height="26" rx="7" fill="#EEEFFE" stroke="#4B5CE8" stroke-width="0.5"/>
-            <text x="130" y="113" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#26215C" text-anchor="middle" dominant-baseline="central">主管综合成一份答复</text>
+            <rect x="52" y="100" width="156" height="26" rx="7" fill="#EEEFFE" stroke="#4B5CE8" stroke-width="0.5"/>
+            <text x="130" y="113" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#26215C" text-anchor="middle" dominant-baseline="central">主管核对 · 署名谁做的</text>
           </svg>
         </div>
       </div>
@@ -471,7 +470,7 @@ body{
       <div class="fd">
         <div class="fd-n">2</div>
         <div class="fd-b">一套组织结构，全公司共用</div>
-        <div class="fd-d">工作空间按<b>部门与项目划分</b>，权限分级到角色。同一公司的<b>多个真人席位共用</b>一支 AI 团队和同一个额度池——财务部、市场部各用一个工作空间，互不串权，主管照常统一调度。跨部门的成果可复用而不泄露。</div>
+        <div class="fd-d">工作空间按<b>部门与项目划分</b>，权限分级到角色。<b>多个真人席位共用</b>一支 AI 团队和一个额度池，互不串权。</div>
         <div class="fd-vis">
           <div class="org">
             <div class="ol"><span class="lv p">总</span><span class="nm">总部</span><span class="ct">owner</span></div>
@@ -485,7 +484,7 @@ body{
             <span class="seat s3">王</span>
             <span class="seat s4">周</span>
             <span class="seat more">+</span>
-            <span class="seats-cap">真人席位共用同一支 AI 团队</span>
+            <span class="seats-cap">共用同一支 AI 团队与额度池</span>
           </div>
         </div>
       </div>
@@ -494,29 +493,29 @@ body{
       <div class="fd">
         <div class="fd-n">3</div>
         <div class="fd-b">真人讨论带 AI，结论直接变任务<span class="fd-tag">即将上线</span></div>
-        <div class="fd-d">同事之间发起讨论，<b>把 AI 员工也拉进来一起想</b>。讨论定下来的结论，<b>一键生成任务</b>，再交回团队主管去执行——从想到做，中间不用再抄一遍。</div>
+        <div class="fd-d">同事讨论时<b>把 AI 员工也拉进来</b>，结论<b>一键生成任务</b>交回主管执行，中间不用再抄一遍。</div>
         <div class="fd-vis">
-          <svg viewBox="0 0 260 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 260 150" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <marker id="fdB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
                 <path d="M2 1L8 5L2 9" fill="none" stroke="#8B90C4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
               </marker>
             </defs>
-            <circle cx="42" cy="20" r="13" fill="#0F6E56"/>
-            <text x="42" y="20" font-family="sans-serif" font-size="10" fill="#fff" text-anchor="middle" dominant-baseline="central">陈</text>
-            <circle cx="76" cy="20" r="13" fill="#4B5CE8"/>
-            <text x="76" y="20" font-family="sans-serif" font-size="10" fill="#fff" text-anchor="middle" dominant-baseline="central">李</text>
-            <circle cx="110" cy="20" r="13" fill="#7A5AF8"/>
-            <text x="110" y="20" font-family="sans-serif" font-size="9" fill="#fff" text-anchor="middle" dominant-baseline="central">AI</text>
-            <text x="132" y="20" font-family="sans-serif" font-size="9" fill="#6E7396" dominant-baseline="central">一起讨论</text>
-            <path d="M59 34 L59 48 L130 48" stroke="#C4C7DE" stroke-width="1" fill="none"/>
-            <path d="M93 34 L93 48 L130 48" stroke="#C4C7DE" stroke-width="1" fill="none"/>
-            <path d="M130 48 L130 60" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdB)"/>
-            <rect x="52" y="64" width="156" height="26" rx="7" fill="#E4F6F0" stroke="#0F6E56" stroke-width="0.5"/>
-            <text x="130" y="77" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#04342C" text-anchor="middle" dominant-baseline="central">讨论结论</text>
-            <path d="M130 90 L130 102" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdB)"/>
-            <rect x="72" y="106" width="116" height="24" rx="7" fill="#EEEFFE" stroke="#4B5CE8" stroke-width="0.5"/>
-            <text x="130" y="118" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#26215C" text-anchor="middle" dominant-baseline="central">一键生成任务</text>
+            <circle cx="42" cy="22" r="13" fill="#0F6E56"/>
+            <text x="42" y="22" font-family="sans-serif" font-size="10" fill="#fff" text-anchor="middle" dominant-baseline="central">陈</text>
+            <circle cx="76" cy="22" r="13" fill="#4B5CE8"/>
+            <text x="76" y="22" font-family="sans-serif" font-size="10" fill="#fff" text-anchor="middle" dominant-baseline="central">李</text>
+            <circle cx="110" cy="22" r="13" fill="#7A5AF8"/>
+            <text x="110" y="22" font-family="sans-serif" font-size="9" fill="#fff" text-anchor="middle" dominant-baseline="central">AI</text>
+            <text x="132" y="22" font-family="sans-serif" font-size="9" fill="#6E7396" dominant-baseline="central">一起讨论</text>
+            <path d="M59 36 L59 54 L130 54" stroke="#C4C7DE" stroke-width="1" fill="none"/>
+            <path d="M93 36 L93 54 L130 54" stroke="#C4C7DE" stroke-width="1" fill="none"/>
+            <path d="M130 54 L130 66" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdB)"/>
+            <rect x="52" y="70" width="156" height="28" rx="7" fill="#E4F6F0" stroke="#0F6E56" stroke-width="0.5"/>
+            <text x="130" y="84" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#04342C" text-anchor="middle" dominant-baseline="central">讨论结论</text>
+            <path d="M130 98 L130 110" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdB)"/>
+            <rect x="66" y="114" width="128" height="26" rx="7" fill="#EEEFFE" stroke="#4B5CE8" stroke-width="0.5"/>
+            <text x="130" y="127" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#26215C" text-anchor="middle" dominant-baseline="central">一键生成任务</text>
           </svg>
         </div>
       </div>
@@ -752,9 +751,10 @@ body{
         </div>
         <b>像素员工档案办公室</b>
       </div>
-      <p>WorkPier 独有。每一位 AI 员工的桌面都能查：今天完成了什么、哪一件失败了、哪一件正等着你拍板。人和 AI 之间发生了什么，不用猜。</p>
+      <p>WorkPier 独有。每位 AI 员工的桌面都能查：<b>今天做完了什么、哪件失败了、哪件正等你拍板</b>。</p>
       <div class="px-strip">
         <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
+        <span class="px-cap">每个人的桌面都能查</span>
         <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
         <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
         <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
@@ -771,7 +771,7 @@ body{
         </div>
         <b>用量看得见，也管得住</b>
       </div>
-      <p>WorkPier 独有。真人席位和 AI 员工的每一次运行都留下记录：谁发起的、消耗多少点数、交付了什么。按成员、按工作空间、按用量统一管控，报表可导出。跨工作空间数据隔离，资料不串权。</p>
+      <p>WorkPier 独有。每次运行都留痕：<b>谁发起、耗多少点、交付了什么</b>。按成员与工作空间统一管控，跨空间资料不串权。</p>
       <div class="tree">
         <div class="tr"><span class="dots"><i class="lead"></i><i class="lead"></i><i class="lead"></i></span> 总部 · 用量总览</div>
         <div class="tr"><span class="dots"><i class="lead"></i><i class="lead"></i><i></i></span> 财务部 · 独立额度与报表</div>
@@ -901,12 +901,12 @@ body{
   <!-- notes -->
   <div class="notes">
     <h4>购买前请了解</h4>
-    <div class="nrow"><b>点数如何扣</b><span>按每次任务实际消耗结算，取决于所用模型、输入资料量、对话轮次与修改次数。同一件事，让它查资料再写，比直接写更耗点数。</span></div>
+    <div class="nrow"><b>点数如何扣</b><span>按任务实际消耗结算，取决于模型、资料量、对话轮次与修改次数。让它先查资料再写，比直接写更耗点数。</span></div>
     <div class="nrow"><b>额度能做什么</b><span>标准版 2,000 点 / 月，约完成 1 次调研 + 1 次提案分析，交付 2–4 份 Word 与预算表。</span></div>
-    <div class="nrow"><b>额度与赠点的关系</b><span>订阅额度已包含每周发放的额度，<b>不与每周赠点叠加</b>。每周赠点仅服务体验版用户，且体验版累计免费额度封顶 2,400 点。</span></div>
-    <div class="nrow"><b>点数有效期</b><span>订阅额度按周发放，每周重置，未用完的部分不结转；标准版可结转 3 个月、团队版 6 个月、企业版 12 个月。充值点数 12 个月有效。</span></div>
-    <div class="nrow"><b>数据处理</b><span>资料存储与模型推理位于新加坡区域。资料不用于训练模型。断开连接后立即停止使用该账户。</span></div>
-    <div class="nrow"><b>退款与取消</b><span>连续包月可随时取消，当前周期结束前仍可正常使用。年度方案退款按《订阅与退款规则》执行。</span></div>
+    <div class="nrow"><b>额度与赠点</b><span>订阅额度已含每周发放，<b>不与每周赠点叠加</b>。周赠仅服务体验版，累计封顶 2,400 点。</span></div>
+    <div class="nrow"><b>点数有效期</b><span>订阅额度按周发放。结转：标准版 3 个月、团队版 6 个月、企业版 12 个月。充值点数 12 个月有效。</span></div>
+    <div class="nrow"><b>数据处理</b><span>存储与推理位于新加坡。资料不用于训练模型。断开连接即停用该账户。</span></div>
+    <div class="nrow"><b>退款与取消</b><span>连续包月随时取消，当前周期结束前照常使用。年度方案按《订阅与退款规则》执行。</span></div>
   </div>
 
 </div>
