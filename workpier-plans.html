@@ -66,11 +66,24 @@ body{
   display:grid;place-items:center;font-size:10px;color:var(--muted);font-weight:600;flex:none;
 }
 .roster-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5}
-.seatbar{display:flex;align-items:baseline;gap:8px;margin:0 0 16px;padding:9px 12px;background:var(--indigo-s);border:1px solid var(--indigo-l);border-radius:var(--r-s)}
+.seatbar{margin:0 0 16px;padding:10px 12px;background:var(--indigo-s);border:1px solid var(--indigo-l);border-radius:var(--r-s)}
+.sb-top{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
 .seatbar .sb-n{font-size:11.5px;color:var(--ink2)}
 .seatbar .sb-p{font-size:17px;font-weight:700;color:var(--indigo);letter-spacing:-.01em}
 .seatbar .sb-p small{font-size:11px;font-weight:500;color:var(--muted)}
 .seatbar .sb-c{margin-left:auto;font-size:11px;color:var(--muted)}
+.sb-humans{display:flex;align-items:center;gap:0;margin-top:10px;padding-top:10px;border-top:1px solid rgba(75,92,232,.18)}
+.sb-humans .hs{width:19px;height:19px;border-radius:50%;background:var(--teal);border:1.5px solid #fff;display:grid;place-items:center;font-size:9px;color:#fff;font-weight:600;margin-right:-5px;position:relative}
+.sb-humans .hs.s2{background:var(--indigo)}
+.sb-humans .hs.s3{background:var(--purple)}
+.sb-humans .hs.s4{background:var(--amber)}
+.sb-humans .hs.more{background:#fff;color:var(--muted);border:1px dashed var(--line2);font-size:8.5px;margin-right:0}
+.sb-humans .hs.more{position:relative;z-index:0}
+.sb-humans .hs:last-child{z-index:1}
+.sb-arrow{width:22px;height:1px;background:var(--indigo-l);margin:0 9px;position:relative;flex:none}
+.sb-arrow::after{content:"";position:absolute;right:0;top:-2.5px;border-left:4px solid var(--indigo-l);border-top:3px solid transparent;border-bottom:3px solid transparent}
+.sb-cap{font-size:10.5px;color:var(--muted);margin-left:0;line-height:1.4}
+.sb-cap b{color:var(--indigo);font-weight:600}
 
 /* 主管枢纽：主管是调度中心，专长员工在其下受命 */
 .hub{background:var(--bg3);border-radius:var(--r-s);padding:14px 13px 12px;margin-bottom:18px;border:1px solid var(--line)}
@@ -535,7 +548,10 @@ body{
     <div class="tier on" data-tier="0">
       <h3>体验版</h3>
       <div class="one">先跑通一件事</div>
-      <div class="seatbar"><span class="sb-n">1 席免费</span><span class="sb-p">HK$0<small>/席</small></span><span class="sb-c">后续可增购</span></div>
+      <div class="seatbar">
+        <div class="sb-top"><span class="sb-n">1 席</span><span class="sb-p">HK$0<small>/席</small></span><span class="sb-c">后续可增购</span></div>
+<div class="sb-humans"><span class="hs">陈</span><span class="sb-arrow"></span><span class="sb-cap">每人一个身份，<b>共用一支 AI 团队</b></span></div>
+      </div>
       <div class="hub">
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
@@ -563,7 +579,8 @@ body{
       <div class="grp">
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span><b>1 个真人席位</b> · 1 个工作空间</span></li>
+          <li><i></i><span>1 个真人席位，<b>独立给主管派活</b></span></li>
+          <li><i></i><span>1 个工作空间，成果只归你自己</span></li>
           <li><i></i><span>定时任务 1 个</span></li>
           <li><i></i><span>2 个连接器（Drive / Notion）</span></li>
         </ul>
@@ -584,7 +601,10 @@ body{
     <div class="tier" data-tier="1">
       <h3>标准版</h3>
       <div class="one">一个人，一支 AI 团队</div>
-      <div class="seatbar"><span class="sb-n">3 席 · 含 2,000 点</span><span class="sb-p">HK$52.67<small>/席</small></span><span class="sb-c">比 CantoNotes 低 30%</span></div>
+      <div class="seatbar">
+        <div class="sb-top"><span class="sb-n">3 席 · 含 2,000 点</span><span class="sb-p">HK$52.67<small>/席</small></span><span class="sb-c">比 CantoNotes 低 30%</span></div>
+<div class="sb-humans"><span class="hs">陈</span><span class="hs s2">李</span><span class="hs s3">王</span><span class="sb-arrow"></span><span class="sb-cap">每人一个身份，<b>共用一支 AI 团队</b></span></div>
+      </div>
       <div class="hub">
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
@@ -613,8 +633,9 @@ body{
       <div class="grp">
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span><b>3 个真人席位</b>，<b>每席 HK$52.67</b>，共用一支 AI 团队</span></li>
-          <li><i></i><span>每席价已含对应额度，<b>点数十人共用一个池</b></span></li>
+          <li><i></i><span>每席是一个真人，<b>各自能独立给主管派活</b></span></li>
+          <li><i></i><span>每席绑定自己的工作空间，<b>分权不串权</b></span></li>
+          <li><i></i><span>成果各自留存，<b>用量可追溯到人</b></span></li>
           <li><i></i><span>席位可增购，<b>每加 1 席 +HK$75</b>、当月 +800 点</span></li>
           <li><i></i><span><b>3 个工作空间</b>，按部门划分</span></li>
           <li><i></i><span>定时任务 5 个</span></li>
@@ -636,7 +657,10 @@ body{
     <div class="tier" data-tier="2">
       <h3>团队版</h3>
       <div class="one">一整个部门共用一支 AI 团队</div>
-      <div class="seatbar"><span class="sb-n">5 席 · 含 4,000 点</span><span class="sb-p">HK$73.60<small>/席</small></span><span class="sb-c">与 CantoNotes 同价</span></div>
+      <div class="seatbar">
+        <div class="sb-top"><span class="sb-n">5 席 · 含 4,000 点</span><span class="sb-p">HK$73.60<small>/席</small></span><span class="sb-c">与 CantoNotes 同价</span></div>
+<div class="sb-humans"><span class="hs">陈</span><span class="hs s2">李</span><span class="hs s3">王</span><span class="hs s4">周</span><span class="hs more">+1</span><span class="sb-arrow"></span><span class="sb-cap">每人一个身份，<b>共用一支 AI 团队</b></span></div>
+      </div>
       <div class="hub">
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
@@ -666,8 +690,9 @@ body{
       <div class="grp">
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span><b>5 个真人席位</b>，<b>每席 HK$73.60</b>，共用一支 AI 团队</span></li>
-          <li><i></i><span>每席价已含对应额度，<b>点数十人共用一个池</b></span></li>
+          <li><i></i><span>每席是一个真人，<b>各自能独立给主管派活</b></span></li>
+          <li><i></i><span>每席绑定自己的工作空间，<b>跨部门成果可复用</b></span></li>
+          <li><i></i><span>成果各自留存，<b>用量可追溯到人</b></span></li>
           <li><i></i><span>席位可增购，<b>每加 1 席 +HK$75</b>、当月 +800 点</span></li>
           <li><i></i><span><b>6 个工作空间</b>，按部门与项目划分</span></li>
           <li><i></i><span>定时任务 15 个</span></li>
@@ -690,7 +715,10 @@ body{
       <span class="tier-tag">按需定制</span>
       <h3>企业版</h3>
       <div class="one">整间公司，一支 AI 部门</div>
-      <div class="seatbar"><span class="sb-n">20 席起 · 含 12,000 点起</span><span class="sb-p">HK$64<small>/席</small></span><span class="sb-c">规模再大价格再谈</span></div>
+      <div class="seatbar">
+        <div class="sb-top"><span class="sb-n">20 席起 · 含 12,000 点起</span><span class="sb-p">HK$64<small>/席</small></span><span class="sb-c">规模再大价格再谈</span></div>
+<div class="sb-humans"><span class="hs">陈</span><span class="hs s2">李</span><span class="hs s3">王</span><span class="hs s4">周</span><span class="hs more">+16</span><span class="sb-arrow"></span><span class="sb-cap">每人一个身份，<b>共用一支 AI 团队</b></span></div>
+      </div>
       <div class="hub">
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
@@ -719,8 +747,8 @@ body{
       <div class="grp">
         <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span><b>20 个真人席位起</b>，<b>每席 HK$64</b>，可按部门增聘</span></li>
-          <li><i></i><span>每席价已含对应额度，<b>点数十人共用一个池</b></span></li>
+          <li><i></i><span>每席是一个真人，<b>各自能独立给主管派活</b></span></li>
+          <li><i></i><span>层级授权：owner / manager / member <b>三级权限</b></span></li>
           <li><i></i><span>席位可增购，<b>每加 1 席 +HK$75</b>、当月 +800 点</span></li>
           <li><i></i><span><b>工作空间不限</b>，按部门与项目自由划分</span></li>
           <li><i></i><span>定时任务不限数量</span></li>
