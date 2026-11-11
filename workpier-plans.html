@@ -81,9 +81,6 @@ body{
 .hub-more{width:26px;height:33px;border-radius:5px;background:#fff;border:1px dashed var(--line2);display:grid;place-items:center;font-size:10px;color:var(--muted);font-weight:600;flex:none}
 .hub-cap{font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.55;text-align:center}
 .hub-cap b{color:var(--ink2);font-weight:600}
-.hub-meter{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;background:#fff;border:1px solid var(--indigo-l);border-radius:999px;padding:5px 13px}
-.hub-meter b{font-size:13px;font-weight:700;color:var(--indigo)}
-.hub-meter span{font-size:11px;color:var(--muted)}
 
 /* 权益分组 */
 .grp{margin-bottom:15px}
@@ -146,6 +143,39 @@ body{
 .tr .dots i{width:7px;height:7px;border-radius:2px;background:var(--indigo-l);display:block}
 .tr .dots i.on{background:var(--indigo)}
 .tr .dots i.lead{background:var(--purple)}
+
+/* 三大特色地基 —— 所有档位共有，不是档位差异 */
+.foundation{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px 26px 26px}
+.fd-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.fd-h b{font-size:17px;letter-spacing:-.01em}
+.fd-h span{font-size:12.5px;color:var(--muted)}
+.fd-note{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px;max-width:720px}
+.fd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.fd{border:1px solid var(--line);border-radius:var(--r-s);padding:18px 17px 16px;background:var(--bg2)}
+.fd-n{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;background:var(--indigo);margin-bottom:11px}
+.fd-tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--amber-s);color:var(--amber);border:1px solid var(--amber-l);margin-left:8px;vertical-align:2px}
+.fd-b{font-size:14.5px;font-weight:600;margin-bottom:7px;letter-spacing:-.01em}
+.fd-d{font-size:12.5px;color:var(--muted);line-height:1.7}
+.fd-d b{color:var(--ink2);font-weight:600}
+.fd-vis{margin-top:13px;padding-top:13px;border-top:1px dashed var(--line2)}
+.fd-vis svg{display:block;width:100%;height:auto}
+
+/* 组织层级树 */
+.org{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.ol{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink2)}
+.ol .lv{width:15px;height:15px;border-radius:4px;background:var(--indigo-s);border:1px solid var(--indigo-l);display:grid;place-items:center;font-size:8.5px;color:var(--indigo);font-weight:700;flex:none}
+.ol .lv.p{background:var(--purple-s);border-color:var(--purple-l);color:var(--purple)}
+.ol .nm{font-weight:500}
+.ol .ct{margin-left:auto;color:var(--muted);font-size:11px}
+
+/* 真人席位 + AI 员工共场 */
+.seats{display:flex;align-items:center;gap:0;margin-top:6px}
+.seat{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600;color:#fff;background:var(--teal);border:2px solid #fff;margin-right:-7px;position:relative}
+.seat.s2{background:var(--indigo)}
+.seat.s3{background:var(--purple)}
+.seat.s4{background:var(--amber)}
+.seat.more{background:#fff;color:var(--muted);border:1px dashed var(--line2);font-size:10px}
+.seats-cap{font-size:11px;color:var(--muted);margin-left:12px}
 
 /* 充值包 */
 .topup{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px 24px}
@@ -378,6 +408,102 @@ body{
     </div>
   </div>
 
+  <!-- 特色地基：所有档位共有，不是档位差异 -->
+  <div class="foundation">
+    <div class="fd-h">
+      <b>每一个套餐，都包含这三件事</b>
+      <span>它们不是高档位的特权，是 WorkPier 的地基 · 所有档位完全一致</span>
+    </div>
+    <p class="fd-note">下面三件事在任何一档里都完整可用，不做拆分、不按档位限量。你付费买的是<b>用量</b>和<b>组织规模</b>，不是把产品拆开卖。</p>
+
+    <div class="fd-grid">
+      <!-- 特色一：主管主动调动，内部讨论后总结 -->
+      <div class="fd">
+        <div class="fd-n">1</div>
+        <div class="fd-b">主管主动调动，先讨论再总结</div>
+        <div class="fd-d">你交代一件事，<b>团队主管自己判断</b>哪部分该自己做、哪部分该交给谁。它把活派给专长 AI 员工，等他们做完<b>回过头来逐一对照你的要求检查</b>，缺什么就退回让谁补上，最后<b>由主管自己写出一份完整答复</b>，并说明哪部分是谁做的。</div>
+        <div class="fd-vis">
+          <svg viewBox="0 0 260 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="fdA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#8B90C4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <rect x="88" y="4" width="84" height="26" rx="7" fill="#F3EEFE" stroke="#7A5AF8" stroke-width="0.5"/>
+            <text x="130" y="17" font-family="sans-serif" font-size="10" font-weight="600" fill="#3C3489" text-anchor="middle" dominant-baseline="central">团队主管</text>
+            <path d="M130 30 L130 44" stroke="#8B90C4" stroke-width="1" marker-end="url(#fdA)"/>
+            <rect x="16" y="48" width="66" height="24" rx="6" fill="#fff" stroke="#D4D6E6" stroke-width="0.5"/>
+            <text x="49" y="60" font-family="sans-serif" font-size="9" fill="#3A3F6B" text-anchor="middle" dominant-baseline="central">研究员</text>
+            <rect x="97" y="48" width="66" height="24" rx="6" fill="#fff" stroke="#D4D6E6" stroke-width="0.5"/>
+            <text x="130" y="60" font-family="sans-serif" font-size="9" fill="#3A3F6B" text-anchor="middle" dominant-baseline="central">分析师</text>
+            <rect x="178" y="48" width="66" height="24" rx="6" fill="#fff" stroke="#D4D6E6" stroke-width="0.5"/>
+            <text x="211" y="60" font-family="sans-serif" font-size="9" fill="#3A3F6B" text-anchor="middle" dominant-baseline="central">撰稿人</text>
+            <path d="M49 72 L49 84 L130 84" stroke="#C4C7DE" stroke-width="1" fill="none"/>
+            <path d="M130 72 L130 84" stroke="#C4C7DE" stroke-width="1" fill="none"/>
+            <path d="M211 72 L211 84 L130 84" stroke="#C4C7DE" stroke-width="1" fill="none"/>
+            <path d="M130 84 L130 96" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdA)"/>
+            <rect x="60" y="100" width="140" height="26" rx="7" fill="#EEEFFE" stroke="#4B5CE8" stroke-width="0.5"/>
+            <text x="130" y="113" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#26215C" text-anchor="middle" dominant-baseline="central">主管综合成一份答复</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 特色二：组织结构 + 真人席位共用 -->
+      <div class="fd">
+        <div class="fd-n">2</div>
+        <div class="fd-b">一套组织结构，全公司共用</div>
+        <div class="fd-d">工作空间按<b>部门与项目划分</b>，权限分级到角色。同一公司的<b>多个真人席位共用</b>一支 AI 团队和同一个额度池——财务部、市场部各用一个工作空间，互不串权，主管照常统一调度。跨部门的成果可复用而不泄露。</div>
+        <div class="fd-vis">
+          <div class="org">
+            <div class="ol"><span class="lv p">总</span><span class="nm">总部</span><span class="ct">owner</span></div>
+            <div class="ol"><span class="lv">部</span><span class="nm">财务部</span><span class="ct">工作空间 A</span></div>
+            <div class="ol"><span class="lv">部</span><span class="nm">市场部</span><span class="ct">工作空间 B</span></div>
+            <div class="ol"><span class="lv">组</span><span class="nm">项目组</span><span class="ct">工作空间 C</span></div>
+          </div>
+          <div class="seats">
+            <span class="seat">陈</span>
+            <span class="seat s2">李</span>
+            <span class="seat s3">王</span>
+            <span class="seat s4">周</span>
+            <span class="seat more">+</span>
+            <span class="seats-cap">真人席位共用同一支 AI 团队</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 特色三：真人讨论 + AI 参与 + 结论转任务 -->
+      <div class="fd">
+        <div class="fd-n">3</div>
+        <div class="fd-b">真人讨论带 AI，结论直接变任务<span class="fd-tag">即将上线</span></div>
+        <div class="fd-d">同事之间发起讨论，<b>把 AI 员工也拉进来一起想</b>。讨论定下来的结论，<b>一键生成任务</b>，再交回团队主管去执行——从想到做，中间不用再抄一遍。</div>
+        <div class="fd-vis">
+          <svg viewBox="0 0 260 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="fdB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="#8B90C4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+            <circle cx="42" cy="20" r="13" fill="#0F6E56"/>
+            <text x="42" y="20" font-family="sans-serif" font-size="10" fill="#fff" text-anchor="middle" dominant-baseline="central">陈</text>
+            <circle cx="76" cy="20" r="13" fill="#4B5CE8"/>
+            <text x="76" y="20" font-family="sans-serif" font-size="10" fill="#fff" text-anchor="middle" dominant-baseline="central">李</text>
+            <circle cx="110" cy="20" r="13" fill="#7A5AF8"/>
+            <text x="110" y="20" font-family="sans-serif" font-size="9" fill="#fff" text-anchor="middle" dominant-baseline="central">AI</text>
+            <text x="132" y="20" font-family="sans-serif" font-size="9" fill="#6E7396" dominant-baseline="central">一起讨论</text>
+            <path d="M59 34 L59 48 L130 48" stroke="#C4C7DE" stroke-width="1" fill="none"/>
+            <path d="M93 34 L93 48 L130 48" stroke="#C4C7DE" stroke-width="1" fill="none"/>
+            <path d="M130 48 L130 60" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdB)"/>
+            <rect x="52" y="64" width="156" height="26" rx="7" fill="#E4F6F0" stroke="#0F6E56" stroke-width="0.5"/>
+            <text x="130" y="77" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#04342C" text-anchor="middle" dominant-baseline="central">讨论结论</text>
+            <path d="M130 90 L130 102" stroke="#7A5AF8" stroke-width="1" marker-end="url(#fdB)"/>
+            <rect x="72" y="106" width="116" height="24" rx="7" fill="#EEEFFE" stroke="#4B5CE8" stroke-width="0.5"/>
+            <text x="130" y="118" font-family="sans-serif" font-size="9.5" font-weight="600" fill="#26215C" text-anchor="middle" dominant-baseline="central">一键生成任务</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- tabs -->
   <div class="tabs">
     <button class="tab on" data-t="0">体验版</button>
@@ -390,22 +516,23 @@ body{
     <!-- 体验版 -->
     <div class="tier on" data-tier="0">
       <h3>体验版</h3>
-      <div class="one">先完成一项真实工作</div>
+      <div class="one">先跑通一件事</div>
       <div class="hub">
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
           <b>团队主管</b>
-          <span>内置 · 每一档都有 · 永不可暂停</span>
+          <span>内置 · 永不可暂停</span>
         </div>
         <div class="hub-stem"></div>
         <div class="hub-bus"></div>
         <div class="hub-row">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-g"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
           <div class="hub-more">+</div>
         </div>
-        <div class="hub-meter"><b>同时 1 项</b><span>主管可并行调度的任务数</span></div>
-        <div class="hub-cap">主管判断哪部分该自己做、哪部分交给专长员工<br><b>专长角色随时可增聘，不按档位限量</b></div>
+        <div class="hub-cap">专长角色<b>随时可增聘，不按档位限量</b><br>主管与专长员工的协作方式，每一档完全一致</div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -415,9 +542,9 @@ body{
         </ul>
       </div>
       <div class="grp">
-        <div class="grp-t">组织与工具</div>
+        <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span>1 个成员席位 · 1 个工作空间</span></li>
+          <li><i></i><span><b>1 个真人席位</b> · 1 个工作空间</span></li>
           <li><i></i><span>定时任务 1 个</span></li>
           <li><i></i><span>2 个连接器（Drive / Notion）</span></li>
         </ul>
@@ -437,24 +564,23 @@ body{
     <!-- 标准版 -->
     <div class="tier" data-tier="1">
       <h3>标准版</h3>
-      <div class="one">一个人的稳定产出</div>
+      <div class="one">一个人，一支 AI 团队</div>
       <div class="hub">
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
           <b>团队主管</b>
-          <span>内置 · 每一档都有 · 永不可暂停</span>
+          <span>内置 · 永不可暂停</span>
         </div>
         <div class="hub-stem"></div>
         <div class="hub-bus"></div>
         <div class="hub-row">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-g"/></svg>
+          <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
           <div class="hub-more">+</div>
         </div>
-        <div class="hub-meter"><b>同时 3 项</b><span>主管可并行调度的任务数</span></div>
-        <div class="hub-cap">主管判断哪部分该自己做、哪部分交给专长员工<br><b>专长角色随时可增聘，不按档位限量</b></div>
+        <div class="hub-cap">专长角色<b>随时可增聘，不按档位限量</b><br>主管与专长员工的协作方式，每一档完全一致</div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -465,9 +591,10 @@ body{
         </ul>
       </div>
       <div class="grp">
-        <div class="grp-t">组织与工具</div>
+        <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span><b>3 个成员席位</b> · 3 个工作空间</span></li>
+          <li><i></i><span><b>3 个真人席位</b>共用一支 AI 团队</span></li>
+          <li><i></i><span><b>3 个工作空间</b>，按部门划分</span></li>
           <li><i></i><span>定时任务 5 个</span></li>
           <li><i></i><span>4 个连接器全部可用（Drive / Notion / Slack / Dropbox）</span></li>
           <li><i></i><span>未用点数结转 <b>3 个月</b></span></li>
@@ -486,12 +613,12 @@ body{
     <!-- 团队版 -->
     <div class="tier" data-tier="2">
       <h3>团队版</h3>
-      <div class="one">多成员共用一支 AI 团队</div>
+      <div class="one">一整个部门共用一支 AI 团队</div>
       <div class="hub">
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
           <b>团队主管</b>
-          <span>内置 · 每一档都有 · 永不可暂停</span>
+          <span>内置 · 永不可暂停</span>
         </div>
         <div class="hub-stem"></div>
         <div class="hub-bus"></div>
@@ -500,11 +627,9 @@ body{
           <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-f"/></svg>
           <div class="hub-more">+</div>
         </div>
-        <div class="hub-meter"><b>同时 8 项</b><span>主管可并行调度的任务数</span></div>
-        <div class="hub-cap">主管判断哪部分该自己做、哪部分交给专长员工<br><b>专长角色随时可增聘，不按档位限量</b></div>
+        <div class="hub-cap">专长角色<b>随时可增聘，不按档位限量</b><br>主管与专长员工的协作方式，每一档完全一致</div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -515,9 +640,10 @@ body{
         </ul>
       </div>
       <div class="grp">
-        <div class="grp-t">组织与工具</div>
+        <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span><b>8 个成员席位</b> · 10 个工作空间</span></li>
+          <li><i></i><span><b>8 个真人席位</b>共用一支 AI 团队</span></li>
+          <li><i></i><span><b>10 个工作空间</b>，按部门与项目划分</span></li>
           <li><i></i><span>定时任务 15 个</span></li>
           <li><i></i><span>项目与知识库容量提升 5 倍</span></li>
           <li><i></i><span>未用点数结转 <b>6 个月</b></span></li>
@@ -537,12 +663,12 @@ body{
     <div class="tier ent" data-tier="3">
       <span class="tier-tag">按需定制</span>
       <h3>企业版</h3>
-      <div class="one">整间公司的 AI 部门</div>
+      <div class="one">整间公司，一支 AI 部门</div>
       <div class="hub">
         <div class="hub-lead">
           <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
           <b>团队主管</b>
-          <span>内置 · 每一档都有 · 永不可暂停</span>
+          <span>内置 · 永不可暂停</span>
         </div>
         <div class="hub-stem"></div>
         <div class="hub-bus"></div>
@@ -550,13 +676,10 @@ body{
           <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-b"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-c"/></svg>
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-d"/></svg>
           <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
-          <svg class="px" viewBox="0 0 32 40"><use href="#px-f"/></svg>
           <div class="hub-more">+</div>
         </div>
-        <div class="hub-meter"><b>不设上限</b><span>并行任务数按需定制</span></div>
-        <div class="hub-cap">主管判断哪部分该自己做、哪部分交给专长员工<br><b>专长角色随时可增聘，不按档位限量</b></div>
+        <div class="hub-cap">专长角色<b>随时可增聘，不按档位限量</b><br>主管与专长员工的协作方式，每一档完全一致</div>
       </div>
       <div class="grp">
         <div class="grp-t">交付成果</div>
@@ -567,9 +690,10 @@ body{
         </ul>
       </div>
       <div class="grp">
-        <div class="grp-t">组织与工具</div>
+        <div class="grp-t">组织与席位</div>
         <ul class="flist">
-          <li><i></i><span><b>20 个成员席位起</b> · 工作空间不限</span></li>
+          <li><i></i><span><b>20 个真人席位起</b>，可按部门增聘</span></li>
+          <li><i></i><span><b>工作空间不限</b>，按部门与项目自由划分</span></li>
           <li><i></i><span>定时任务不限数量</span></li>
           <li><i></i><span>发票、合同与采购材料出具</span></li>
           <li><i></i><span>未用点数结转 <b>12 个月</b></span></li>
@@ -592,31 +716,13 @@ body{
       <div class="sp-h">
         <div class="ic">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="5" rx="1.6"/><rect x="3" y="15" width="18" height="5" rx="1.6"/>
-            <path d="M12 9v6"/>
-          </svg>
-        </div>
-        <b>组织架构与部门管理</b>
-      </div>
-      <p>WorkPier 独有。工作空间按部门与项目划分，权限分级到角色，跨部门成果可复用而不串权。跨工作空间数据隔离，统一用量管控与报表导出。</p>
-      <div class="tree">
-        <div class="tr"><span class="dots"><i class="lead"></i><i class="lead"></i><i class="lead"></i></span> 总部</div>
-        <div class="tr"><span class="dots"><i class="lead"></i><i class="lead"></i><i></i></span> 财务部</div>
-        <div class="tr"><span class="dots"><i class="lead"></i><i></i><i></i></span> 市场部</div>
-        <div class="tr"><span class="dots"><i></i><i></i><i></i></span> 项目组</div>
-      </div>
-    </div>
-    <div class="sp">
-      <div class="sp-h">
-        <div class="ic">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="7" height="16" rx="1.6"/><rect x="14" y="4" width="7" height="16" rx="1.6"/>
             <path d="M6.5 8h0M17.5 8h0M6.5 12h0M17.5 12h0"/>
           </svg>
         </div>
         <b>像素员工档案办公室</b>
       </div>
-      <p>WorkPier 独有。每一位 AI 员工的桌面都能查：今天完成了什么、哪一件失败了、哪一件正等着你拍板。人机之间发生了什么，不用猜。</p>
+      <p>WorkPier 独有。每一位 AI 员工的桌面都能查：今天完成了什么、哪一件失败了、哪一件正等着你拍板。人和 AI 之间发生了什么，不用猜。</p>
       <div class="px-strip">
         <svg class="px" viewBox="0 0 32 40"><use href="#px-lead"/></svg>
         <svg class="px" viewBox="0 0 32 40"><use href="#px-a"/></svg>
@@ -626,9 +732,26 @@ body{
         <svg class="px" viewBox="0 0 32 40"><use href="#px-e"/></svg>
       </div>
     </div>
+    <div class="sp">
+      <div class="sp-h">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 20V9M9 20V4M15 20v-8M21 20v-5"/>
+          </svg>
+        </div>
+        <b>用量看得见，也管得住</b>
+      </div>
+      <p>WorkPier 独有。真人席位和 AI 员工的每一次运行都留下记录：谁发起的、消耗多少点数、交付了什么。按成员、按工作空间、按用量统一管控，报表可导出。跨工作空间数据隔离，资料不串权。</p>
+      <div class="tree">
+        <div class="tr"><span class="dots"><i class="lead"></i><i class="lead"></i><i class="lead"></i></span> 总部 · 用量总览</div>
+        <div class="tr"><span class="dots"><i class="lead"></i><i class="lead"></i><i></i></span> 财务部 · 独立额度与报表</div>
+        <div class="tr"><span class="dots"><i class="lead"></i><i></i><i></i></span> 市场部 · 独立额度与报表</div>
+        <div class="tr"><span class="dots"><i></i><i></i><i></i></span> 项目组 · 按项目归集</div>
+      </div>
+    </div>
   </div>
 
-  <div class="hint">切换上方档位查看对应价格。<b>每档都内置同一个团队主管</b>——它自己判断哪部分该自己做、哪部分该交给专长员工，再把结果统合交回。这是 WorkPier 与其他工具最不同的地方：你买的不是一个额度，而是一支会自己分工的团队。</div>
+  <div class="hint">切换上方档位查看对应价格。<b>四档的 AI 团队完全一样</b>——同一个团队主管、同样主动调动、同样先讨论再总结，一分钱不多收。档位之间差的只是<b>你能用多少</b>（点数与每日上限）和<b>你能组织多大</b>（真人席位与工作空间）。</div>
 
   <!-- buy -->
   <div class="buys" id="buysPaid">
